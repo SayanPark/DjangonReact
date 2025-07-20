@@ -1,0 +1,36 @@
+import localtunnel from 'localtunnel';
+
+async function startTunnels() {
+  try {
+    // Start backend tunnel
+    const backendTunnel = await localtunnel({ port: 8000, subdomain: 'backend-szkblog' });
+    console.log(`Backend tunnel running at: ${backendTunnel.url}`);
+
+    // Start frontend tunnel
+    const frontendTunnel = await localtunnel({ port: 5173, subdomain: 'frontend-szkblog' });
+    console.log(`Frontend tunnel running at: ${frontendTunnel.url}`);
+
+    backendTunnel.on('close', () => {
+      console.log('Backend tunnel closed');
+    });
+
+    frontendTunnel.on('close', () => {
+      console.log('Frontend tunnel closed');
+    });
+
+    // Keep tunnels open until process is terminated
+    process.on('SIGINT', () => {
+      backendTunnel.close();
+      frontendTunnel.close();
+      process.exit();
+    });
+
+    // Keep process alive
+    await new Promise(() => {});
+  } catch (err) {
+    console.error('Error starting tunnels:', err);
+    process.exit(1);
+  }
+}
+
+startTunnels();

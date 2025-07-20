@@ -1,0 +1,7 @@
+tunnel: backend-szkblog
+credentials-file: C:\Users\lenovo\.cloudflared\backend-szkblog.json
+originCertPath: C:\Users\lenovo\.cloudflared\cert.pem
+
+ingress:
+  - service: http://localhost:8000
+  - service: http_status:404

@@ -1,0 +1,6 @@
+tunnel: frontend-szkblog
+credentials-file: C:\Users\lenovo\.cloudflared\frontend-szkblog.json
+
+ingress:
+  - service: http://localhost:5173
+  - service: http_status:404
