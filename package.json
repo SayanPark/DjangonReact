@@ -2,7 +2,7 @@
   "scripts": {
     "build": "cd frontend && npm run build",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "deploy": "gh-pages -d frontend/dist"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.7.2",
