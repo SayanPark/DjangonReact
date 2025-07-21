@@ -6,7 +6,7 @@ import Toast from "../../plugin/Toast";
 import Swal from "sweetalert2";
 import { Editor, EditorState, convertFromRaw, ContentState, AtomicBlockUtils, Modifier, CompositeDecorator, convertToRaw} from "draft-js";
 import "draft-js/dist/Draft.css";
-import setImmediate from 'setimmediate';
+import * as setImmediate from 'setimmediate';
 
 if (typeof window !== 'undefined' && !window.setImmediate) {
   window.setImmediate = setImmediate;
