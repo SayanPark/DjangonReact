@@ -3,7 +3,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuthStore } from "../../store/auth";
 import { logout } from "../../utils/auth";
 import apiInstance from "../../utils/axios";
-import logo from "../../../dist/logo-removebg-preview.webp";
+import logo from "../../../public/logo-removebg-preview.webp";
 import "../core/DropdownColumnsFix.css";
 
 function Header() {    

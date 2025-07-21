@@ -1,5 +1,5 @@
 import React from "react";
-import image from "../../../dist/LogoLandrl.webp";
+import image from "../../../public/LogoLandrl.webp";
 
 function Footer() {
     return (
