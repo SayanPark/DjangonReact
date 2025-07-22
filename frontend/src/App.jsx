@@ -1,5 +1,5 @@
 import React, { Suspense, lazy, useEffect } from "react";
-import { Route, Routes, BrowserRouter, Navigate, useNavigate, useLocation } from "react-router-dom";
+import { Route, Routes, HashRouter, Navigate, useNavigate, useLocation } from "react-router-dom";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Loading from "./views/UI/Loading";
@@ -124,9 +124,9 @@ function AppWrapper() {
 
 function App() {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <AppWrapper />
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 
