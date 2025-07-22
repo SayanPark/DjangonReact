@@ -18,6 +18,11 @@ jobs:
         with:
           node-version: '18'
 
+      - name: Clean node_modules and package-lock.json
+        run: |
+          rm -rf frontend/node_modules
+          rm -f frontend/package-lock.json
+
       - name: Install dependencies
         run: npm install
         working-directory: ./frontend
