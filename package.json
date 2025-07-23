@@ -12,7 +12,7 @@
     "express": "^5.1.0",
     "gh-pages": "^6.3.0",
     "http-proxy-middleware": "^3.0.5",
-    "localtunnel": "^1.8.3"
+    "localtunnel": "^2.0.2"
   },
   "devDependencies": {
     "concurrently": "9.2.0"
