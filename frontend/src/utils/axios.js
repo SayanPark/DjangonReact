@@ -1,7 +1,7 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
-const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || '/api/v1';
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'https://your-render-backend-url.onrender.com/api/v1';
 
 const apiInstance = axios.create({
     baseURL: apiBaseUrl,
