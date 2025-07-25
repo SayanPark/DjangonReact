@@ -9,11 +9,11 @@ import "../../index.css";
 
 function ImageSlider() {
     const images = [
-        "https://i.postimg.cc/4yPjF6rs/168422861-10627390.webp",
-        "https://i.postimg.cc/Wp7R3VtC/22597574-6649594.webp",
-        "https://i.postimg.cc/CLvWG4G4/378116512-e6e71982-34e1-497e-9c48-e69edd769506.webp",
-        "https://i.postimg.cc/VLsx0hC6/4952776-39693.webp",
-        "https://i.postimg.cc/tJpL5SvB/6622376-3370253.webp"
+        "/DjangonReact/A1.webp",
+        "/DjangonReact/Four_Iranian_women_wearing_outfits_representing_medicine,_engineering.webp",
+        "/DjangonReact/Iranian_rural_women_with_traditional_rural_Iranian_clothing_standingg.webp",
+        "/DjangonReact/Iranian_rural_women_with_traditional_rural_Iranian_clothing_standing.webp",
+        "/DjangonReact/fxhcgjcg.webp"
     ];
     const [currentIndex, setCurrentIndex] = React.useState(0);
 
@@ -186,13 +186,13 @@ function Index({ logoutMessage }) {
                             </div>
                             <div className="col-md-6 align-self-end">
                                 <div style={{ position: "relative", display: "flex", justifyContent: "center", alignItems: "center" }}>
-                                <img loading="lazy" src="https://i.postimg.cc/fRcNd3Hr/5cb0633d80f2cf201a4c3253png-1701765866-31930.webp" className="main-image" style={{zIndex: 3}}/>
-                                    {/* Image slider inside the phone */}
-                                    <ImageSlider />
-                                <img loading="lazy" src="https://i.postimg.cc/0NN9qkfX/illustrationpng-1701766114-35035.webp" className="around-image image1" style={{zIndex: 1}} />
-                                <img loading="lazy" src="https://i.postimg.cc/pLR2qYnH/illustrationpng-1701766127-42730.webp" className="around-image image2" />
-                                <img loading="lazy" src="https://i.postimg.cc/6pcBS2dG/vectorpng-1701766195-89727.webp" className="around-image image3" />
-                                <img loading="lazy" src="https://i.postimg.cc/J7B8cd0g/vectorpng-1701766150-61868.webp" className="around-image image4" />
+                                    <img loading="lazy" src="/DjangonReact/main-image.webp" className="main-image" style={{zIndex: 3}}/>
+                                        {/* Image slider inside the phone */}
+                                        <ImageSlider />
+                                    <img loading="lazy" src="/DjangonReact/accessory1.webp" className="around-image image1" style={{zIndex: 1}} />
+                                    <img loading="lazy" src="/DjangonReact/accessory2.webp" className="around-image image2" />
+                                    <img loading="lazy" src="/DjangonReact/accessory3.webp" className="around-image image3" />
+                                    <img loading="lazy" src="/DjangonReact/accessory4.webp" className="around-image image4" />
                                 </div>
                                 <div className="counter-section" style={{position: "static"}}>
                                     <div>
@@ -350,7 +350,7 @@ function Index({ logoutMessage }) {
                                                 <div className="avatar avatar-xxl mb-2">
                                                     {(() => {
                                                         const validImage = (url) => url && url.trim() !== "" && url !== "http://127.0.0.1:8000/media/default/default-user.jpg";
-                                                        const imgSrc = validImage(user.image) ? user.image : "https://i.postimg.cc/RVLb8r7B/K.webp";
+                                                        const imgSrc = validImage(user.image) ? user.image : "/DjangonReact/K.webp";
                                                         return (
                                                             <Link to={`/author-profile/${user.id}`}>
                                                                 <img

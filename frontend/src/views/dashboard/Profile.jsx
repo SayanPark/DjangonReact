@@ -155,7 +155,7 @@ function Profile() {
                                         <div className="d-flex align-items-center mb-4 mb-lg-0">
                                             {(() => {
                                                 const validImage = (url) => typeof url === "string" && url.trim() !== "" && url !== "http://127.0.0.1:8000/media/default/default-user.jpg";
-                                                const imgSrc = imagePreview ? imagePreview : (validImage(profileData.image) ? profileData.image : "https://i.postimg.cc/RVLb8r7B/K.webp");
+                                                const imgSrc = imagePreview ? imagePreview : (validImage(profileData.image) ? profileData.image : "/DjangonReact/K.webp");
                                                 if (!isValidImage) {
                                                     return (
                                                         <div style={{ width: "100px", height: "100px", borderRadius: "50%", backgroundColor: "#f8d7da", color: "#721c24", display: "flex", alignItems: "center", justifyContent: "center", textAlign: "center", padding: "5px", fontSize: "12px" }}>

@@ -1065,7 +1065,7 @@ function About() {
                             <h2 className="pt-2 pb-2">سخن اول موسس شهرزنان</h2>
                             <div style={{ display: "flex", justifyContent: "center" }}>
                                 <video className="pt-4 pb-5" controls controlsList="nodownload" style={{ width: "100%" }} onContextMenu={(e) => e.preventDefault()}>
-                                    <source src="/video_2025-06-12_14-20-37.mp4" type="video/mp4" />
+                                    <source src="/DjangonReact/video_2025-06-12_14-20-37.mp4" type="video/mp4" />
                                     مرورگر شما از ویدئو پشتیبانی نمی‌کند، مجددا تلاش کنید
                                 </video>
                             </div>
@@ -1165,7 +1165,7 @@ function About() {
                                         <div className="avatar avatar-xxl mb-2">
                                             {(() => {
                                                 const validImage = (url) => url && url.trim() !== "" && url !== "http://127.0.0.1:8000/media/default/default-user.jpg";
-                                                const imgSrc = validImage(user.image) ? user.image : "https://i.postimg.cc/RVLb8r7B/K.webp";
+                                                const imgSrc = validImage(user.image) ? user.image : "/DjangonReact/K.webp";
                                                 return (
                                                     <Link to={`/author-profile/${user.id}`}>
                                                         <img
