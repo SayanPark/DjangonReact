@@ -29,7 +29,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-%43v^qi*3&pjm*6m=i-1x
 
 DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'backendszk-o5pq.onrender.com,localhost,127.0.0.1').split(',')
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', ',localhost,127.0.0.1,szkbackend.onrender.com').split(',')
 
 # Add this to correctly detect HTTPS when behind a proxy (like localtunnel)
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
@@ -171,6 +171,11 @@ STATIC_URL = 'static/'
 
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
+WHITENOISE_MIMETYPES = {
+    '.js': 'application/javascript',
+    '.min.js': 'application/javascript',
+}
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
@@ -225,7 +230,7 @@ if DEBUG:
     ]
 else:
     CORS_ALLOW_ALL_ORIGINS = False
-    CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS', 'https://backendszk-o5pq.onrender.com').split(',')
+    CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS', 'https://szkbackend.onrender.com').split(',')
 
 CORS_ALLOW_CREDENTIALS = True
 
