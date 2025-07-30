@@ -4,7 +4,8 @@
     "build": "cd frontend && npm run build",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d frontend/dist",
-    "start-backend-tunnel": "concurrently \"cloudflared tunnel --config frontend/.cloudflared/backend-config.yml run backend-szkblog\" \"python backend/manage.py runserver 0.0.0.0:8000\""
+    "start-backend-tunnel": "concurrently \"cloudflared tunnel --config frontend/.cloudflared/backend-config.yml run backend-szkblog\" \"python backend/manage.py runserver 0.0.0.0:8000\"",
+    "postinstall": "cd frontend && npm install"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "7.0.0",
