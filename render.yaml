@@ -4,6 +4,6 @@ services:
     env: python
     buildCommand: python -m pip install -r backend/requirements.txt
     preStartCommand: python -m pip show gunicorn
-    startCommand: python -m gunicorn backend.backend.wsgi:application --bind 0.0.0.0:$PORT
+    startCommand: python -m gunicorn backend.wsgi:application --bind 0.0.0.0:$PORT
     autoDeploy: true
     plan: free
