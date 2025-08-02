@@ -16,6 +16,12 @@ import dj_database_url
 import os
 import sys
 
+# Add the project root directory to Python path
+# This ensures that 'backend' package can be found
+project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if project_root not in sys.path:
+    sys.path.insert(0, project_root)
+
 import api.monkey_patch_drf_yasg_lazy_translation
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
