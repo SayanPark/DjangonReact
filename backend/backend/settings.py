@@ -114,18 +114,6 @@ if DATABASE_URL:
     DATABASES = {
         'default': dj_database_url.parse(DATABASE_URL, conn_max_age=600, ssl_require=True)
     }
-elif DEBUG:
-    # database of localhost development
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'SZKblog',
-            'USER': 'postgres',
-            'PASSWORD': 'S@y@n248',
-            'HOST': 'localhost',
-            'PORT': '5432',
-        }
-    }
 else:
     # database of render.com development
     DATABASES = {
