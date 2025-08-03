@@ -126,21 +126,15 @@ function CategorySlider({ category }) {
         responsive: [
         {
             breakpoint: 992,
-            settings: {
-            slidesToShow: 3
-            }
+            settings: {slidesToShow: 3}
         },
         {
             breakpoint: 768,
-            settings: {
-            slidesToShow: 2
-            }
+            settings: {slidesToShow: 2}
         },
         {
             breakpoint: 576,
-            settings: {
-            slidesToShow: 1
-            }
+            settings: {slidesToShow: 1}
         }
         ]
     });
