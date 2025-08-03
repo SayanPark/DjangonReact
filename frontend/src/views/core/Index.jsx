@@ -6,6 +6,7 @@ import CategorySlider from "./CategorySlider";
 import useUserData from "../../plugin/useUserData";
 import Slider from "react-slick";
 import "../../index.css";
+import "./AvatarStyles.css";
 
 function ImageSlider() {
     const images = [
