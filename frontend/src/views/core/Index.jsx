@@ -359,6 +359,12 @@ function Index({ logoutMessage }) {
                                                                     style={{ width: "100px", height: "100px", objectFit: "cover", margin: "0 auto", display: "block" }}
                                                                     src={imgSrc}
                                                                     alt="avatar"
+                                                                    onError={(e) => {
+                                                                        // If the image fails to load, fallback to default image
+                                                                        if (e.target.src !== "/K.webp") {
+                                                                            e.target.src = "/K.webp";
+                                                                        }
+                                                                    }}
                                                                 />
                                                             </Link>
                                                         );
