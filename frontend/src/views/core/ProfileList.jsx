@@ -51,8 +51,7 @@ function ProfileList() {
                             <Link key={user.id} to={`/author-profile/${user.id}`} className="text-center px-1 fade-in" style={{ textDecoration: "none", color: "inherit" }}>
                                 <div className="avatar avatar-xxl mb-2">
                                     {(() => {
-                                        const validImage = (url) => url && url.trim() !== "" && url !== "http://127.0.0.1:8000/media/default/default-user.jpg";
-                                        const imgSrc = validImage(user.image) ? user.image : "https://i.postimg.cc/RVLb8r7B/K.webp";
+                                        const imgSrc = user.image && user.image.trim() !== "" && !user.image.includes("default-user") ? user.image : "/K.webp";
                                         return (
                                             <img
                                                 className="avatar-img rounded-circle"
