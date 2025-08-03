@@ -9,3 +9,11 @@ services:
     staticPaths:
       - path: /media
         directory: backend/media
+
+static_sites:
+  - name: frontend
+    buildCommand: cd frontend && npm install && npm run build
+    staticPublishPath: frontend/dist
+    envVars:
+      - key: VITE_API_BASE_URL
+        value: https://djangonreact.onrender.com/api/v1/
