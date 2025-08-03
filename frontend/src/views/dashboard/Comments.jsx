@@ -138,7 +138,7 @@ function Comments() {
                                                 }}
                                             >
                                                 <div className="d-flex">
-                                                    <img src={c?.image || "https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg"} alt="avatar" className="rounded-circle avatar-lg" style={{ width: "70px", height: "70px", borderRadius: "50%", objectFit: "cover" }} />
+                                                    <img src={c?.image || "/K.webp"} alt="avatar" className="rounded-circle avatar-lg" style={{ width: "70px", height: "70px", borderRadius: "50%", objectFit: "cover" }} />
                                                     <div style={{ marginRight: "1rem", marginTop: "0.5rem" }} >
                                                         <div className="d-flex align-items-center justify-content-between">
                                                             <div>

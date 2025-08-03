@@ -158,7 +158,7 @@ function Dashboard() {
                                                 <div className="col-12">
                                                     <div className="d-flex align-items-center position-relative">
                                                         <div className="avatar avatar-lg flex-shrink-0">
-                                                            <img className="avatar-img" src={c?.image || "/DjangonReact/K.webp"} style={{ width: "100px", height: "100px", objectFit: "cover", borderRadius: "50%" }} alt="avatar" />
+                                                            <img className="avatar-img" src={c?.image || "/K.webp"} style={{ width: "100px", height: "100px", objectFit: "cover", borderRadius: "50%" }} alt="avatar" />
                                                         </div>
                                                         <div className="me-3">
                                                             <p className="mb-1">
