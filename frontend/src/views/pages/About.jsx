@@ -1164,8 +1164,7 @@ function About() {
                                     <div key={user.id} className="text-center px-1">
                                         <div className="avatar avatar-xxl mb-2">
                                             {(() => {
-                                                const validImage = (url) => url && url.trim() !== "" && url !== "http://127.0.0.1:8000/media/default/default-user.jpg";
-                                                const imgSrc = validImage(user.image) ? user.image : "/K.webp";
+                                                const imgSrc = user.image && user.image.trim() !== "" && !user.image.includes("default-user") ? user.image : "/K.webp";
                                                 return (
                                                     <Link to={`/author-profile/${user.id}`}>
                                                         <img
