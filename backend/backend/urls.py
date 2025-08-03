@@ -18,6 +18,9 @@ from django.contrib import admin
 from django.urls import path, include, re_path
 from django.conf import settings
 from django.conf.urls.static import static
+from django.views.generic import RedirectView
+from django.views.static import serve
+import os
 
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
@@ -43,10 +46,12 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/', include('api.urls')),
 
+    # Serve media files directly
+    re_path(r'^media/(?P<path>.*)$', serve, {
+        'document_root': settings.MEDIA_ROOT,
+    }),
+
     # Catch-all pattern for SPA frontend
     re_path(r'^(?:.*)/?$', FrontendAppView.as_view(), name='frontend'),
 ]
-
-# Always serve media files, regardless of DEBUG setting
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
