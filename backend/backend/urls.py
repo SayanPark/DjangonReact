@@ -45,13 +45,9 @@ urlpatterns = [
     path('api/v1/', include('api.urls')),
 ]
 
-# Serve media files in development and static files in production
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-else:
-    # In production, let Render handle media files via staticPaths in render.yaml
-    # But we still need to include the media URL pattern for Django admin
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# Serve media files in both development and production
+# In production, this will work alongside Render's staticPaths configuration
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # Catch-all pattern for SPA frontend
 urlpatterns += [re_path(r'^(?:.*)/?$', FrontendAppView.as_view(), name='frontend')]

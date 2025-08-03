@@ -53,7 +53,7 @@ function ProfileDetail() {
                                         <img
                                             className="avatar-img"
                                             style={{ width: "100px", height: "100px", objectFit: "cover", borderRadius: "50%" }}
-                                            src={author.image || "https://i.postimg.cc/RVLb8r7B/K.webp"}
+                                            src={author.image_url || author.image || "https://i.postimg.cc/RVLb8r7B/K.webp"}
                                             alt="avatar"
                                             onError={(e) => { e.target.onerror = null; e.target.src = "https://i.postimg.cc/RVLb8r7B/K.webp"; }}
                                         />

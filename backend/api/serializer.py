@@ -96,6 +96,8 @@ class RegisterSerializer(serializers.ModelSerializer):
         return user
 
 class UserSerializer(serializers.ModelSerializer):
+    image_url = serializers.SerializerMethodField()
+    
     class Meta:
         model = gomini.User
         fields = '__all__'
@@ -103,10 +105,23 @@ class UserSerializer(serializers.ModelSerializer):
             'otp': {'write_only': True, 'required': False},
             'reset_token': {'write_only': True, 'required': False},
         }
+        
+    def get_image_url(self, obj):
+        request = self.context.get('request')
+        if obj.image and hasattr(obj.image, 'url'):
+            url = obj.image.url
+            # If we have a request, build absolute URI, otherwise return relative URL
+            if request is not None:
+                return request.build_absolute_uri(url)
+            else:
+                return url
+        # Return default image if no image is set
+        return '/media/default/default-user.jpg'
 
 class UserProfileSerializer(serializers.ModelSerializer):
     bio = serializers.CharField(allow_blank=True, allow_null=True, required=False)
     about = serializers.CharField(allow_blank=True, allow_null=True, required=False)
+    image_url = serializers.SerializerMethodField()
 
     class Meta:
         model = gomini.User
@@ -115,6 +130,18 @@ class UserProfileSerializer(serializers.ModelSerializer):
             'otp': {'write_only': True, 'required': False},
             'reset_token': {'write_only': True, 'required': False},
         }
+        
+    def get_image_url(self, obj):
+        request = self.context.get('request')
+        if obj.image and hasattr(obj.image, 'url'):
+            url = obj.image.url
+            # If we have a request, build absolute URI, otherwise return relative URL
+            if request is not None:
+                return request.build_absolute_uri(url)
+            else:
+                return url
+        # Return default image if no image is set
+        return '/media/default/default-user.jpg'
 
     def update(self, instance, validated_data):
         bio = validated_data.get('bio')
