@@ -19,8 +19,6 @@ from django.urls import path, include, re_path
 from django.conf import settings
 from django.conf.urls.static import static
 from django.views.generic import RedirectView
-from django.views.static import serve
-import os
 
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
@@ -45,13 +43,16 @@ urlpatterns = [
     path("", schema_view.with_ui('swagger', cache_timeout=0), name="schema-swagger-ui"),
     path('admin/', admin.site.urls),
     path('api/v1/', include('api.urls')),
-
-    # Serve media files directly
-    re_path(r'^media/(?P<path>.*)$', serve, {
-        'document_root': settings.MEDIA_ROOT,
-    }),
-
-    # Catch-all pattern for SPA frontend
-    re_path(r'^(?:.*)/?$', FrontendAppView.as_view(), name='frontend'),
 ]
+
+# Serve media files in development and static files in production
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+else:
+    # In production, let Render handle media files via staticPaths in render.yaml
+    # But we still need to include the media URL pattern for Django admin
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+# Catch-all pattern for SPA frontend
+urlpatterns += [re_path(r'^(?:.*)/?$', FrontendAppView.as_view(), name='frontend')]
 
