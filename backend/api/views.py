@@ -646,7 +646,7 @@ class DashboardPostCreateAPIView(generics.CreateAPIView):
         logger.info(f"Post creation request data: {request.data}")
         user_id = request.data.get('user_id')
         title = request.data.get('title')
-        image = request.data.get('image')
+        image = request.FILES.get('image')  # Changed to get file from request.FILES
         description = request.data.get('description')
         tags = request.data.get('tags')
         category_id = request.data.get('category')
@@ -691,7 +691,7 @@ class DashboardPostEditAPIView(generics.RetrieveUpdateDestroyAPIView):
         post_instance = self.get_object()
 
         title = request.data.get('title')
-        image = request.data.get('image')
+        image = request.FILES.get('image')  # Changed to get file from request.FILES
         description = request.data.get('description')
         tags = request.data.get('tags')
         category_id = request.data.get('category')
