@@ -1,6 +1,7 @@
 import React from "react";
 import Slider from "react-slick";
 import { Link } from "react-router-dom";
+import { getCategoryImage } from "../../utils/categoryImageMapper";
 
 const arrowStyleOverrides = `
   .slick-arrow.slick-next::before,
@@ -139,39 +140,43 @@ function CategorySlider({ category }) {
                             <h2>دسته بندی مطالب</h2>
                         </div>
                         <Slider {...sliderSettings}>
-                        {category?.filter(c => c.title !== "اخبار").map((c) => (
-                            <Link to={`/category/${c.slug}`} key={c.id}>
-                                <div className="px-2">
-                                    <div className="card bg-transparent">
-                                        <div className="d-flex flex-column align-items-center">
-                                            <LazyBackgroundImage
-                                                src={c.image}
-                                                style={{
-                                                    width: "100%",
-                                                    height: 120,
-                                                    position: "relative",
-                                                }}
-                                            >
-                                                <div
+                        {category?.filter(c => c.title !== "اخبار").map((c) => {
+                            const categoryImage = getCategoryImage(c.slug) || c.image;
+                            
+                            return (
+                                <Link to={`/category/${c.slug}`} key={c.id}>
+                                    <div className="px-2">
+                                        <div className="card bg-transparent">
+                                            <div className="d-flex flex-column align-items-center">
+                                                <LazyBackgroundImage
+                                                    src={categoryImage}
                                                     style={{
-                                                        position: "absolute",
-                                                        bottom: 0,
                                                         width: "100%",
-                                                        paddingTop: 8,
-                                                        paddingBottom: 8,
-                                                        color: "white",
-                                                        textShadow: "0 0 5px rgba(0,0,0,0.7)",
+                                                        height: 120,
+                                                        position: "relative",
                                                     }}
                                                 >
-                                                    <h6 className="me-2">{c.title}</h6>
-                                                    <small className="me-2">{c.post_count || "0"} مقاله</small>
-                                                </div>
-                                            </LazyBackgroundImage>
+                                                    <div
+                                                        style={{
+                                                            position: "absolute",
+                                                            bottom: 0,
+                                                            width: "100%",
+                                                            paddingTop: 8,
+                                                            paddingBottom: 8,
+                                                            color: "white",
+                                                            textShadow: "0 0 5px rgba(0,0,0,0.7)",
+                                                        }}
+                                                    >
+                                                        <h6 className="me-2">{c.title}</h6>
+                                                        <small className="me-2">{c.post_count || "0"} مقاله</small>
+                                                    </div>
+                                                </LazyBackgroundImage>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </Link>
-                        ))}
+                                </Link>
+                            );
+                        })}
                         </Slider>
                     </div>
                 </div>
