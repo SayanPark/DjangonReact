@@ -178,6 +178,10 @@ WHITENOISE_MIMETYPES = {
     '.min.js': 'application/javascript',
 }
 
+# Ensure media directories are created on startup
+from .storage_config import ensure_media_directories
+ensure_media_directories()
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
