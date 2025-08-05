@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import apiInstance from "../../utils/axios";
 import Momment from "../../plugin/Moment";
+import { getCategoryImage } from "../../utils/categoryImageMapper";
 import "./Category.css";
 
 
@@ -509,21 +510,32 @@ function Category() {
   
   useEffect(() => {
     if (slug) {
-      apiInstance
-        .get(`/post/category/list/`)
-        .then((response) => {
-          if (response.data && Array.isArray(response.data)) {
-            const category = response.data.find((cat) => cat.slug === slug);
-            if (category && category.image_url) {
-              setCategoryImage(category.image_url);
-              setSelectedDepartment((prev) => ({
-                ...prev,
-                image: category.image_url,
-              }));
+      // Use the same image mapping logic as CategorySlider.jsx
+      const categoryImage = getCategoryImage(slug);
+      if (categoryImage) {
+        setCategoryImage(categoryImage);
+        setSelectedDepartment((prev) => ({
+          ...prev,
+          image: categoryImage,
+        }));
+      } else {
+        // Fallback to API if no mapped image found
+        apiInstance
+          .get(`/post/category/list/`)
+          .then((response) => {
+            if (response.data && Array.isArray(response.data)) {
+              const category = response.data.find((cat) => cat.slug === slug);
+              if (category && category.image_url) {
+                setCategoryImage(category.image_url);
+                setSelectedDepartment((prev) => ({
+                  ...prev,
+                  image: category.image_url,
+                }));
+              }
             }
-          }
-        })
-        .catch((error) => console.error("Error fetching category list:", error));
+          })
+          .catch((error) => console.error("Error fetching category list:", error));
+      }
     }
   }, [slug]);
 
