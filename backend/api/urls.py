@@ -28,8 +28,6 @@ urlpatterns = [
     path('user/change-superuser-status/', api_views.ChangeSuperuserStatusAPIView.as_view(), name='change_superuser_status'),
     # Post Endpoints
     path('post/category/list/', api_views.CategoryListAPIView.as_view()),
-    path('post/category/create/', api_views.CategoryCreateAPIView.as_view()),
-    path('post/category/update/<int:pk>/', api_views.CategoryUpdateAPIView.as_view()),
     path('post/category/posts/<category_slug>/', api_views.PostCategoryListAPIView.as_view()),
     path('post/lists/', api_views.PostListAPIView.as_view()),
     path('post/most-viewed/', api_views.MostViewedPostListAPIView.as_view()),

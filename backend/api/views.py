@@ -242,46 +242,6 @@ class CategoryListAPIView(generics.ListAPIView):
     def get_queryset(self):
         return gomini.Category.objects.all()
 
-class CategoryCreateAPIView(generics.CreateAPIView):
-    serializer_class = serializers.CategorySerializer
-    permission_classes = [AllowAny]
-
-    def get_queryset(self):
-        return gomini.Category.objects.all()
-
-    def create(self, request, *args, **kwargs):
-        try:
-            serializer = self.get_serializer(data=request.data)
-            serializer.is_valid(raise_exception=True)
-            category = serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        except Exception as e:
-            return Response(
-                {"error": f"Failed to create category: {str(e)}"}, 
-                status=status.HTTP_400_BAD_REQUEST
-            )
-
-class CategoryUpdateAPIView(generics.UpdateAPIView):
-    serializer_class = serializers.CategorySerializer
-    permission_classes = [AllowAny]
-
-    def get_queryset(self):
-        return gomini.Category.objects.all()
-
-    def update(self, request, *args, **kwargs):
-        try:
-            partial = kwargs.pop('partial', False)
-            instance = self.get_object()
-            serializer = self.get_serializer(instance, data=request.data, partial=partial)
-            serializer.is_valid(raise_exception=True)
-            category = serializer.save()
-            return Response(serializer.data)
-        except Exception as e:
-            return Response(
-                {"error": f"Failed to update category: {str(e)}"}, 
-                status=status.HTTP_400_BAD_REQUEST
-            )
-
 class PostCategoryListAPIView(generics.ListAPIView):
     serializer_class = serializers.PostSerializer
     permission_classes = [AllowAny]
