@@ -1,6 +1,7 @@
 import React from "react";
 import Slider from "react-slick";
 import { Link } from "react-router-dom";
+import { getCategoryImage } from "../../utils/categoryImageMapper";
 
 const arrowStyleOverrides = `
   .slick-arrow.slick-next::before,
@@ -145,7 +146,7 @@ function CategorySlider({ category }) {
                                     <div className="card bg-transparent">
                                         <div className="d-flex flex-column align-items-center">
                                             <LazyBackgroundImage
-                                                src={c.image}
+                                                src={getCategoryImage(c.slug) || c.image}
                                                 style={{
                                                     width: "100%",
                                                     height: 120,
