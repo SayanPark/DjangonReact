@@ -149,7 +149,7 @@ function CategorySlider({ category }) {
                                         <div className="card bg-transparent">
                                             <div className="d-flex flex-column align-items-center">
                                                 <LazyBackgroundImage
-                                                    src={categoryImage}
+                                                    src={getCategoryImage(c.slug) || c.image}
                                                     style={{
                                                         width: "100%",
                                                         height: 120,
