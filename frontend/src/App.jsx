@@ -124,9 +124,9 @@ function AppWrapper() {
 
 function App() {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <AppWrapper />
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 
