@@ -127,7 +127,11 @@ function Detail() {
       }
     } catch (error) {
       console.error("Failed to fetch post:", error);
-      Toast("error", "پست یافت نشد یا مشکلی در بارگذاری وجود دارد");
+      if (error.response?.status === 404) {
+        Toast("error", "پست مورد نظر یافت نشد");
+      } else {
+        Toast("error", "خطا در بارگذاری پست. لطفاً دوباره تلاش کنید");
+      }
     }
   };
 
