@@ -326,6 +326,6 @@ JAZZMIN_UI_TWEAKS = {
     }
 }
 
-# Frontend base URL for password reset link
-FRONTEND_BASE_URL = "https://shahrezananekarafarin.onrender.com"
+# Frontend base URL for password reset link (with hash routing for SPA)
+FRONTEND_BASE_URL = "https://shahrezananekarafarin.onrender.com/#"
 
