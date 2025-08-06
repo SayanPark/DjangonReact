@@ -1,7 +1,7 @@
-import React from "react";
+import React, { lazy } from "react";
 
-const Header = lazy(() => import("./views/partials/Header"));
-const Footer = lazy(() => import("./views/partials/Footer"));
+const Header = lazy(() => import("../partials/Header"));
+const Footer = lazy(() => import("../partials/Footer"));
 
 function Page404() {
     return (
