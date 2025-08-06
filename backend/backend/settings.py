@@ -327,5 +327,5 @@ JAZZMIN_UI_TWEAKS = {
 }
 
 # Frontend base URL for password reset link
-FRONTEND_BASE_URL = "http://localhost:5173"
+FRONTEND_BASE_URL = "https://shahrezananekarafarin.onrender.com"
 
