@@ -278,7 +278,8 @@ class PostDetailAPIView(generics.RetrieveAPIView):
     def get_object(self):
         slug = self.kwargs['slug']
         try:
-            post = gomini.Post.objects.get(slug=slug, status="Active")
+            # Normalize slug to lowercase for case-insensitive lookup
+            post = gomini.Post.objects.get(slug__iexact=slug, status="Active")
         except gomini.Post.DoesNotExist:
             raise NotFound(detail="Post not found")
         post.view += 1
