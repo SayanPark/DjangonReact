@@ -419,9 +419,9 @@ function Index({ logoutMessage }) {
                                         </div>
                                         <div className="card-body px-3 pt-3">
                                             <h4 className="card-title" style={{overflow: "hidden", whiteSpace: "nowrap"}}>
-                                                <a href={`/post/${post.slug}`} className="btn-link text-reset stretched-link fw-bold text-decoration-none post-title-text" title={post.title}>
+                                                <Link to={`/post/${post.slug}`} className="btn-link text-reset stretched-link fw-bold text-decoration-none post-title-text" title={post.title}>
                                                     {post.title.length > 18 ? post.title.substring(0, 18) + "…" : post.title}
-                                                </a>
+                                                </Link>
                                             </h4>
                                             <ul className="mt-3 list-style-none" style={{ listStyle: "none", paddingRight: 0 }}>
                                                 <li>
