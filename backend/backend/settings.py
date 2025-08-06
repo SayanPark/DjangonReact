@@ -236,7 +236,7 @@ if DEBUG:
     ]
 else:
     CORS_ALLOW_ALL_ORIGINS = False
-    CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS', 'https://szkbackend.onrender.com').split(',')
+    CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS', 'https://shahrezananekarafarin.onrender.com').split(',')
 
 CORS_ALLOW_CREDENTIALS = True
 
