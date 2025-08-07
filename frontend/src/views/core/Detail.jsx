@@ -212,6 +212,12 @@ function Detail() {
                         style={{ width: "100px", height: "100px", objectFit: "cover", borderRadius: "50%" }}
                         src={post?.user?.image || "/K.webp"}
                         alt="avatar"
+                        onError={(e) => {
+                            // If the image fails to load, fallback to default image
+                            if (e.target.src !== "/K.webp") {
+                                e.target.src = "/K.webp";
+                            }
+                        }}
                       />
                     </Link>
                   </div>
