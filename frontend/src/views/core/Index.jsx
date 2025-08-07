@@ -262,7 +262,15 @@ function Index({ logoutMessage }) {
                                 <div className="col-sm-6 col-lg-3 post-title-container" key={post?.id} style={{overflow: "hidden"}}>
                                     <div className="card mb-4">
                                         <div className="card-fold position-relative">
-                                            <img className="card-img" style={{ width: "100%", height: "160px", objectFit: "cover" }} src={post?.image && post.image.trim() !== "" ? post.image : "/Loader.gif"} alt="Card image" />
+                                            <img 
+                                                className="card-img" 
+                                                style={{ width: "100%", height: "160px", objectFit: "cover" }} 
+                                                src={post?.image && post.image.trim() !== "" ? post.image : "/Loader.gif"} 
+                                                alt="Card image"
+                                                onError={(e) => {
+                                                    e.target.src = "/Loader.gif";
+                                                }}
+                                            />
                                         </div>
                                         <div className="card-body px-3 pt-3">
                                             <h4 className="card-title" style={{overflow: "hidden", whiteSpace: "nowrap"}}>
@@ -415,7 +423,15 @@ function Index({ logoutMessage }) {
                                 <div className="col-sm-6 col-lg-3 post-title-container" key={post?.id} style={{overflow: "hidden"}}>
                                     <div className="card mb-4">
                                         <div className="card-fold position-relative">
-                                            <img className="card-img" style={{ width: "100%", height: "160px", objectFit: "cover" }} src={post?.image && post.image.trim() !== "" ? post.image : "/Loader.gif"} alt="Card image" />
+                                            <img 
+                                                className="card-img" 
+                                                style={{ width: "100%", height: "160px", objectFit: "cover" }} 
+                                                src={post?.image && post.image.trim() !== "" ? post.image : "/Loader.gif"} 
+                                                alt="Card image"
+                                                onError={(e) => {
+                                                    e.target.src = "/Loader.gif";
+                                                }}
+                                            />
                                         </div>
                                         <div className="card-body px-3 pt-3">
                                             <h4 className="card-title" style={{overflow: "hidden", whiteSpace: "nowrap"}}>
