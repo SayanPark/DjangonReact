@@ -304,6 +304,9 @@ function Detail() {
                     src={post?.thumbnail || post?.image}
                     alt="post thumbnail"
                     style={{ width: "100%", height: "auto", borderRadius: "8px" }}
+                    onError={(e) => {
+                        e.target.src = "/Loader.gif";
+                    }}
                   />
                 </div>
               )}
