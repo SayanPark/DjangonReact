@@ -210,7 +210,7 @@ function Detail() {
                       <img
                         className="avatar-img"
                         style={{ width: "100px", height: "100px", objectFit: "cover", borderRadius: "50%" }}
-                        src={post?.user?.image || "/DjangonReact/K.webp"}
+                        src={post?.user?.image || "/K.webp"}
                         alt="avatar"
                       />
                     </Link>
