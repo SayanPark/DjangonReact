@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import Page404 from "../pages/Page404";
 import Loading from "../UI/Loading";
 import apiInstance from "../../utils/axios";
+import Momment from "../../plugin/Moment";
 
 function Search() {
     const { searchTerm } = useParams();
@@ -171,10 +172,10 @@ function Search() {
                                                 </span>
                                             </li>
                                             <li className="mt-2">
-                                                <i className="fas fa-calendar"></i> {new Date(post.date).toLocaleDateString()}
+                                                <i className="fas fa-calendar"></i> {Momment(post.date)}
                                             </li>
                                             <li className="mt-2">
-                                                <i className="fas fa-eye"></i> {post.view || 0} Views
+                                                <i className="fas fa-eye"></i> {post.view || 0}
                                             </li>
                                         </ul>
                                     </div>
