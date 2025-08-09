@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { useTranslation } from 'react-i18next';
 import { useAuthStore } from "../../store/auth";
 import { logout } from "../../utils/auth";
+import { t, changeLanguage, getCurrentLanguage } from "../../utils/translation";
 import apiInstance from "../../utils/axios";
 import logo from "../../../public/logo-removebg-preview.webp";
 import "../core/DropdownColumnsFix.css";
 
 function Header() {    
-    const { t, i18n } = useTranslation();
     const [showLogoutPopup, setShowLogoutPopup] = useState(false);
     const [categories, setCategories] = useState([]);
     const [loadingCategories, setLoadingCategories] = useState(true);
@@ -18,24 +17,12 @@ function Header() {
     const loggedIn = isLoggedIn();
     const navigate = useNavigate();
     const location = useLocation();
+    const [currentLang, setCurrentLang] = useState(getCurrentLanguage());
 
-    // Handle language change
-    const changeLanguage = (lng) => {
-        i18n.changeLanguage(lng);
-        // Update URL parameter
-        const url = new URL(window.location);
-        url.searchParams.set('lang', lng);
-        window.history.replaceState({}, '', url);
+    const handleLanguageChange = (lang) => {
+        changeLanguage(lang);
+        setCurrentLang(lang);
     };
-
-    // Set initial language based on URL parameter
-    useEffect(() => {
-        const urlParams = new URLSearchParams(window.location.search);
-        const lang = urlParams.get('lang');
-        if (lang && ['fa', 'en', 'ar'].includes(lang)) {
-            i18n.changeLanguage(lang);
-        }
-    }, []);
 
     useEffect(() => {
         let timer;
@@ -193,7 +180,7 @@ function Header() {
                 <nav className="navbar navbar-expand-lg">
                     <div className="container" style={{ direction: "rtl" }}>
                         <button className="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-                            <span className="h6 d-none d-sm-inline-block text-white">منو</span>
+                            <span className="h6 d-none d-sm-inline-block text-white">{currentLang === 'fa' ? 'منو' : currentLang === 'en' ? 'Menu' : 'القائمة'}</span>
                             <span className="navbar-toggler-icon" />
                         </button>
                         <Link className="navbar-brand" to="/">
@@ -211,7 +198,7 @@ function Header() {
                                         <input
                                             className="form-control pe-5 text-end"
                                             type="search"
-                                            placeholder="جستجو کنید"
+                                            placeholder={t('search')}
                                             aria-label="Search"
                                             value={searchTerm}
                                             onChange={(e) => setSearchTerm(e.target.value)}
@@ -229,26 +216,26 @@ function Header() {
                             <ul className="navbar-nav navbar-nav-scroll ms-auto" >
                                 <li className="nav-item">
                                     <Link className="nav-link" to="/">
-                                        {t('nav.home')}
+                                        {t('home')}
                                     </Link>
                                 </li>
                                 <li className="nav-item">
                                     <Link className="nav-link" to="/all-posts">
-                                        {t('nav.articles')}
+                                        {t('articles')}
                                     </Link>
                                 </li>
                                 <li className="nav-item">
                                     <Link className="nav-link" to="/news">
-                                        {t('nav.news')}
+                                        {t('news')}
                                     </Link>
                                 </li>
                                 <li className="nav-item dropdown" style={{ direction: "rtl" }}>
                                     <button className="nav-link dropdown-toggle btn btn-link" type="button" style={{ direction: "rtl" }} id="departmentsMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        {t('nav.departments')}
+                                        {t('departments')}
                                     </button>
                                     {loadingCategories ? (
                                         <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="departmentsMenu" style={{ direction: "rtl", textAlign: "right", marginTop: 0 }}>
-                                            <li className="dropdown-item text-center">در حال بارگذاری...</li>
+                                            <li className="dropdown-item text-center">{t('loading')}</li>
                                         </ul>
                                     ) : (
                                         (() => {
@@ -267,7 +254,7 @@ function Header() {
                                             const departments = filteredCategories.map((cat, index) => ({
                                                 to: `/category/${cat.slug}/`,
                                                 icon: iconMap[index] || "fas fa-folder",
-                                                label: cat.title
+                                                label: t(cat.title) || cat.title
                                             }));
                                             const firstColumn = departments.slice(0, 5);
                                             const secondColumn = departments.slice(5);
@@ -299,39 +286,39 @@ function Header() {
                                 </li>
                                 <li className="nav-item dropdown" style={{ direction: "rtl" }}>
                                     <a className="nav-link dropdown-toggle" href="#" id="pagesMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        آشنایی با ما
+                                        {t('about')}
                                     </a>
                                     <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="pagesMenu" style={{ direction: "rtl", textAlign: "right" }}>
                                         <li>
                                             <Link className="dropdown-item" to="/about/">
-                                                <i className="bi bi-person-lines-fill"></i> درباره ما
+                                                <i className="bi bi-person-lines-fill"></i> {t('aboutUs')}
                                             </Link>
                                         </li>
                                         <li>
                                             <Link className="dropdown-item" to="/contact/">
-                                                <i className="bi bi-telephone-fill"></i> تماس با ما
+                                                <i className="bi bi-telephone-fill"></i> {t('contactUs')}
                                             </Link>
                                         </li>
                                     </ul>
                                 </li>
                                 <li className="nav-item dropdown" style={{ direction: "rtl" }}>
                                     <a className="nav-link dropdown-toggle" href="#" id="languageMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="bi bi-globe"></i>
+                                        <i className="bi bi-globe"></i>
                                     </a>
                                     <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="languageMenu" style={{ direction: "rtl", textAlign: "right" }}>
                                         <li>
-                                            <a className="dropdown-item" href="#" onClick={() => window.location.href = window.location.pathname + '?lang=fa'}>
-                                                فارسی
+                                            <a className="dropdown-item" href="#" onClick={() => handleLanguageChange('fa')}>
+                                                {t('persian')}
                                             </a>
                                         </li>
                                         <li>
-                                            <a className="dropdown-item" href="#" onClick={() => window.location.href = window.location.pathname + '?lang=en'}>
-                                                English
+                                            <a className="dropdown-item" href="#" onClick={() => handleLanguageChange('en')}>
+                                                {t('english')}
                                             </a>
                                         </li>
                                         <li>
-                                            <a className="dropdown-item" href="#" onClick={() => window.location.href = window.location.pathname + '?lang=ar'}>
-                                                العربية
+                                            <a className="dropdown-item" href="#" onClick={() => handleLanguageChange('ar')}>
+                                                {t('arabic')}
                                             </a>
                                         </li>
                                     </ul>
@@ -344,12 +331,12 @@ function Header() {
                                             <div className="d-flex flex-column flex-sm-row align-items-start align-items-sm-center" style={{gap: "0.5rem"}}>
                                                 <div className="nav-item dropdown ms-2 mb-2 mb-sm-0">
                                                     <button className="btn btn-primary dropdown-toggle" id="dashboardMenu" data-bs-toggle="dropdown" aria-expanded="false" type="button" style={{direction: "rtl"}}>
-                                                        داشبورد <i className="bi bi-person-fill"></i>
+                                                        {t('dashboard')} <i className="bi bi-person-fill"></i>
                                                     </button>
                                                     <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="dashboardMenu" style={{ direction: "rtl", textAlign: "right" }}>
                                                         <li>
                                                             <Link className="dropdown-item" to="/dashboard/">
-                                                                <i className="bi bi-person-workspace"></i> میزکار
+                                                                <i className="bi bi-person-workspace"></i> {t('workspace')}
                                                                 {hasUnansweredContactMessages && (
                                                                     <span className="badge bg-success rounded-circle ms-2 me-1" style={{ width: "8px", height: "8px", display: "inline-block", padding: 0, borderRadius: "50%" }}></span>
                                                                 )}
@@ -357,21 +344,21 @@ function Header() {
                                                         </li>
                                                         <li>
                                                             <Link className="dropdown-item" to="/profile/">
-                                                                <i className="bi bi-person-circle"></i> پروفایل
+                                                                <i className="bi bi-person-circle"></i> {t('profile')}
                                                             </Link>
                                                         </li>
                                                     </ul>
                                                 </div>
                                                 <div>
                                                     <button onClick={handleLogout} className="btn btn-danger ms-2 logout-button">
-                                                        خروج <i className="fas fa-sign-out-alt"></i>
+                                                        {t('logout')} <i className="fas fa-sign-out-alt"></i>
                                                     </button>
                                                 </div>
                                             </div>
                                         </>
                                     ) : (
                                         <Link to={"/login/"} className="btn btn-success ms-2" href="dashboard.html" style={{ backgroundColor: '#609f63', border: "None" }}>
-                                            ورود <i className="fas fa-sign-in-alt"></i>
+                                            {t('login')} <i className="fas fa-sign-in-alt"></i>
                                         </Link>
                                     )}
                                 </div>
@@ -383,8 +370,16 @@ function Header() {
             {showLogoutPopup && (
                 <div className="logout-popup-overlay">
                     <div className="logout-popup-content card shadow p-4" style={{ maxWidth: "400px", textAlign: "center", direction: "rtl", position: "relative" }}>
-                        <h1 className="mb-1 fw-bold">شما خارج شدید</h1>
-                        <span>از بازدید شما از وبسایت متشکریم، هر زمان بازگردید!</span>
+                        <h1 className="mb-1 fw-bold">
+                            {currentLang === 'fa' ? 'شما خارج شدید' : 
+                             currentLang === 'en' ? 'You have been logged out' : 
+                             'تم تسجيل الخروج'}
+                        </h1>
+                        <span>
+                            {currentLang === 'fa' ? 'از بازدید شما از وبسایت متشکریم، هر زمان بازگردید!' : 
+                             currentLang === 'en' ? 'Thank you for visiting our website, come back anytime!' : 
+                             'شكراً لزيارتك لموقعنا، عد في أي وقت!'}
+                        </span>
                         <div className="progress-bar"></div>
                     </div>
                 </div>
