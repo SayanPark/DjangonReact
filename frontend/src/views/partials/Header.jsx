@@ -3,6 +3,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuthStore } from "../../store/auth";
 import { logout } from "../../utils/auth";
 import { useTranslation } from 'react-i18next';
+import { useGlobalTranslation } from "../../contexts/TranslationContext";
 import apiInstance from "../../utils/axios";
 import logo from "../../../public/logo-removebg-preview.webp";
 import "../core/DropdownColumnsFix.css";
