@@ -17,12 +17,10 @@ function Header() {
     const loggedIn = isLoggedIn();
     const navigate = useNavigate();
     const location = useLocation();
-    
-    const { t, i18n } = useTranslation();
-    const [currentLang, setCurrentLang] = useState(i18n.language);
+    const [currentLang, setCurrentLang] = useState(getCurrentLanguage());
 
     const handleLanguageChange = (lang) => {
-        i18n.changeLanguage(lang);
+        changeLanguage(lang);
         setCurrentLang(lang);
     };
 
@@ -200,7 +198,7 @@ function Header() {
                                         <input
                                             className="form-control pe-5 text-end"
                                             type="search"
-                                            placeholder={t('nav.search')}
+                                            placeholder={t('search')}
                                             aria-label="Search"
                                             value={searchTerm}
                                             onChange={(e) => setSearchTerm(e.target.value)}
@@ -218,22 +216,22 @@ function Header() {
                             <ul className="navbar-nav navbar-nav-scroll ms-auto" >
                                 <li className="nav-item">
                                     <Link className="nav-link" to="/">
-                                        {t('nav.home')}
+                                        {t('home')}
                                     </Link>
                                 </li>
                                 <li className="nav-item">
                                     <Link className="nav-link" to="/all-posts">
-                                        {t('nav.articles')}
+                                        {t('articles')}
                                     </Link>
                                 </li>
                                 <li className="nav-item">
                                     <Link className="nav-link" to="/news">
-                                        {t('nav.news')}
+                                        {t('news')}
                                     </Link>
                                 </li>
                                 <li className="nav-item dropdown" style={{ direction: "rtl" }}>
                                     <button className="nav-link dropdown-toggle btn btn-link" type="button" style={{ direction: "rtl" }} id="departmentsMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        {t('nav.departments')}
+                                        {t('departments')}
                                     </button>
                                     {loadingCategories ? (
                                         <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="departmentsMenu" style={{ direction: "rtl", textAlign: "right", marginTop: 0 }}>
@@ -304,23 +302,23 @@ function Header() {
                                     </ul>
                                 </li>
                                 <li className="nav-item dropdown" style={{ direction: "rtl" }}>
-                                        <a className="nav-link dropdown-toggle" href="#" id="languageMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <a className="nav-link dropdown-toggle" href="#" id="languageMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <i className="bi bi-globe"></i>
                                     </a>
                                     <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="languageMenu" style={{ direction: "rtl", textAlign: "right" }}>
                                         <li>
                                             <a className="dropdown-item" href="#" onClick={() => handleLanguageChange('fa')}>
-                                                {t('languages.persian')}
+                                                {t('persian')}
                                             </a>
                                         </li>
                                         <li>
                                             <a className="dropdown-item" href="#" onClick={() => handleLanguageChange('en')}>
-                                                {t('languages.english')}
+                                                {t('english')}
                                             </a>
                                         </li>
                                         <li>
                                             <a className="dropdown-item" href="#" onClick={() => handleLanguageChange('ar')}>
-                                                {t('languages.arabic')}
+                                                {t('arabic')}
                                             </a>
                                         </li>
                                     </ul>
