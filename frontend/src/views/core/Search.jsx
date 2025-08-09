@@ -59,7 +59,14 @@ function Search() {
 
     if (loading) {
         return (
-            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "calc(100vh - 120px)" }}>
+            <div 
+                style={{ 
+                    display: "flex", 
+                    justifyContent: "center", 
+                    alignItems: "center", 
+                    height: "calc(100vh - 120px)" 
+                }}
+            >
                 <Loading />
             </div>
         );
@@ -130,7 +137,7 @@ function Search() {
                                         <ul className="mt-3 list-style-none" style={{ listStyle: "none", paddingRight: 0, paddingLeft: "1rem" }}>
                                             <li>
                                                 <span className="text-dark">
-                                                    <i className="fas fa-user"></i> {post?.user?.username || "Unknown"}
+                                                    <i className="fas fa-user"></i> {post?.user?.full_name || "Unknown"}
                                                 </span>
                                             </li>
                                             <li className="mt-2">
