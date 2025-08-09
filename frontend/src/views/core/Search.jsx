@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import Page404 from "../pages/Page404";
 import Loading from "../UI/Loading";
 import apiInstance from "../../utils/axios";
@@ -126,13 +126,43 @@ function Search() {
                                             style={{ width: "100%", height: "160px", objectFit: "cover" }}
                                             src={post.image || "https://via.placeholder.com/300x160"}
                                             alt={post.title}
+                                            onError={(e) => {
+                                                e.target.style.display = 'none';
+                                                const shimmerContainer = document.createElement('div');
+                                                shimmerContainer.style.cssText = `
+                                                    width: 100%;
+                                                    height: 160px;
+                                                    background-color: #f0f0f0;
+                                                    border-radius: 4px;
+                                                    position: relative;
+                                                    overflow: hidden;
+                                                `;
+                                                shimmerContainer.innerHTML = `
+                                                    <div style="
+                                                        position: absolute;
+                                                        top: 0;
+                                                        left: 0;
+                                                        width: 100%;
+                                                        height: 100%;
+                                                        background: linear-gradient(90deg, #f0f0f0 0%, #e0e0e0 50%, #f0f0f0 100%);
+                                                        animation: shimmer 1.5s infinite;
+                                                    "></div>
+                                                    <style>
+                                                        @keyframes shimmer {
+                                                            0% { transform: translateX(-100%); }
+                                                            100% { transform: translateX(100%); }
+                                                        }
+                                                    </style>
+                                                `;
+                                                e.target.parentNode.insertBefore(shimmerContainer, e.target.nextSibling);
+                                            }}
                                         />
                                     </div>
                                     <div className="card-body px-3 pt-3" style={{ textAlign: "right" }}>
                                         <h4 className="card-title">
-                                            <a href={`/post/${post.slug}`} className="btn-link text-reset stretched-link fw-bold text-decoration-none post-title-text" title={post.title}>
+                                            <Link to={`/post/${post.slug}`} className="btn-link text-reset stretched-link fw-bold text-decoration-none post-title-text" title={post.title}>
                                                 {post.title.length > 18 ? post.title.substring(0, 18) + "…" : post.title}
-                                            </a>
+                                            </Link>
                                         </h4>
                                         <ul className="mt-3 list-style-none" style={{ listStyle: "none", paddingRight: 0, paddingLeft: "1rem" }}>
                                             <li>
