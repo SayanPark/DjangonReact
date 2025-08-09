@@ -2,10 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuthStore } from "../../store/auth";
 import { logout } from "../../utils/auth";
-import { useTranslation } from 'react-i18next';
-import { useGlobalTranslation } from "../../contexts/TranslationContext";
 import apiInstance from "../../utils/axios";
-import logo from "../../../public/logo-removebg-preview.webp";
+import logo from "../../../dist/logo-removebg-preview.webp";
 import "../core/DropdownColumnsFix.css";
 
 function Header() {    
@@ -18,13 +16,6 @@ function Header() {
     const loggedIn = isLoggedIn();
     const navigate = useNavigate();
     const location = useLocation();
-    const { t, getCurrentLanguage, changeLanguage } = useGlobalTranslation();
-    const [currentLang, setCurrentLang] = useState(getCurrentLanguage());
-
-    const handleLanguageChange = (lang) => {
-        changeLanguage(lang);
-        setCurrentLang(lang);
-    };
 
     useEffect(() => {
         let timer;
@@ -182,7 +173,7 @@ function Header() {
                 <nav className="navbar navbar-expand-lg">
                     <div className="container" style={{ direction: "rtl" }}>
                         <button className="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-                            <span className="h6 d-none d-sm-inline-block text-white">{currentLang === 'fa' ? 'منو' : currentLang === 'en' ? 'Menu' : 'القائمة'}</span>
+                            <span className="h6 d-none d-sm-inline-block text-white">منو</span>
                             <span className="navbar-toggler-icon" />
                         </button>
                         <Link className="navbar-brand" to="/">
@@ -200,7 +191,7 @@ function Header() {
                                         <input
                                             className="form-control pe-5 text-end"
                                             type="search"
-                                            placeholder={t('search')}
+                                            placeholder="جستجو کنید"
                                             aria-label="Search"
                                             value={searchTerm}
                                             onChange={(e) => setSearchTerm(e.target.value)}
@@ -218,26 +209,26 @@ function Header() {
                             <ul className="navbar-nav navbar-nav-scroll ms-auto" >
                                 <li className="nav-item">
                                     <Link className="nav-link" to="/">
-                                        {t('home')}
+                                        خانه
                                     </Link>
                                 </li>
                                 <li className="nav-item">
                                     <Link className="nav-link" to="/all-posts">
-                                        {t('articles')}
+                                        مقالات
                                     </Link>
                                 </li>
                                 <li className="nav-item">
                                     <Link className="nav-link" to="/news">
-                                        {t('news')}
+                                        اخبار
                                     </Link>
                                 </li>
                                 <li className="nav-item dropdown" style={{ direction: "rtl" }}>
                                     <button className="nav-link dropdown-toggle btn btn-link" type="button" style={{ direction: "rtl" }} id="departmentsMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        {t('departments')}
+                                        دپارتمان‌ها
                                     </button>
                                     {loadingCategories ? (
                                         <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="departmentsMenu" style={{ direction: "rtl", textAlign: "right", marginTop: 0 }}>
-                                            <li className="dropdown-item text-center">{t('loading')}</li>
+                                            <li className="dropdown-item text-center">در حال بارگذاری...</li>
                                         </ul>
                                     ) : (
                                         (() => {
@@ -256,7 +247,7 @@ function Header() {
                                             const departments = filteredCategories.map((cat, index) => ({
                                                 to: `/category/${cat.slug}/`,
                                                 icon: iconMap[index] || "fas fa-folder",
-                                                label: t(cat.title) || cat.title
+                                                label: cat.title
                                             }));
                                             const firstColumn = departments.slice(0, 5);
                                             const secondColumn = departments.slice(5);
@@ -288,40 +279,18 @@ function Header() {
                                 </li>
                                 <li className="nav-item dropdown" style={{ direction: "rtl" }}>
                                     <a className="nav-link dropdown-toggle" href="#" id="pagesMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        {t('about')}
+                                        آشنایی با ما
                                     </a>
                                     <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="pagesMenu" style={{ direction: "rtl", textAlign: "right" }}>
                                         <li>
                                             <Link className="dropdown-item" to="/about/">
-                                                <i className="bi bi-person-lines-fill"></i> {t('aboutUs')}
+                                                <i className="bi bi-person-lines-fill"></i> درباره ما
                                             </Link>
                                         </li>
                                         <li>
                                             <Link className="dropdown-item" to="/contact/">
-                                                <i className="bi bi-telephone-fill"></i> {t('contactUs')}
+                                                <i className="bi bi-telephone-fill"></i> تماس با ما
                                             </Link>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li className="nav-item dropdown" style={{ direction: "rtl" }}>
-                                    <a className="nav-link dropdown-toggle" href="#" id="languageMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i className="bi bi-globe"></i>
-                                    </a>
-                                    <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="languageMenu" style={{ direction: "rtl", textAlign: "right" }}>
-                                        <li>
-                                            <a className="dropdown-item" href="#" onClick={() => handleLanguageChange('fa')}>
-                                                {t('persian')}
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a className="dropdown-item" href="#" onClick={() => handleLanguageChange('en')}>
-                                                {t('english')}
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a className="dropdown-item" href="#" onClick={() => handleLanguageChange('ar')}>
-                                                {t('arabic')}
-                                            </a>
                                         </li>
                                     </ul>
                                 </li>
@@ -333,12 +302,12 @@ function Header() {
                                             <div className="d-flex flex-column flex-sm-row align-items-start align-items-sm-center" style={{gap: "0.5rem"}}>
                                                 <div className="nav-item dropdown ms-2 mb-2 mb-sm-0">
                                                     <button className="btn btn-primary dropdown-toggle" id="dashboardMenu" data-bs-toggle="dropdown" aria-expanded="false" type="button" style={{direction: "rtl"}}>
-                                                        {t('dashboard')} <i className="bi bi-person-fill"></i>
+                                                        داشبورد <i className="bi bi-person-fill"></i>
                                                     </button>
                                                     <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="dashboardMenu" style={{ direction: "rtl", textAlign: "right" }}>
                                                         <li>
                                                             <Link className="dropdown-item" to="/dashboard/">
-                                                                <i className="bi bi-person-workspace"></i> {t('workspace')}
+                                                                <i className="bi bi-person-workspace"></i> میزکار
                                                                 {hasUnansweredContactMessages && (
                                                                     <span className="badge bg-success rounded-circle ms-2 me-1" style={{ width: "8px", height: "8px", display: "inline-block", padding: 0, borderRadius: "50%" }}></span>
                                                                 )}
@@ -346,21 +315,21 @@ function Header() {
                                                         </li>
                                                         <li>
                                                             <Link className="dropdown-item" to="/profile/">
-                                                                <i className="bi bi-person-circle"></i> {t('profile')}
+                                                                <i className="bi bi-person-circle"></i> پروفایل
                                                             </Link>
                                                         </li>
                                                     </ul>
                                                 </div>
                                                 <div>
                                                     <button onClick={handleLogout} className="btn btn-danger ms-2 logout-button">
-                                                        {t('logout')} <i className="fas fa-sign-out-alt"></i>
+                                                        خروج <i className="fas fa-sign-out-alt"></i>
                                                     </button>
                                                 </div>
                                             </div>
                                         </>
                                     ) : (
                                         <Link to={"/login/"} className="btn btn-success ms-2" href="dashboard.html" style={{ backgroundColor: '#609f63', border: "None" }}>
-                                            {t('login')} <i className="fas fa-sign-in-alt"></i>
+                                            ورود <i className="fas fa-sign-in-alt"></i>
                                         </Link>
                                     )}
                                 </div>
@@ -372,16 +341,8 @@ function Header() {
             {showLogoutPopup && (
                 <div className="logout-popup-overlay">
                     <div className="logout-popup-content card shadow p-4" style={{ maxWidth: "400px", textAlign: "center", direction: "rtl", position: "relative" }}>
-                        <h1 className="mb-1 fw-bold">
-                            {currentLang === 'fa' ? 'شما خارج شدید' : 
-                             currentLang === 'en' ? 'You have been logged out' : 
-                             'تم تسجيل الخروج'}
-                        </h1>
-                        <span>
-                            {currentLang === 'fa' ? 'از بازدید شما از وبسایت متشکریم، هر زمان بازگردید!' : 
-                             currentLang === 'en' ? 'Thank you for visiting our website, come back anytime!' : 
-                             'شكراً لزيارتك لموقعنا، عد في أي وقت!'}
-                        </span>
+                        <h1 className="mb-1 fw-bold">شما خارج شدید</h1>
+                        <span>از بازدید شما از وبسایت متشکریم، هر زمان بازگردید!</span>
                         <div className="progress-bar"></div>
                     </div>
                 </div>
