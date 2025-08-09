@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuthStore } from "../../store/auth";
 import { logout } from "../../utils/auth";
-import { t, changeLanguage, getCurrentLanguage } from "../../utils/translation";
+import { useGlobalTranslation } from "../../contexts/TranslationContext.jsx"
 import apiInstance from "../../utils/axios";
 import logo from "../../../public/logo-removebg-preview.webp";
 import "../core/DropdownColumnsFix.css";
@@ -17,6 +17,8 @@ function Header() {
     const loggedIn = isLoggedIn();
     const navigate = useNavigate();
     const location = useLocation();
+    
+    const { t, changeLanguage, getCurrentLanguage } = useGlobalTranslation();
     const [currentLang, setCurrentLang] = useState(getCurrentLanguage());
 
     const handleLanguageChange = (lang) => {
