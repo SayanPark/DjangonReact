@@ -17,25 +17,12 @@ function Header() {
     const loggedIn = isLoggedIn();
     const navigate = useNavigate();
     const location = useLocation();
-<<<<<<< HEAD
-    
     const { t, changeLanguage, getCurrentLanguage } = useGlobalTranslation();
     const [currentLang, setCurrentLang] = useState(getCurrentLanguage());
 
     const handleLanguageChange = (lang) => {
         changeLanguage(lang);
         setCurrentLang(lang);
-=======
-    const [currentLang, setCurrentLang] = useState(i18n.language);
-
-    const handleLanguageChange = (lang) => {
-        i18n.changeLanguage(lang);
-        setCurrentLang(lang);
-        // Update URL parameter
-        const url = new URL(window.location);
-        url.searchParams.set('lang', lang);
-        window.history.replaceState({}, '', url);
->>>>>>> e85edc181ff1070298cc7d5e55130ffddb7a4a47
     };
 
     useEffect(() => {
@@ -300,29 +287,17 @@ function Header() {
                                 </li>
                                 <li className="nav-item dropdown" style={{ direction: "rtl" }}>
                                     <a className="nav-link dropdown-toggle" href="#" id="pagesMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-<<<<<<< HEAD
                                         {t('about')}
-=======
-                                        {t('nav.about')}
->>>>>>> e85edc181ff1070298cc7d5e55130ffddb7a4a47
                                     </a>
                                     <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="pagesMenu" style={{ direction: "rtl", textAlign: "right" }}>
                                         <li>
                                             <Link className="dropdown-item" to="/about/">
-<<<<<<< HEAD
                                                 <i className="bi bi-person-lines-fill"></i> {t('aboutUs')}
-=======
-                                                <i className="bi bi-person-lines-fill"></i> {t('nav.aboutUs')}
->>>>>>> e85edc181ff1070298cc7d5e55130ffddb7a4a47
                                             </Link>
                                         </li>
                                         <li>
                                             <Link className="dropdown-item" to="/contact/">
-<<<<<<< HEAD
                                                 <i className="bi bi-telephone-fill"></i> {t('contactUs')}
-=======
-                                                <i className="bi bi-telephone-fill"></i> {t('nav.contactUs')}
->>>>>>> e85edc181ff1070298cc7d5e55130ffddb7a4a47
                                             </Link>
                                         </li>
                                     </ul>
@@ -334,29 +309,17 @@ function Header() {
                                     <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="languageMenu" style={{ direction: "rtl", textAlign: "right" }}>
                                         <li>
                                             <a className="dropdown-item" href="#" onClick={() => handleLanguageChange('fa')}>
-<<<<<<< HEAD
                                                 {t('persian')}
-=======
-                                                {t('languages.persian')}
->>>>>>> e85edc181ff1070298cc7d5e55130ffddb7a4a47
                                             </a>
                                         </li>
                                         <li>
                                             <a className="dropdown-item" href="#" onClick={() => handleLanguageChange('en')}>
-<<<<<<< HEAD
                                                 {t('english')}
-=======
-                                                {t('languages.english')}
->>>>>>> e85edc181ff1070298cc7d5e55130ffddb7a4a47
                                             </a>
                                         </li>
                                         <li>
                                             <a className="dropdown-item" href="#" onClick={() => handleLanguageChange('ar')}>
-<<<<<<< HEAD
                                                 {t('arabic')}
-=======
-                                                {t('languages.arabic')}
->>>>>>> e85edc181ff1070298cc7d5e55130ffddb7a4a47
                                             </a>
                                         </li>
                                     </ul>
