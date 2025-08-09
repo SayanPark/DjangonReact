@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import useUserData from "../../plugin/useUserData";
 import apiInstance from "../../utils/axios";
 import Moment from "../../plugin/Moment";
+import ShimmerImage from "../../components/ShimmerImage";
 
 function Dashboard() {
     const [stats, setStats] = useState([])
@@ -113,7 +114,44 @@ function Dashboard() {
                                             <React.Fragment key={p.id || index}>
                                                 <div className="col-12">
                                                         <div className="d-flex position-relative">
-                                                            <img className="w-60 rounded" src={p?.image} style={{ width: "100px", height: "110px", objectFit: "cover", borderRadius: "10px" }} alt="product" />
+                                            <img 
+                                                className="w-60 rounded" 
+                                                src={p?.image} 
+                                                style={{ width: "100px", height: "110px", objectFit: "cover", borderRadius: "10px" }} 
+                                                alt="product" 
+                                                onError={(e) => {
+                                                    e.target.style.display = 'none';
+                                                    const shimmerContainer = document.createElement('div');
+                                                    shimmerContainer.style.cssText = 'width: 100px; height: 110px;';
+                                                    shimmerContainer.innerHTML = `
+                                                        <div style="
+                                                            width: 100%;
+                                                            height: 100%;
+                                                            background-color: #f0f0f0;
+                                                            border-radius: 10px;
+                                                            position: relative;
+                                                            overflow: hidden;
+                                                        ">
+                                                            <div style="
+                                                                position: absolute;
+                                                                top: 0;
+                                                                left: 0;
+                                                                width: 100%;
+                                                                height: 100%;
+                                                                background: linear-gradient(90deg, #f0f0f0 0%, #e0e0e0 50%, #f0f0f0 100%);
+                                                                animation: shimmer 1.5s infinite;
+                                                            "></div>
+                                                        </div>
+                                                        <style>
+                                                            @keyframes shimmer {
+                                                                0% { transform: translateX(-100%); }
+                                                                100% { transform: translateX(100%); }
+                                                            }
+                                                        </style>
+                                                    `;
+                                                    e.target.parentNode.insertBefore(shimmerContainer, e.target.nextSibling);
+                                                }}
+                                            />
                                                             <div className="me-3">
                                                                 <a href={`/post/${p?.slug}`} className="h6 stretched-link text-decoration-none text-dark">
                                                                     {p.title}
@@ -158,7 +196,18 @@ function Dashboard() {
                                                 <div className="col-12">
                                                     <div className="d-flex align-items-center position-relative">
                                                         <div className="avatar avatar-lg flex-shrink-0">
-                                                            <img className="avatar-img" src={c?.image || "/K.webp"} style={{ width: "100px", height: "100px", objectFit: "cover", borderRadius: "50%" }} alt="avatar" />
+                                                            <img 
+                                                                className="avatar-img" 
+                                                                src={c?.image || "/K.webp"} 
+                                                                style={{ width: "100px", height: "100px", objectFit: "cover", borderRadius: "50%" }} 
+                                                                alt="avatar" 
+                                                                onError={(e) => {
+                                                                    // If the image fails to load, fallback to default image
+                                                                    if (e.target.src !== "/K.webp") {
+                                                                        e.target.src = "/K.webp";
+                                                                    }
+                                                                }}
+                                                            />
                                                         </div>
                                                         <div className="me-3">
                                                             <p className="mb-1">
