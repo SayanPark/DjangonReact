@@ -116,26 +116,19 @@ function ProfileDetail() {
                                                             />
                                                         </div>
                                                         <div className="card-body px-3 pt-3">
-                                                            <h4 className="card-title" style={{ overflow: "hidden", whiteSpace: "nowrap" }}>
+                                                            <h4 className="card-title" style={{overflow: "hidden", whiteSpace: "nowrap"}}>
                                                                 <Link to={`/post/${post.slug}`} className="btn-link text-reset stretched-link fw-bold text-decoration-none post-title-text" title={post.title}>
                                                                     {post.title.length > 18 ? post.title.substring(0, 18) + "…" : post.title}
                                                                 </Link>
                                                             </h4>
-                                                            <button style={{ border: "none", background: "none" }}>
-                                                                <i className="fas fa-bookmark text-danger"></i>
-                                                            </button>
-                                                            <button style={{ border: "none", background: "none" }}>
-                                                                <i className="fas fa-thumbs-up text-primary"></i>
-                                                            </button>
-                                                            <i className="fas fa-eye"></i> {post.view}
                                                             <ul className="mt-3 list-style-none" style={{ listStyle: "none", paddingRight: 0 }}>
                                                                 <li>
                                                                     <a href="#" className="text-dark text-decoration-none">
-                                                                        <i className="fas fa-user"></i> {post.user.full_name}
+                                                                        <i className="fas fa-user"></i> {post?.user?.full_name}
                                                                     </a>
                                                                 </li>
                                                                 <li className="mt-2">
-                                                                    <i className="fas fa-calendar"></i> {Moment(post.date)}
+                                                                    <i className="fas fa-calendar"></i> {Momment(post.date)}
                                                                 </li>
                                                             </ul>
                                                         </div>
