@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
 import { useAuthStore } from "../../store/auth";
 import { logout } from "../../utils/auth";
-import { t, changeLanguage, getCurrentLanguage } from "../../utils/translation";
 import apiInstance from "../../utils/axios";
 import logo from "../../../public/logo-removebg-preview.webp";
 import "../core/DropdownColumnsFix.css";
 
 function Header() {    
+    const { t, i18n } = useTranslation();
     const [showLogoutPopup, setShowLogoutPopup] = useState(false);
     const [categories, setCategories] = useState([]);
     const [loadingCategories, setLoadingCategories] = useState(true);
@@ -17,11 +18,15 @@ function Header() {
     const loggedIn = isLoggedIn();
     const navigate = useNavigate();
     const location = useLocation();
-    const [currentLang, setCurrentLang] = useState(getCurrentLanguage());
+    const [currentLang, setCurrentLang] = useState(i18n.language);
 
     const handleLanguageChange = (lang) => {
-        changeLanguage(lang);
+        i18n.changeLanguage(lang);
         setCurrentLang(lang);
+        // Update URL parameter
+        const url = new URL(window.location);
+        url.searchParams.set('lang', lang);
+        window.history.replaceState({}, '', url);
     };
 
     useEffect(() => {
@@ -216,22 +221,22 @@ function Header() {
                             <ul className="navbar-nav navbar-nav-scroll ms-auto" >
                                 <li className="nav-item">
                                     <Link className="nav-link" to="/">
-                                        {t('home')}
+                                        {t('nav.home')}
                                     </Link>
                                 </li>
                                 <li className="nav-item">
                                     <Link className="nav-link" to="/all-posts">
-                                        {t('articles')}
+                                        {t('nav.articles')}
                                     </Link>
                                 </li>
                                 <li className="nav-item">
                                     <Link className="nav-link" to="/news">
-                                        {t('news')}
+                                        {t('nav.news')}
                                     </Link>
                                 </li>
                                 <li className="nav-item dropdown" style={{ direction: "rtl" }}>
                                     <button className="nav-link dropdown-toggle btn btn-link" type="button" style={{ direction: "rtl" }} id="departmentsMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        {t('departments')}
+                                        {t('nav.departments')}
                                     </button>
                                     {loadingCategories ? (
                                         <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="departmentsMenu" style={{ direction: "rtl", textAlign: "right", marginTop: 0 }}>
@@ -286,17 +291,17 @@ function Header() {
                                 </li>
                                 <li className="nav-item dropdown" style={{ direction: "rtl" }}>
                                     <a className="nav-link dropdown-toggle" href="#" id="pagesMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        {t('about')}
+                                        {t('nav.about')}
                                     </a>
                                     <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="pagesMenu" style={{ direction: "rtl", textAlign: "right" }}>
                                         <li>
                                             <Link className="dropdown-item" to="/about/">
-                                                <i className="bi bi-person-lines-fill"></i> {t('aboutUs')}
+                                                <i className="bi bi-person-lines-fill"></i> {t('nav.aboutUs')}
                                             </Link>
                                         </li>
                                         <li>
                                             <Link className="dropdown-item" to="/contact/">
-                                                <i className="bi bi-telephone-fill"></i> {t('contactUs')}
+                                                <i className="bi bi-telephone-fill"></i> {t('nav.contactUs')}
                                             </Link>
                                         </li>
                                     </ul>
@@ -308,17 +313,17 @@ function Header() {
                                     <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="languageMenu" style={{ direction: "rtl", textAlign: "right" }}>
                                         <li>
                                             <a className="dropdown-item" href="#" onClick={() => handleLanguageChange('fa')}>
-                                                {t('persian')}
+                                                {t('languages.persian')}
                                             </a>
                                         </li>
                                         <li>
                                             <a className="dropdown-item" href="#" onClick={() => handleLanguageChange('en')}>
-                                                {t('english')}
+                                                {t('languages.english')}
                                             </a>
                                         </li>
                                         <li>
                                             <a className="dropdown-item" href="#" onClick={() => handleLanguageChange('ar')}>
-                                                {t('arabic')}
+                                                {t('languages.arabic')}
                                             </a>
                                         </li>
                                     </ul>
