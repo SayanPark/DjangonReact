@@ -7,6 +7,7 @@ import Swal from "sweetalert2";
 import { Editor, EditorState, convertFromRaw, ContentState, AtomicBlockUtils, Modifier, CompositeDecorator, convertToRaw} from "draft-js";
 import "draft-js/dist/Draft.css";
 import * as setImmediate from 'setimmediate';
+import ShimmerImage from "../../components/ShimmerImage";
 
 if (typeof window !== 'undefined' && !window.setImmediate) {
   window.setImmediate = setImmediate;
@@ -77,6 +78,7 @@ function mediaBlockRenderer(block) {
 function EditPost() {
   const [post, setEditPost] = useState({ title: "", category: "", tags: "", status: ""});
   const [imagePreview, setImagePreview] = useState(null);
+  const [imageError, setImageError] = useState(false);
   const [editorState, setEditorState] = useState(EditorState.createEmpty(decorator));
   const [categoryList, setCategoryList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -327,7 +329,21 @@ function EditPost() {
                       <label htmlFor="postTHumbnail" className="form-label">
                         نمایش عکس
                       </label>
-                      <img style={{ width: "100%", height: "330px", objectFit: "cover", borderRadius: "10px",}}className="mb-4"src={ imagePreview || "https://www.eclosio.ong/wp-content/uploads/2018/08/default.png"}alt=""/>
+                      {imageError ? (
+                        <ShimmerImage 
+                          width="100%" 
+                          height="330px" 
+                          style={{ borderRadius: "10px", marginBottom: "1.5rem" }}
+                        />
+                      ) : (
+                        <img 
+                          style={{ width: "100%", height: "330px", objectFit: "cover", borderRadius: "10px",}}
+                          className="mb-4"
+                          src={ imagePreview || "https://www.eclosio.ong/wp-content/uploads/2018/08/default.png"}
+                          alt=""
+                          onError={() => setImageError(true)}
+                        />
+                      )}
                       <div className="mb-3">
                         <label htmlFor="postTHumbnail" className="form-label">
                         عکس کاور پست
