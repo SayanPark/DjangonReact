@@ -203,7 +203,7 @@ function Detail() {
         <div className="container position-relative" data-sticky-container="">
           <div className="row">
             <div className="col-lg-2" style={{ direction: "rtl", textAlign: "right" }}>
-              <div className="text-end text-lg-center mb-5">
+              <div className="text-center text-lg-center mb-5">
                 <div className="position-relative">
                   <div className="avatar avatar-xl">
                     <Link to={`/author-profile/${post?.user?.id}`}>
