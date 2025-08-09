@@ -18,6 +18,7 @@ function Header() {
     const loggedIn = isLoggedIn();
     const navigate = useNavigate();
     const location = useLocation();
+    const { t: contextT, getCurrentLanguage, changeLanguage } = useGlobalTranslation();
     const [currentLang, setCurrentLang] = useState(getCurrentLanguage());
 
     const handleLanguageChange = (lang) => {
