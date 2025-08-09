@@ -392,7 +392,7 @@ function EditPost() {
                         <label className="form-label">مقاله</label>
                         <br/>
                         <small className="mb-3">مقاله خود را اینجا بنویسید</small>
-                        <div className="mb-3 d-flex flex-column" style={{ border: "1px solid #ccc", height: "200px", padding: "10px" }}>
+                        <div className="mb-3 d-flex flex-column" style={{ border: "1px solid #ccc", height: "300px", padding: "10px" }}>
                           <div className="mb-3 d-flex gap-2" style={{ flexShrink: 0 }}>
                             <input id="fileUploadImage" type="file" accept="image/*" onChange={handleFileUpload} style={{ display: "none" }}/>
                             <label htmlFor="fileUploadImage" className="btn btn-outline-secondary btn-lg" style={{outline: "none",boxShadow: "none",border: "none",padding: 0,}}>
