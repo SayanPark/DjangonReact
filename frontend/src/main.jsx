@@ -7,7 +7,11 @@ import './index.css'
 import './App.css'
 import App from './App.jsx'
 import './i18n/index.js'
+import { initLanguage } from './utils/languageFix.js'
 import 'setimmediate';
+
+// Initialize language to ensure Persian is default
+initLanguage();
 
 if (typeof window !== 'undefined' && !window.setImmediate) {
   window.setImmediate = (fn) => setTimeout(fn, 0);
