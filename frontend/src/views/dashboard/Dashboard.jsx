@@ -153,7 +153,7 @@ function Dashboard() {
                                                             }}
                                                         />
                                                         <div className="me-3">
-                                                            <Link href={`/post/${p?.slug}`} className="h6 stretched-link text-decoration-none text-dark">
+                                                            <Link href={`/#/post/${p?.slug}`} className="h6 stretched-link text-decoration-none text-dark">
                                                                 {p.title}
                                                             </Link>
                                                             <p className="small mb-0 mt-3">
