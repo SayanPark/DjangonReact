@@ -316,7 +316,7 @@ function Header() {
                                 </li>
                                 <li className="nav-item dropdown" style={{ direction: "rtl" }}>
                                     <a className="nav-link dropdown-toggle" href="#" id="languageMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        زبان
+                                        <i class="bi bi-globe"></i>
                                     </a>
                                     <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="languageMenu" style={{ direction: "rtl", textAlign: "right" }}>
                                         <li>
