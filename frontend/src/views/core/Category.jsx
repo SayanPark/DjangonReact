@@ -672,7 +672,42 @@ function Category() {
                 <div className="col-sm-6 col-lg-3" key={post?.id}>
                     <div className="card mb-4">
                         <div className="card-fold position-relative">
-                            <img className="card-img" style={{ width: "100%", height: "160px", objectFit: "cover" }} src={post.image} alt="Card image" />
+                            <img 
+                              className="card-img" 
+                              style={{ width: "100%", height: "160px", objectFit: "cover" }} 
+                              src={post.image} 
+                              alt="Card image" 
+                              onError={(e) => {
+                                e.target.style.display = 'none';
+                                const shimmerContainer = document.createElement('div');
+                                shimmerContainer.style.cssText = `
+                                  width: 100%;
+                                  height: 160px;
+                                  background-color: #f0f0f0;
+                                  border-radius: 4px;
+                                  position: relative;
+                                  overflow: hidden;
+                                `;
+                                shimmerContainer.innerHTML = `
+                                  <div style="
+                                    position: absolute;
+                                    top: 0;
+                                    left: 0;
+                                    width: 100%;
+                                    height: 100%;
+                                    background: linear-gradient(90deg, #f0f0f0 0%, #e0e0e0 50%, #f0f0f0 100%);
+                                    animation: shimmer 1.5s infinite;
+                                  "></div>
+                                  <style>
+                                    @keyframes shimmer {
+                                      0% { transform: translateX(-100%); }
+                                      100% { transform: translateX(100%); }
+                                    }
+                                  </style>
+                                `;
+                                e.target.parentNode.insertBefore(shimmerContainer, e.target.nextSibling);
+                              }}
+                            />
                         </div>
                         <div className="card-body px-3 pt-3">
                             <h4 className="card-title">
