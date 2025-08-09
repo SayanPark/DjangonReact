@@ -113,57 +113,57 @@ function Dashboard() {
                                         {posts?.slice(0, 3)?.map((p, index) => (
                                             <React.Fragment key={p.id || index}>
                                                 <div className="col-12">
-                                                        <div className="d-flex position-relative">
-                                            <img 
-                                                className="w-60 rounded" 
-                                                src={p?.image} 
-                                                style={{ width: "100px", height: "110px", objectFit: "cover", borderRadius: "10px" }} 
-                                                alt="product" 
-                                                onError={(e) => {
-                                                    e.target.style.display = 'none';
-                                                    const shimmerContainer = document.createElement('div');
-                                                    shimmerContainer.style.cssText = 'width: 100px; height: 110px;';
-                                                    shimmerContainer.innerHTML = `
-                                                        <div style="
-                                                            width: 100%;
-                                                            height: 100%;
-                                                            background-color: #f0f0f0;
-                                                            border-radius: 10px;
-                                                            position: relative;
-                                                            overflow: hidden;
-                                                        ">
-                                                            <div style="
-                                                                position: absolute;
-                                                                top: 0;
-                                                                left: 0;
-                                                                width: 100%;
-                                                                height: 100%;
-                                                                background: linear-gradient(90deg, #f0f0f0 0%, #e0e0e0 50%, #f0f0f0 100%);
-                                                                animation: shimmer 1.5s infinite;
-                                                            "></div>
+                                                    <div className="d-flex position-relative">
+                                                        <img 
+                                                            className="w-60 rounded" 
+                                                            src={p?.image} 
+                                                            style={{ width: "100px", height: "110px", objectFit: "cover", borderRadius: "10px" }} 
+                                                            alt="product" 
+                                                            onError={(e) => {
+                                                                e.target.style.display = 'none';
+                                                                const shimmerContainer = document.createElement('div');
+                                                                shimmerContainer.style.cssText = 'width: 100px; height: 110px;';
+                                                                shimmerContainer.innerHTML = `
+                                                                    <div style="
+                                                                        width: 100%;
+                                                                        height: 100%;
+                                                                        background-color: #f0f0f0;
+                                                                        border-radius: 10px;
+                                                                        position: relative;
+                                                                        overflow: hidden;
+                                                                    ">
+                                                                        <div style="
+                                                                            position: absolute;
+                                                                            top: 0;
+                                                                            left: 0;
+                                                                            width: 100%;
+                                                                            height: 100%;
+                                                                            background: linear-gradient(90deg, #f0f0f0 0%, #e0e0e0 50%, #f0f0f0 100%);
+                                                                            animation: shimmer 1.5s infinite;
+                                                                        "></div>
+                                                                    </div>
+                                                                    <style>
+                                                                        @keyframes shimmer {
+                                                                            0% { transform: translateX(-100%); }
+                                                                            100% { transform: translateX(100%); }
+                                                                        }
+                                                                    </style>
+                                                                `;
+                                                                e.target.parentNode.insertBefore(shimmerContainer, e.target.nextSibling);
+                                                            }}
+                                                        />
+                                                        <div className="me-3">
+                                                            <Link href={`/post/${p?.slug}`} className="h6 stretched-link text-decoration-none text-dark">
+                                                                {p.title}
+                                                            </Link>
+                                                            <p className="small mb-0 mt-3">
+                                                                <i className="fas fa-calendar ms-2"></i>{Moment(p.date)}
+                                                            </p>
+                                                            <p className="small mb-0">
+                                                                <i className="fas fa-eye ms-2"></i>{p.view}
+                                                            </p>
                                                         </div>
-                                                        <style>
-                                                            @keyframes shimmer {
-                                                                0% { transform: translateX(-100%); }
-                                                                100% { transform: translateX(100%); }
-                                                            }
-                                                        </style>
-                                                    `;
-                                                    e.target.parentNode.insertBefore(shimmerContainer, e.target.nextSibling);
-                                                }}
-                                            />
-                                                            <div className="me-3">
-                                                                <a href={`/post/${p?.slug}`} className="h6 stretched-link text-decoration-none text-dark">
-                                                                    {p.title}
-                                                                </a>
-                                                                <p className="small mb-0 mt-3">
-                                                                        <i className="fas fa-calendar ms-2"></i>{Moment(p.date)}
-                                                                </p>
-                                                                <p className="small mb-0">
-                                                                        <i className="fas fa-eye ms-2"></i>{p.view}
-                                                                </p>
-                                                            </div>
-                                                        </div>
+                                                    </div>
                                                 </div>
                                                 <hr className="my-3" />
                                             </React.Fragment>
