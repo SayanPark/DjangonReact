@@ -294,6 +294,28 @@ function Header() {
                                         </li>
                                     </ul>
                                 </li>
+                                <li className="nav-item dropdown" style={{ direction: "rtl" }}>
+                                    <a className="nav-link dropdown-toggle" href="#" id="languageMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        زبان
+                                    </a>
+                                    <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="languageMenu" style={{ direction: "rtl", textAlign: "right" }}>
+                                        <li>
+                                            <a className="dropdown-item" href="#" onClick={() => window.location.href = window.location.pathname + '?lang=fa'}>
+                                                فارسی
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a className="dropdown-item" href="#" onClick={() => window.location.href = window.location.pathname + '?lang=en'}>
+                                                English
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a className="dropdown-item" href="#" onClick={() => window.location.href = window.location.pathname + '?lang=ar'}>
+                                                العربية
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
                             </ul>
                             <ul className="navbar-nav navbar-nav-scroll me-auto" >
                                 <div className="nav-item nav-item-left" >
