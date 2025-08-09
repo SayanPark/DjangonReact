@@ -652,7 +652,7 @@ function Category() {
                   <div className="category-image-overlay"></div>
                 </div>
                 <div className="row">
-                  <div className="col-12 mb-3">
+                  <div className="col-12 mb-3 mt-2">
                     <h3>{selectedDepartment.name}</h3>
                     {renderNestedDictionary(selectedDepartment)}
                   </div>
@@ -670,71 +670,71 @@ function Category() {
             {posts.length > 0 ? (
               posts.map((post) => (
                 <div className="col-sm-6 col-lg-3" key={post?.id}>
-                    <div className="card mb-4">
-                        <div className="card-fold position-relative">
-                            <img 
-                              className="card-img" 
-                              style={{ width: "100%", height: "160px", objectFit: "cover" }} 
-                              src={post.image} 
-                              alt="Card image" 
-                              onError={(e) => {
-                                e.target.style.display = 'none';
-                                const shimmerContainer = document.createElement('div');
-                                shimmerContainer.style.cssText = `
-                                  width: 100%;
-                                  height: 160px;
-                                  background-color: #f0f0f0;
-                                  border-radius: 4px;
-                                  position: relative;
-                                  overflow: hidden;
-                                `;
-                                shimmerContainer.innerHTML = `
-                                  <div style="
-                                    position: absolute;
-                                    top: 0;
-                                    left: 0;
-                                    width: 100%;
-                                    height: 100%;
-                                    background: linear-gradient(90deg, #f0f0f0 0%, #e0e0e0 50%, #f0f0f0 100%);
-                                    animation: shimmer 1.5s infinite;
-                                  "></div>
-                                  <style>
-                                    @keyframes shimmer {
-                                      0% { transform: translateX(-100%); }
-                                      100% { transform: translateX(100%); }
-                                    }
-                                  </style>
-                                `;
-                                e.target.parentNode.insertBefore(shimmerContainer, e.target.nextSibling);
-                              }}
-                            />
-                        </div>
-                        <div className="card-body px-3 pt-3">
-                            <h4 className="card-title" style={{ overflow: "hidden", whiteSpace: "nowrap" }}>
-                                <Link to={`/post/${post.slug}`} className="btn-link text-reset stretched-link fw-bold text-decoration-none post-title-text" title={post.title}>
-                                    {post.title.length > 18 ? post.title.substring(0, 18) + "…" : post.title}
-                                </Link>
-                            </h4>
-                            <button style={{ border: "none", background: "none" }}>
-                                <i className="fas fa-bookmark text-danger"></i>
-                            </button>
-                            <button style={{ border: "none", background: "none" }}>
-                                <i className="fas fa-thumbs-up text-primary"></i>
-                            </button>
-                            <i className="fas fa-eye"></i> {post?.view}                                            
-                            <ul className="mt-3 list-style-none" style={{ listStyle: "none", paddingRight: 0 }}>
-                                <li>
-                                    <a href="#" className="text-dark text-decoration-none">
-                                        <i className="fas fa-user"></i> {post?.user?.full_name}
-                                    </a>
-                                </li>
-                                <li className="mt-2">
-                                    <i className="fas fa-calendar"></i> {Momment(post.date)}
-                                </li>                                                
-                            </ul>
-                        </div>
-                    </div>
+                  <div className="card mb-4">
+                    <div className="card-fold position-relative">
+                      <img 
+                        className="card-img" 
+                        style={{ width: "100%", height: "160px", objectFit: "cover" }} 
+                        src={post.image} 
+                        alt="Card image" 
+                        onError={(e) => {
+                          e.target.style.display = 'none';
+                          const shimmerContainer = document.createElement('div');
+                          shimmerContainer.style.cssText = `
+                            width: 100%;
+                            height: 160px;
+                            background-color: #f0f0f0;
+                            border-radius: 4px;
+                            position: relative;
+                            overflow: hidden;
+                          `;
+                          shimmerContainer.innerHTML = `
+                            <div style="
+                              position: absolute;
+                              top: 0;
+                              left: 0;
+                              width: 100%;
+                              height: 100%;
+                              background: linear-gradient(90deg, #f0f0f0 0%, #e0e0e0 50%, #f0f0f0 100%);
+                              animation: shimmer 1.5s infinite;
+                            "></div>
+                            <style>
+                              @keyframes shimmer {
+                                0% { transform: translateX(-100%); }
+                                100% { transform: translateX(100%); }
+                              }
+                            </style>
+                          `;
+                          e.target.parentNode.insertBefore(shimmerContainer, e.target.nextSibling);
+                        }}
+                      />
+                  </div>
+                  <div className="card-body px-3 pt-3">
+                    <h4 className="card-title" style={{ overflow: "hidden", whiteSpace: "nowrap" }}>
+                      <Link to={`/post/${post.slug}`} className="btn-link text-reset stretched-link fw-bold text-decoration-none post-title-text" title={post.title}>
+                        {post.title.length > 18 ? post.title.substring(0, 18) + "…" : post.title}
+                      </Link>
+                    </h4>
+                    <button style={{ border: "none", background: "none" }}>
+                      <i className="fas fa-bookmark text-danger"></i>
+                    </button>
+                    <button style={{ border: "none", background: "none" }}>
+                      <i className="fas fa-thumbs-up text-primary"></i>
+                    </button>
+                    <i className="fas fa-eye"></i> {post?.view}                                            
+                    <ul className="mt-3 list-style-none" style={{ listStyle: "none", paddingRight: 0 }}>
+                      <li>
+                        <a href="#" className="text-dark text-decoration-none">
+                          <i className="fas fa-user"></i> {post?.user?.full_name}
+                        </a>
+                      </li>
+                      <li className="mt-2">
+                        <i className="fas fa-calendar"></i> {Momment(post.date)}
+                      </li>                                                
+                    </ul>
+                  </div>
                 </div>
+              </div>
               ))
             ) : (
               <p>هیچ مقاله‌ای یافت نشد.</p>
