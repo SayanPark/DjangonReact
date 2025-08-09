@@ -710,9 +710,9 @@ function Category() {
                             />
                         </div>
                         <div className="card-body px-3 pt-3">
-                            <h4 className="card-title">
-                                <Link to={`/post/${post.slug}`} className="btn-link text-reset stretched-link fw-bold text-decoration-none">
-                                    {post?.title}
+                            <h4 className="card-title" style={{ overflow: "hidden", whiteSpace: "nowrap" }}>
+                                <Link to={`/post/${post.slug}`} className="btn-link text-reset stretched-link fw-bold text-decoration-none post-title-text" title={post.title}>
+                                    {post.title.length > 18 ? post.title.substring(0, 18) + "…" : post.title}
                                 </Link>
                             </h4>
                             <button style={{ border: "none", background: "none" }}>
