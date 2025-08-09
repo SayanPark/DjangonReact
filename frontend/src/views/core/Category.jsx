@@ -652,8 +652,8 @@ function Category() {
                   <div className="category-image-overlay"></div>
                 </div>
                 <div className="row">
-                  <div className="col-12 mb-3 mt-2">
-                    <h3>{selectedDepartment.name}</h3>
+                  <div className="col-12 mb-3">
+                    <h3 className=" mt-2">{selectedDepartment.name}</h3>
                     {renderNestedDictionary(selectedDepartment)}
                   </div>
                 </div>
