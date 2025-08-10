@@ -24,7 +24,7 @@ class User(AbstractUser):
     first_name = models.CharField(max_length=30, blank=True, null=True)
     last_name = models.CharField(max_length=150, blank=True, null=True)
     full_name = models.CharField(max_length=100, null=True, blank=True)
-    image_base64 = models.TextField(blank=True, null=True, help_text='Base64 encoded image data')
+    image = models.FileField(upload_to="image", default="default/default-user.jpg", null=True, blank=True)
     bio = models.CharField(max_length=100, null=True, blank=True)
     about = models.CharField(max_length=100, null=True, blank=True)
     author = models.BooleanField(default=False)
@@ -90,7 +90,7 @@ class Post(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
-    image_base64 = models.TextField(blank=True, null=True, help_text='Base64 encoded image data')
+    image = models.FileField(upload_to="image", null=True, blank=True)
     description = JSONField(null=True, blank=True)
     tags = models.CharField(max_length=100, default="")
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, related_name='posts')
