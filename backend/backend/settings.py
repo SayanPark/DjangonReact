@@ -12,9 +12,11 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 from datetime import timedelta
+from dotenv import load_dotenv
 import dj_database_url
 import os
 import sys
+load_dotenv()
 
 # Add the project root directory to Python path
 # This ensures that 'backend' package can be found
@@ -64,6 +66,7 @@ INSTALLED_APPS = [
 
      # Custom Apps
      'api',
+     'storages',
 
      #Third Party Apps
      'corsheaders',
@@ -71,6 +74,14 @@ INSTALLED_APPS = [
      'rest_framework_simplejwt.token_blacklist',
      'drf_yasg',
 ]
+
+# AWS S3 Settings for Liara
+AWS_ACCESS_KEY_ID = os.getenv('LIARA_ACCESS_KEY')
+AWS_SECRET_ACCESS_KEY = os.getenv('LIARA_SECRET_KEY')
+AWS_STORAGE_BUCKET_NAME = os.getenv('BUCKET_NAME')
+AWS_S3_ENDPOINT_URL = os.getenv('LIARA_ENDPOINT_URL')
+
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
