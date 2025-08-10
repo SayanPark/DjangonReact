@@ -90,7 +90,7 @@ class Post(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
-    image = models.FileField(upload_to="image", null=True, blank=True)
+    image_base64 = models.TextField(blank=True, null=True, help_text='Base64 encoded image data')
     description = JSONField(null=True, blank=True)
     tags = models.CharField(max_length=100, default="")
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, related_name='posts')
