@@ -39,7 +39,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-%43v^qi*3&pjm*6m=i-1x
 
 DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'djangonreact.onrender.com']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'djangonreact.onrender.com', 'shahrezananekarafarin.onrender.com']
 
 # Add this to correctly detect HTTPS when behind a proxy (like localtunnel)
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
@@ -74,14 +74,6 @@ INSTALLED_APPS = [
      'rest_framework_simplejwt.token_blacklist',
      'drf_yasg',
 ]
-
-# AWS S3 Settings for Liara
-AWS_ACCESS_KEY_ID = os.getenv('LIARA_ACCESS_KEY')
-AWS_SECRET_ACCESS_KEY = os.getenv('LIARA_SECRET_KEY')
-AWS_STORAGE_BUCKET_NAME = os.getenv('BUCKET_NAME')
-AWS_S3_ENDPOINT_URL = os.getenv('LIARA_ENDPOINT_URL')
-
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -340,3 +332,10 @@ JAZZMIN_UI_TWEAKS = {
 # Frontend base URL for password reset link (with hash routing for SPA)
 FRONTEND_BASE_URL = "https://shahrezananekarafarin.onrender.com/#"
 
+# AWS S3 Settings for Liara
+AWS_ACCESS_KEY_ID = os.getenv('LIARA_ACCESS_KEY')
+AWS_SECRET_ACCESS_KEY = os.getenv('LIARA_SECRET_KEY')
+AWS_STORAGE_BUCKET_NAME = os.getenv('BUCKET_NAME')
+AWS_S3_ENDPOINT_URL = os.getenv('LIARA_ENDPOINT_URL')
+
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
