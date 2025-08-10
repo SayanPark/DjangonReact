@@ -68,8 +68,9 @@ INSTALLED_APPS = [
      #Third Party Apps
      'corsheaders',
      'rest_framework',
-     'rest_framework_simplejwt.token_blacklist',
+    'rest_framework_simplejwt.token_blacklist',
      'drf_yasg',
+     'storages',
 ]
 
 MIDDLEWARE = [
@@ -328,4 +329,18 @@ JAZZMIN_UI_TWEAKS = {
 
 # Frontend base URL for password reset link (with hash routing for SPA)
 FRONTEND_BASE_URL = "https://shahrezananekarafarin.onrender.com/#"
+
+# ArvanCloud S3 Storage Configuration
+AWS_ACCESS_KEY_ID = '496a0ecf-d52b-40e2-9ce8-89e94eec23a3'
+AWS_SECRET_ACCESS_KEY = '934e59872279bac7ab1d9e8bd73b8a061ca75010db7ca90a2cae99c20de03d3b'
+AWS_STORAGE_BUCKET_NAME = 'szk'
+AWS_S3_ENDPOINT_URL = 'https://szk.s3.ir-thr-at1.arvanstorage.ir'
+AWS_S3_CUSTOM_DOMAIN = f'{AWS_S3_ENDPOINT_URL}/{AWS_STORAGE_BUCKET_NAME}'
+
+AWS_S3_ADDRESSING_STYLE = "path"  # Use path style addressing for ArvanCloud
+
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+# Optional: Set media URL to use the S3 custom domain
+MEDIA_URL = f'{AWS_S3_CUSTOM_DOMAIN}/'
 
