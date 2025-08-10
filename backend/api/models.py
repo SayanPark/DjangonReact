@@ -24,7 +24,7 @@ class User(AbstractUser):
     first_name = models.CharField(max_length=30, blank=True, null=True)
     last_name = models.CharField(max_length=150, blank=True, null=True)
     full_name = models.CharField(max_length=100, null=True, blank=True)
-    image = models.FileField(upload_to="image", default="default/default-user.jpg", null=True, blank=True)
+    image_base64 = models.TextField(blank=True, null=True, help_text='Base64 encoded image data')
     bio = models.CharField(max_length=100, null=True, blank=True)
     about = models.CharField(max_length=100, null=True, blank=True)
     author = models.BooleanField(default=False)
