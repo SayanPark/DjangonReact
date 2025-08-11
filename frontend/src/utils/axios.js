@@ -1,7 +1,8 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import { API_BASE_URL } from './constants.js';
 
-const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'https://djangonreact.onrender.com/api/v1/';
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || API_BASE_URL;
 
 const apiInstance = axios.create({
     baseURL: apiBaseUrl,
