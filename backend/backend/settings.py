@@ -39,7 +39,8 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-%43v^qi*3&pjm*6m=i-1x
 
 DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'djangonreact.onrender.com', 'shahrezananekarafarin.onrender.com']
+# Allow all hosts for Liara deployment
+ALLOWED_HOSTS = ['*']
 
 # Add this to correctly detect HTTPS when behind a proxy (like localtunnel)
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
@@ -153,12 +154,10 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'pawsky254@gmail.com'  # Replace with your real email
-EMAIL_HOST_PASSWORD = 'qqxoxjxzccjhuooq'  # Updated with your new Gmail app password (remove spaces)
-
-# Default from email
-DEFAULT_FROM_EMAIL = 'webmaster@localhost'
-FROM_EMAIL = "no-reply@yourdomain.com"
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', 'pawsky254@gmail.com')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
+DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', 'webmaster@localhost')
+FROM_EMAIL = os.environ.get('FROM_EMAIL', 'no-reply@yourdomain.com')
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
@@ -326,7 +325,7 @@ JAZZMIN_UI_TWEAKS = {
 }
 
 # Frontend base URL for password reset link (with hash routing for SPA)
-FRONTEND_BASE_URL = "https://shahrezananekarafarin.onrender.com/#"
+FRONTEND_BASE_URL = os.environ.get('FRONTEND_BASE_URL', "https://shahrezananekarafarin.onrender.com/#")
 
 # AWS S3 Settings for Liara
 AWS_ACCESS_KEY_ID = os.getenv('LIARA_ACCESS_KEY')
