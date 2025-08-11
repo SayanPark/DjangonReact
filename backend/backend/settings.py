@@ -88,7 +88,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'backend.backend.urls'
+ROOT_URLCONF = 'backend.urls'
 
 TEMPLATES = [
     {
@@ -118,15 +118,11 @@ if DATABASE_URL:
         'default': dj_database_url.parse(DATABASE_URL, conn_max_age=600, ssl_require=True)
     }
 else:
-    # database of render.com development
+    # Use local SQLite for development when DATABASE_URL is not provided
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'szk_psql_db',
-            'USER': 'szk_psql_db_user',
-            'PASSWORD': 'wScSnvAqLBeJ681D7wYATZsFb98vVqYd',
-            'HOST': 'dpg-d256ji1r0fns73dp8da0-a.oregon-postgres.render.com',
-            'PORT': '5432',
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
 

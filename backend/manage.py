@@ -12,7 +12,7 @@ def main():
     if project_root not in sys.path:
         sys.path.insert(0, project_root)
     
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'backend.backend.settings')
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'backend.settings')
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
