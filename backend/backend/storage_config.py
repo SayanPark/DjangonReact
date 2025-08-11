@@ -3,7 +3,6 @@ Storage configuration for handling persistent file uploads
 """
 import os
 from django.conf import settings
-from storages.backends.s3boto3 import S3Boto3Storage
 
 def ensure_media_directories():
     """Ensure media directories exist"""
@@ -27,9 +26,3 @@ def get_media_url(file_path):
         return str(file_path)
     
     return f"{settings.MEDIA_URL}{file_path}"
-
-class LiaraStorage(S3Boto3Storage):
-    bucket_name = settings.AWS_STORAGE_BUCKET_NAME
-    custom_domain = settings.AWS_S3_CUSTOM_DOMAIN
-    file_overwrite = False
-    default_acl = 'public-read'
