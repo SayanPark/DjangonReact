@@ -1,0 +1,7 @@
+{
+  "app": "SZKblog",
+  "platform": "python",
+  "python": {
+    "version": "3.12"
+  }
+}
