@@ -1,0 +1,12 @@
+{
+  "app": "shahrezananekarafarin",
+  "port": 5173,
+  "platform": "static",
+  "build": {
+    "location": "iran"
+  },
+  "static": {
+    "path": "./dist",
+    "spa": true
+  }
+}
