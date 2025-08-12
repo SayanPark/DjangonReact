@@ -6,7 +6,6 @@
   "scripts": {
     "dev": "vite",
     "dev:all": "concurrently \"python ../backend/manage.py runserver 8000\" \"vite\"",
-    "dev:tunnel": "concurrently \"python ../backend/manage.py runserver 8000\" \"vite --mode tunnel\" \"node cloudflare-tunnel.js\"",
     "build": "vite build",
     "build:tunnel": "vite build --mode tunnel",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
