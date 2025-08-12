@@ -1,6 +1,16 @@
 {
   "app": "SZKblog",
+  "port": 80,
   "platform": "python",
+  "build": {
+    "location": "iran"
+  },
+  "disks": [
+    {
+      "name": "my-disk",
+      "mountTo": "path/to/folder"
+    }
+  ],
   "python": {
     "version": "3.12"
   }
