@@ -1,7 +1,0 @@
-tunnel: postgres-szkblog
-credentials-file: C:\\Users\\lenovo\\.cloudflared\\postgres-szkblog.json
-originCertPath: C:\\Users\\lenovo\\.cloudflared\\cert.pem
-
-ingress:
-  - service: tcp://localhost:5432
-  - service: http_status:404
