@@ -117,9 +117,16 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 DATABASE_URL = os.environ.get('DATABASE_URL')
 
 if DATABASE_URL:
+    # Parse the database URL and disable SSL for PostgreSQL connections
     DATABASES = {
-        'default': dj_database_url.parse(DATABASE_URL, conn_max_age=600, ssl_require=True)
+        'default': dj_database_url.parse(DATABASE_URL, conn_max_age=600, ssl_require=False)
     }
+    
+    # Override SSL settings for PostgreSQL to disable SSL
+    if 'postgres' in DATABASE_URL:
+        DATABASES['default']['OPTIONS'] = {
+            'sslmode': 'disable'
+        }
 else:
     # Use Liara-compatible database location from environment
     database_dir = os.environ.get('DATABASE_DIR', '/tmp/database')
