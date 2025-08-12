@@ -1,17 +1,31 @@
 {
   "app": "SZKblog",
-  "port": 80,
+  "port": 8000,
   "platform": "python",
   "build": {
     "location": "iran"
   },
   "disks": [
     {
-      "name": "my-disk",
-      "mountTo": "path/to/folder"
+      "name": "media-disk",
+      "mountTo": "/usr/src/app/media"
+    },
+    {
+      "name": "static-disk",
+      "mountTo": "/usr/src/app/staticfiles"
+    },
+    {
+      "name": "database-disk",
+      "mountTo": "/usr/src/app/database"
     }
   ],
   "python": {
     "version": "3.12"
+  },
+  "env": {
+    "DJANGO_SETTINGS_MODULE": "backend.settings",
+    "MEDIA_ROOT": "/usr/src/app/media",
+    "STATIC_ROOT": "/usr/src/app/staticfiles",
+    "DATABASE_DIR": "/usr/src/app/database"
   }
 }

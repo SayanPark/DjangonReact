@@ -1,165 +1,207 @@
 #!/usr/bin/env python3
 """
-Deployment Fix Script for Liara
-This script will fix the common deployment issues:
-1. Database configuration
-2. Static files
-3. Environment setup
+Comprehensive deployment fix script for Liara deployment
+This script addresses the read-only filesystem issues and database problems
 """
 
 import os
 import sys
 import subprocess
-import json
+import shutil
+from pathlib import Path
 
-def fix_database_config():
-    """Fix database configuration for production"""
-    print("🔧 Fixing database configuration...")
+def fix_deployment():
+    """Main function to fix deployment issues"""
+    print("🔧 Fixing deployment issues for Liara...")
     
-    # Create .env file template if it doesn't exist
-    env_template = """# Database Configuration
-DATABASE_URL=postgresql://username:password@host:port/database_name
+    # Get project root
+    project_root = Path(__file__).parent
+    backend_dir = project_root / "backend"
+    
+    # 1. Fix storage configuration for read-only filesystem
+    fix_storage_config(backend_dir)
+    
+    # 2. Fix database configuration for Liara
+    fix_database_config(backend_dir)
+    
+    # 3. Fix static files configuration
+    fix_static_files(project_root)
+    
+    # 4. Update liara.json with proper disk configuration
+    fix_liara_config(project_root)
+    
+    print("✅ Deployment fixes applied successfully!")
 
-# Email Configuration
-EMAIL_HOST_USER=your-email@gmail.com
-EMAIL_HOST_PASSWORD=your-app-password
-
-# AWS S3 (Liara Object Storage)
-LIARA_ACCESS_KEY=your-liara-access-key
-LIARA_SECRET_KEY=your-liara-secret-key
-BUCKET_NAME=your-bucket-name
-LIARA_ENDPOINT_URL=https://storage.iran.liara.ir
-
-# Frontend URL
-FRONTEND_BASE_URL=https://szkblog.liara.run/#
+def fix_storage_config(backend_dir):
+    """Update storage configuration for read-only filesystem"""
+    storage_config_path = backend_dir / "backend" / "storage_config.py"
+    
+    new_storage_config = '''"""
+Storage configuration for handling persistent file uploads in Liara deployment
 """
+import os
+import logging
+from django.conf import settings
+
+logger = logging.getLogger(__name__)
+
+def ensure_media_directories():
+    """Ensure media directories exist - adapted for Liara read-only filesystem"""
+    # Skip directory creation in production (Liara handles this via disk mounts)
+    if os.environ.get('LIARA_APP_NAME'):
+        logger.info("Running in Liara environment - skipping directory creation")
+        return
     
-    env_path = os.path.join(os.path.dirname(__file__), '.env')
-    if not os.path.exists(env_path):
-        with open(env_path, 'w') as f:
-            f.write(env_template)
-        print("✅ Created .env template file")
+    # Only create directories in development
+    media_root = settings.MEDIA_ROOT
+    directories = [
+        os.path.join(media_root, 'image'),
+        os.path.join(media_root, 'ckeditor_uploads'),
+    ]
     
-    # Update settings.py to handle database properly
-    settings_path = os.path.join('backend', 'backend', 'settings.py')
+    for directory in directories:
+        try:
+            if not os.path.exists(directory):
+                os.makedirs(directory, exist_ok=True)
+                logger.info(f"Created directory: {directory}")
+        except OSError as e:
+            logger.warning(f"Could not create directory {directory}: {e}")
+
+def get_media_url(file_path):
+    """Generate full media URL for a file"""
+    if not file_path:
+        return None
     
-    # Check if DATABASE_URL is being used correctly
-    with open(settings_path, 'r') as f:
+    # Handle both relative and absolute paths
+    if str(file_path).startswith('http'):
+        return str(file_path)
+    
+    return f"{settings.MEDIA_URL}{file_path}"
+'''
+
+    with open(storage_config_path, 'w', encoding='utf-8') as f:
+        f.write(new_storage_config)
+    print("   ✅ Updated storage_config.py for Liara deployment")
+
+def fix_database_config(backend_dir):
+    """Update database configuration for Liara"""
+    settings_path = backend_dir / "backend" / "settings.py"
+    
+    # Read current settings
+    with open(settings_path, 'r', encoding='utf-8') as f:
         content = f.read()
     
-    # Ensure DATABASE_URL parsing is correct
-    if 'DATABASE_URL' in content:
-        print("✅ DATABASE_URL configuration found")
-    else:
-        print("❌ DATABASE_URL configuration missing")
+    # Update database configuration
+    new_db_config = '''
+# Database
+# https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-def fix_procfile():
-    """Fix Procfile for correct deployment"""
-    print("🔧 Fixing Procfile...")
-    
-    procfile_content = """web: cd backend && gunicorn backend.wsgi:application --bind 0.0.0.0:$PORT --timeout 120"""
-    
-    with open('Procfile', 'w') as f:
-        f.write(procfile_content)
-    
-    print("✅ Updated Procfile")
+DATABASE_URL = os.environ.get('DATABASE_URL')
 
-def create_deployment_config():
-    """Create deployment configuration files"""
-    print("🔧 Creating deployment configuration...")
+if DATABASE_URL:
+    DATABASES = {
+        'default': dj_database_url.parse(DATABASE_URL, conn_max_age=600, ssl_require=True)
+    }
+else:
+    # Use Liara-compatible database location
+    database_dir = '/usr/src/app/database'
+    os.makedirs(database_dir, exist_ok=True)
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(database_dir, 'db.sqlite3'),
+        }
+    }
+'''
     
-    # Create liara.json if it doesn't exist
+    # Replace the database configuration
+    import re
+    db_pattern = r'# Database.*?else:.*?}\s*}'
+    new_content = re.sub(db_pattern, new_db_config, content, flags=re.DOTALL)
+    
+    # Update media root for Liara
+    media_root_update = "MEDIA_ROOT = os.environ.get('MEDIA_ROOT', '/usr/src/app/media')"
+    new_content = re.sub(r'MEDIA_ROOT = os\.path\.join\(BASE_DIR, \'media\'\)', media_root_update, new_content)
+    
+    # Update static root for Liara
+    static_root_update = "STATIC_ROOT = os.environ.get('STATIC_ROOT', '/usr/src/app/staticfiles')"
+    new_content = re.sub(r'STATIC_ROOT = BASE_DIR / \'staticfiles\'', static_root_update, new_content)
+    
+    # Remove the ensure_media_directories call from settings.py
+    new_content = re.sub(r'# Ensure media directories are created on startup.*?ensure_media_directories\(\)', 
+                        '# Media directories handled by Liara disk mounts', new_content, flags=re.DOTALL)
+    
+    with open(settings_path, 'w', encoding='utf-8') as f:
+        f.write(new_content)
+    print("   ✅ Updated settings.py for Liara deployment")
+
+def fix_static_files(project_root):
+    """Fix static files configuration"""
+    frontend_dist = project_root / "frontend" / "dist"
+    
+    # Create frontend dist directory if it doesn't exist
+    frontend_dist.mkdir(parents=True, exist_ok=True)
+    
+    # Create a simple index.html if it doesn't exist
+    index_html = frontend_dist / "index.html"
+    if not index_html.exists():
+        index_content = '''<!DOCTYPE html>
+<html>
+<head>
+    <title>SZK Blog</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    <div id="root">
+        <h1>SZK Blog</h1>
+        <p>Frontend build will be placed here</p>
+    </div>
+</body>
+</html>'''
+        with open(index_html, 'w', encoding='utf-8') as f:
+            f.write(index_content)
+    print("   ✅ Fixed static files configuration")
+
+def fix_liara_config(project_root):
+    """Update liara.json with proper configuration"""
     liara_config = {
-        "platform": "python",
+        "app": "SZKblog",
         "port": 8000,
+        "platform": "python",
+        "build": {
+            "location": "iran"
+        },
+        "disks": [
+            {
+                "name": "media-disk",
+                "mountTo": "/usr/src/app/media"
+            },
+            {
+                "name": "static-disk",
+                "mountTo": "/usr/src/app/staticfiles"
+            },
+            {
+                "name": "database-disk",
+                "mountTo": "/usr/src/app/database"
+            }
+        ],
         "python": {
             "version": "3.12"
         },
-        "build": {
-            "command": "cd backend && python manage.py collectstatic --noinput"
+        "env": {
+            "DJANGO_SETTINGS_MODULE": "backend.settings",
+            "MEDIA_ROOT": "/usr/src/app/media",
+            "STATIC_ROOT": "/usr/src/app/staticfiles",
+            "DATABASE_DIR": "/usr/src/app/database"
         }
     }
     
-    with open('liara.json', 'w') as f:
+    liara_path = project_root / "liara.json"
+    import json
+    with open(liara_path, 'w', encoding='utf-8') as f:
         json.dump(liara_config, f, indent=2)
-    
-    print("✅ Created liara.json")
-
-def check_and_create_directories():
-    """Check and create necessary directories"""
-    print("🔧 Checking directories...")
-    
-    # Create media directory
-    media_dir = os.path.join('backend', 'media')
-    os.makedirs(media_dir, exist_ok=True)
-    
-    # Create staticfiles directory
-    staticfiles_dir = os.path.join('backend', 'staticfiles')
-    os.makedirs(staticfiles_dir, exist_ok=True)
-    
-    # Create frontend/dist if it doesn't exist
-    frontend_dist = os.path.join('frontend', 'dist')
-    os.makedirs(frontend_dist, exist_ok=True)
-    
-    print("✅ Created necessary directories")
-
-def create_deployment_guide():
-    """Create deployment guide"""
-    print("🔧 Creating deployment guide...")
-    
-    guide = """# Deployment Guide for Liara
-
-## Quick Fix Steps:
-
-1. **Set Environment Variables in Liara Dashboard:**
-   - Go to your app dashboard: https://console.liara.ir/apps/szkblog/settings/environment-variables
-   - Add these variables:
-     - DATABASE_URL: Get from your PostgreSQL database
-     - EMAIL_HOST_USER: Your Gmail address
-     - EMAIL_HOST_PASSWORD: Your Gmail app password
-     - LIARA_ACCESS_KEY: From Liara Object Storage
-     - LIARA_SECRET_KEY: From Liara Object Storage
-     - BUCKET_NAME: Your bucket name
-     - LIARA_ENDPOINT_URL: https://storage.iran.liara.ir
-
-2. **Deploy:**
-   ```bash
-   liara deploy
-   ```
-
-3. **Check logs:**
-   ```bash
-   liara logs
-   ```
-
-## Database Setup:
-1. Go to Liara Console → Databases → Create PostgreSQL
-2. Copy the connection string
-3. Add it as DATABASE_URL environment variable
-
-## Common Issues Fixed:
-- ✅ Database connection errors
-- ✅ Static files configuration
-- ✅ Entry point issues
-- ✅ Environment variables
-"""
-    
-    with open('DEPLOYMENT_GUIDE.md', 'w') as f:
-        f.write(guide)
-    
-    print("✅ Created deployment guide")
+    print("   ✅ Updated liara.json with proper disk configuration")
 
 if __name__ == "__main__":
-    print("🚀 Starting deployment fix process...")
-    
-    fix_database_config()
-    fix_procfile()
-    create_deployment_config()
-    check_and_create_directories()
-    create_deployment_guide()
-    
-    print("\n🎉 Deployment fixes completed!")
-    print("Next steps:")
-    print("1. Set environment variables in Liara dashboard")
-    print("2. Run: liara deploy")
-    print("3. Check: liara logs")
+    fix_deployment()

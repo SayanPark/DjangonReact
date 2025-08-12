@@ -109,6 +109,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'backend.wsgi.application'
 
 
+
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
@@ -119,13 +120,16 @@ if DATABASE_URL:
         'default': dj_database_url.parse(DATABASE_URL, conn_max_age=600, ssl_require=True)
     }
 else:
-    # Use local SQLite for development when DATABASE_URL is not provided
+    # Use Liara-compatible database location
+    database_dir = '/usr/src/app/database'
+    os.makedirs(database_dir, exist_ok=True)
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
+            'NAME': os.path.join(database_dir, 'db.sqlite3'),
         }
     }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
@@ -164,7 +168,7 @@ FROM_EMAIL = os.environ.get('FROM_EMAIL', 'no-reply@yourdomain.com')
 
 STATIC_URL = 'static/'
 
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATIC_ROOT = os.environ.get('STATIC_ROOT', '/usr/src/app/staticfiles')
 
 # Add frontend build directory to static files dirs
 STATICFILES_DIRS = [
@@ -176,9 +180,7 @@ WHITENOISE_MIMETYPES = {
     '.min.js': 'application/javascript',
 }
 
-# Ensure media directories are created on startup
-from .storage_config import ensure_media_directories
-ensure_media_directories()
+# Media directories handled by Liara disk mounts
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
@@ -186,7 +188,7 @@ ensure_media_directories()
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.environ.get('MEDIA_ROOT', '/usr/src/app/media')
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
