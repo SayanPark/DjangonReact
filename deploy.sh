@@ -1,18 +1,28 @@
 #!/bin/bash
+# Deployment script for Liara that handles database migrations
+
 set -e
 
-echo "Starting deployment..."
+echo "🚀 Starting SZK Blog deployment..."
 
-# Install dependencies
-pip install -r requirements.txt
+# Change to backend directory
+cd backend
 
-# Collect static files
-python backend/manage.py collectstatic --noinput
+# Set Django settings
+export DJANGO_SETTINGS_MODULE=backend.settings
 
 # Run migrations
-python backend/manage.py migrate --noinput
+echo "🔄 Running Django migrations..."
+python manage.py migrate --noinput
+
+# Collect static files
+echo "📦 Collecting static files..."
+python manage.py collectstatic --noinput
 
 # Create superuser if it doesn't exist
-python backend/manage.py shell -c "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.filter(is_superuser=True).exists() or User.objects.create_superuser('admin', 'admin@example.com', 'admin123')"
+echo "👤 Checking superuser..."
+python manage.py createsuperuser --noinput --username admin --email admin@example.com || echo "Superuser already exists"
 
-echo "Deployment complete!"
+# Start the application
+echo "🌐 Starting application..."
+exec gunicorn backend.wsgi:application --bind 0.0.0.0:$PORT
