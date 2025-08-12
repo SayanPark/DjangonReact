@@ -722,23 +722,30 @@ class DashboardPostEditAPIView(generics.RetrieveUpdateDestroyAPIView):
 @permission_classes([AllowAny])
 def send_signup_email(request):
     email = request.data.get('email')
-    logger = logging.getLogger(__name__)
+    
     if not email:
         return Response({"error": "Email is required"}, status=status.HTTP_400_BAD_REQUEST)
+    
     try:
-        user = gomini.User.objects.filter(email=email).first()
-        if user:
+        # Check if user already exists
+        existing_user = gomini.User.objects.filter(email=email).first()
+        if existing_user:
             return Response({"error": "User with this email already exists"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        # Generate signup link
         signup_link = f"{settings.FRONTEND_BASE_URL}/signup?email={email}"
-        uidb64 = urlsafe_base64_encode(force_bytes(user.pk)) if user else ''
+        
+        # Prepare email context
         merge_data = {
             'signup_link': signup_link,
             'email': email,
-            'uidb64': uidb64,
         }
+        
         subject = "تکمیل ثبت نام در سایت"
         text_body = render_to_string("email/signup_email.txt", merge_data)
         html_body = render_to_string("email/signup_email.html", merge_data)
+        
+        # Create email message
         msg = EmailMultiAlternatives(
             subject=subject,
             from_email=f'"ShahreZananeKarafarin" <{settings.EMAIL_HOST_USER}>',
@@ -746,16 +753,25 @@ def send_signup_email(request):
             body=text_body
         )
         msg.attach_alternative(html_body, "text/html")
-
+        
+        # Send email
         try:
             msg.send()
+            logger.info(f"Signup email sent successfully to {email}")
             return Response({"message": "Signup email sent successfully"}, status=status.HTTP_200_OK)
         except Exception as e:
-            logger.error(f"Failed to send signup email to {email}: {e}")
-            return Response({"error": "Failed to send signup email"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            logger.error(f"Failed to send signup email to {email}: {str(e)}")
+            return Response(
+                {"error": "Failed to send signup email. Please try again later."}, 
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+            
     except Exception as e:
-        logger.error(f"Error in send_signup_email: {e}")
-        return Response({"error": "An error occurred while processing signup email"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        logger.error(f"Error in send_signup_email: {str(e)}")
+        return Response(
+            {"error": "An error occurred while processing your request"}, 
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
 
 def send_post_update_email(post, email, unsubscribe_url=None):
     logger = logging.getLogger(__name__)
@@ -945,8 +961,6 @@ class ChangeSuperuserStatusAPIView(APIView):
             "is_superuser": user.is_superuser,
             "is_staff": user.is_staff
         }, status=status.HTTP_200_OK)
-
-
 
 class FrontendAppView(View):
     """
