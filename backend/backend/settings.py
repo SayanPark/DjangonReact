@@ -110,6 +110,7 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 
 
+
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
@@ -120,15 +121,19 @@ if DATABASE_URL:
         'default': dj_database_url.parse(DATABASE_URL, conn_max_age=600, ssl_require=True)
     }
 else:
-    # Use Liara-compatible database location
-    database_dir = '/usr/src/app/database'
-    os.makedirs(database_dir, exist_ok=True)
+    # Use Liara-compatible database location from environment
+    database_dir = os.environ.get('DATABASE_DIR', '/tmp/database')
+    # Skip directory creation in production - Liara handles this via disk mounts
+    if not os.environ.get('LIARA_APP_NAME'):
+        os.makedirs(database_dir, exist_ok=True)
+    
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME': os.path.join(database_dir, 'db.sqlite3'),
         }
     }
+
 
 
 # Password validation

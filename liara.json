@@ -5,20 +5,27 @@
   "build": {
     "location": "iran"
   },
+  "disks": [
+    {
+      "name": "media-disk",
+      "mountTo": "/usr/src/app/media"
+    },
+    {
+      "name": "static-disk",
+      "mountTo": "/usr/src/app/staticfiles"
+    },
+    {
+      "name": "database-disk",
+      "mountTo": "/usr/src/app/database"
+    }
+  ],
   "python": {
     "version": "3.12"
   },
   "env": {
     "DJANGO_SETTINGS_MODULE": "backend.settings",
-    "DEBUG": "False",
-    "MEDIA_ROOT": "/tmp/media",
-    "STATIC_ROOT": "/tmp/staticfiles",
-    "DATABASE_DIR": "/tmp/database"
-  },
-  "disks": [
-    {
-      "name": "my-disk",
-      "mountTo": "path/to/folder"
-    }
-  ]
+    "MEDIA_ROOT": "/usr/src/app/media",
+    "STATIC_ROOT": "/usr/src/app/staticfiles",
+    "DATABASE_DIR": "/usr/src/app/database"
+  }
 }
