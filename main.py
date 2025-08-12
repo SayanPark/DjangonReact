@@ -10,5 +10,8 @@ BACKEND_DIR = os.path.join(PROJECT_ROOT, 'backend')
 # Change to backend directory
 os.chdir(BACKEND_DIR)
 
-# Run Django directly using subprocess to avoid autoreload issues
-subprocess.run([sys.executable, '-m', 'django', 'runserver', '0.0.0.0:8000'])
+# Set Django settings module
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'backend.settings')
+
+# Run Django using manage.py directly
+subprocess.run([sys.executable, 'manage.py', 'runserver', '0.0.0.0:8000'])
