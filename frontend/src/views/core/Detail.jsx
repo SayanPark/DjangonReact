@@ -102,6 +102,15 @@ function Detail() {
       const response = await apiInstance.get(url);
       setPost(response.data);
 
+      // Debug: Log comments to see if replies are included
+      console.log("Post comments:", response.data.comments);
+      if (response.data.comments && response.data.comments.length > 0) {
+        response.data.comments.forEach((comment, index) => {
+          console.log(`Comment ${index}:`, comment);
+          console.log(`Comment ${index} reply:`, comment.reply);
+        });
+      }
+
       const tagArray = response?.data?.tags?.split(",");
       setTags(tagArray);
 
@@ -350,7 +359,7 @@ function Detail() {
                       <p className="fw-bold">{c?.comment}</p>
                       
                       {/* Display comment reply if exists */}
-                      {(c?.reply && c?.reply.trim() !== "") ? (
+                      {(c?.reply && c?.reply !== null && c?.reply !== undefined && String(c?.reply).trim() !== "" && String(c?.reply).trim() !== "null") ? (
                         <div className="mt-3 p-3 bg-light border-start border-primary border-3 shadow-sm rounded" style={{marginRight: "2rem"}}>
                           <div className="d-flex align-items-center mb-2">
                             <i className="fas fa-reply text-primary me-2"></i>
