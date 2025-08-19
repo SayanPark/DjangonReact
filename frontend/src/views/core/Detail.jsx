@@ -93,6 +93,7 @@ function Detail() {
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty(decorator)
   );
+  const [comments, setComments] = useState([]);
 
   const fetchPost = async () => {
     console.log("Fetching post with slug:", param.slug);
@@ -101,15 +102,6 @@ function Detail() {
       console.log("API URL:", url);
       const response = await apiInstance.get(url);
       setPost(response.data);
-
-      // Debug: Log comments to see if replies are included
-      console.log("Post comments:", response.data.comments);
-      if (response.data.comments && response.data.comments.length > 0) {
-        response.data.comments.forEach((comment, index) => {
-          console.log(`Comment ${index}:`, comment);
-          console.log(`Comment ${index} reply:`, comment.reply);
-        });
-      }
 
       const tagArray = response?.data?.tags?.split(",");
       setTags(tagArray);
@@ -144,9 +136,33 @@ function Detail() {
     }
   };
 
+  const fetchComments = async () => {
+    if (!post?.id) return;
+    
+    try {
+      const url = `author/dashboard/comment-list/${post.id}/`;
+      console.log("Fetching comments from:", url);
+      const response = await apiInstance.get(url);
+      console.log("Comments with replies:", response.data);
+      setComments(response.data);
+    } catch (error) {
+      console.error("Failed to fetch comments:", error);
+      // Fallback to post comments if API fails
+      if (post?.comments) {
+        setComments(post.comments);
+      }
+    }
+  };
+
   useEffect(() => {
     fetchPost();
   }, []);
+
+  useEffect(() => {
+    if (post?.id) {
+      fetchComments();
+    }
+  }, [post?.id]);
 
   const handleCreateCommentChange = (event) => {
     setCreateComment({
@@ -166,6 +182,7 @@ function Detail() {
     const response = await apiInstance.post(`post/comment-post/`, json);
     Toast("success", "فرستاده شد");
     fetchPost();
+    fetchComments(); // Refresh comments to include new comment
     setCreateComment({
       full_name: "",
       email: "",
@@ -348,8 +365,8 @@ function Detail() {
               </div>
 
               <div className="mt-5">
-                <h3> تعداد نظرات:{post?.comments?.length}</h3>
-                {post?.comments?.map((c, index) => (
+                <h3> تعداد نظرات:{comments?.length}</h3>
+                {comments?.map((c, index) => (
                   <div className="my-4 d-flex bg-light p-3 mb-3 rounded" key={index}>
                     <div>
                       <div className="mb-2">
@@ -357,9 +374,13 @@ function Detail() {
                         <span className="me-3 small">{Moment(c?.date)}</span>
                       </div>
                       <p className="fw-bold">{c?.comment}</p>
-                      <hr/> 
-                      <p className="mb-1 text-muted small">پاسخ نویسنده:</p>
-                      <p className="fw-bold text-primary">{c?.reply}</p>
+                      {c?.reply && (
+                        <>
+                          <hr/> 
+                          <p className="mb-1 text-muted small">پاسخ نویسنده:</p>
+                          <p className="fw-bold text-primary">{c?.reply}</p>
+                        </>
+                      )}
                     </div>
                   </div>
                 ))}
