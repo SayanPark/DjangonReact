@@ -740,7 +740,7 @@ def send_signup_email(request):
         # Generate signup link with proper encoding
         from urllib.parse import urlencode
         params = {'email': email}
-        signup_link = f"{settings.FRONTEND_BASE_URL}/signup?{urlencode(params)}"
+        signup_link = f"{settings.FRONTEND_BASE_URL}/#/signup?{urlencode(params)}"
         
         # Prepare email context
         merge_data = {

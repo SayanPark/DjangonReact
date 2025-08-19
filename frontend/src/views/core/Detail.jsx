@@ -348,6 +348,12 @@ function Detail() {
                         <span className="me-3 small">{Moment(c?.date)}</span>
                       </div>
                       <p className="fw-bold">{c?.comment}</p>
+                      {c?.reply && (
+                        <div className="mt-3 p-3 bg-info bg-opacity-10 border-start border-info border-3">
+                          <h6 className="text-primary mb-2">پاسخ نویسنده:</h6>
+                          <p className="mb-0">{c?.reply}</p>
+                        </div>
+                      )}
                     </div>
                   </div>
                 ))}
