@@ -359,7 +359,7 @@ function Detail() {
                       <p className="fw-bold">{c?.comment}</p>
                       
                       {/* Display comment reply if exists */}
-                      {c?.reply && String(c?.reply).trim() && String(c?.reply).toLowerCase().trim() !== "null" && String(c?.reply).trim() !== "" ? (
+                      {c?.reply && c?.reply !== null && c?.reply !== "" && c?.reply !== "null" ? (
                         <div className="mt-3 p-3 bg-info bg-opacity-10 border-start border-info border-3 shadow-sm rounded" style={{marginRight: "2rem"}}>
                           <div className="d-flex align-items-center mb-2">
                             <i className="fas fa-reply text-info me-2"></i>
