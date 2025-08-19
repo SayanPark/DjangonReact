@@ -754,7 +754,6 @@ def send_signup_email(request):
             text_body = render_to_string("email/signup_email.txt", merge_data)
             html_body = render_to_string("email/signup_email.html", merge_data)
         except Exception as e:
-            logger.error(f"Template rendering error: {str(e)}")
             return Response(
                 {"error": "Email template rendering failed"}, 
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
@@ -771,13 +770,11 @@ def send_signup_email(request):
         
         # Send email
         msg.send()
-        logger.info(f"Signup email sent successfully to {email}")
         return Response({"message": "Signup email sent successfully"}, status=status.HTTP_200_OK)
         
     except gomini.User.DoesNotExist:
         return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
-        logger.error(f"Error in send_signup_email: {str(e)}")
         return Response(
             {"error": f"Failed to send email: {str(e)}"}, 
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
