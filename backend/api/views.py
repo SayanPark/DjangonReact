@@ -21,20 +21,21 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.exceptions import ValidationError, NotFound
 from rest_framework.views import APIView
+# drf_yasg Imports
+from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
+# api Imports
+from api import models as gomini
+from api import serializer as serializers
+from api.utils.draftjs_to_html import draftjs_to_html
 # Others
 import json
 import logging
 import random
 import base64
 import re
-from drf_yasg import openapi
-from drf_yasg.utils import swagger_auto_schema
 from datetime import datetime
 from pathlib import Path
-# Custom Imports
-from api import models as gomini
-from api import serializer as serializers
-from api.utils.draftjs_to_html import draftjs_to_html
 
 class DashboardSendEmailAPIView(APIView):
     permission_classes = [AllowAny]
