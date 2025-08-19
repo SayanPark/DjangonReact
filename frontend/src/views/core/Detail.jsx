@@ -359,11 +359,11 @@ function Detail() {
                       <p className="fw-bold">{c?.comment}</p>
                       
                       {/* Display comment reply if exists */}
-                      {(c?.reply && c?.reply !== null && c?.reply !== undefined && String(c?.reply).trim() !== "" && String(c?.reply).trim() !== "null") ? (
-                        <div className="mt-3 p-3 bg-light border-start border-primary border-3 shadow-sm rounded" style={{marginRight: "2rem"}}>
+                      {c?.reply && String(c?.reply).trim() && String(c?.reply).toLowerCase().trim() !== "null" && String(c?.reply).trim() !== "" ? (
+                        <div className="mt-3 p-3 bg-info bg-opacity-10 border-start border-info border-3 shadow-sm rounded" style={{marginRight: "2rem"}}>
                           <div className="d-flex align-items-center mb-2">
-                            <i className="fas fa-reply text-primary me-2"></i>
-                            <h6 className="text-primary mb-0 fw-bold">پاسخ نویسنده:</h6>
+                            <i className="fas fa-reply text-info me-2"></i>
+                            <h6 className="text-info mb-0 fw-bold">پاسخ نویسنده:</h6>
                           </div>
                           <p className="mb-0 text-dark" style={{fontSize: "0.9rem", lineHeight: "1.5"}}>{c?.reply}</p>
                         </div>
