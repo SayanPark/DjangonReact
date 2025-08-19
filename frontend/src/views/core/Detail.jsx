@@ -357,7 +357,7 @@ function Detail() {
                         <span className="me-3 small">{Moment(c?.date)}</span>
                       </div>
                       <p className="fw-bold">{c?.comment}</p>
-                      <br/>
+                      <hr/>
                       {c?.reply && (
                         <div className="mt-3 ps-4 border-start border-primary">
                           <p className="mb-1 text-muted small">پاسخ نویسنده:</p>
