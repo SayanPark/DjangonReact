@@ -348,10 +348,15 @@ function Detail() {
                         <span className="me-3 small">{Moment(c?.date)}</span>
                       </div>
                       <p className="fw-bold">{c?.comment}</p>
-                      {(c?.reply && c?.reply !== "" && c?.reply !== null) || (c?.response && c?.response !== "" && c?.response !== null) ? (
-                        <div className="mt-3 p-3 bg-info bg-opacity-10 border-start border-info border-3">
-                          <h6 className="text-primary mb-2">پاسخ نویسنده:</h6>
-                          <p className="mb-0">{c?.reply || c?.response}</p>
+                      
+                      {/* Display comment reply if exists */}
+                      {(c?.reply && c?.reply.trim() !== "") || (c?.response && c?.response.trim() !== "") ? (
+                        <div className="mt-3 p-3 bg-light border-start border-primary border-3 shadow-sm rounded" style={{marginRight: "2rem"}}>
+                          <div className="d-flex align-items-center mb-2">
+                            <i className="fas fa-reply text-primary me-2"></i>
+                            <h6 className="text-primary mb-0 fw-bold">پاسخ نویسنده:</h6>
+                          </div>
+                          <p className="mb-0 text-dark" style={{fontSize: "0.9rem", lineHeight: "1.5"}}>{c?.reply || c?.response}</p>
                         </div>
                       ) : null}
                     </div>
