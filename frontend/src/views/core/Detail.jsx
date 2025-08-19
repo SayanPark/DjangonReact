@@ -356,7 +356,7 @@ function Detail() {
                             <i className="fas fa-reply text-primary me-2"></i>
                             <h6 className="text-primary mb-0 fw-bold">پاسخ نویسنده:</h6>
                           </div>
-                          <p className="mb-0 text-dark" style={{fontSize: "0.9rem", lineHeight: "1.5"}}>{c?.reply || c?.response}</p>
+                          <p className="mb-0 text-dark" style={{fontSize: "0.9rem", lineHeight: "1.5"}}>{c?.reply}</p>
                         </div>
                       ) : null}
                     </div>
