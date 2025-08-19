@@ -728,13 +728,19 @@ def send_signup_email(request):
         return Response({"error": "Email is required"}, status=status.HTTP_400_BAD_REQUEST)
     
     try:
+        # Validate email format
+        from django.core.validators import validate_email
+        validate_email(email)
+        
         # Check if user already exists
         existing_user = gomini.User.objects.filter(email=email).first()
         if existing_user:
             return Response({"error": "User with this email already exists"}, status=status.HTTP_400_BAD_REQUEST)
         
-        # Generate signup link
-        signup_link = f"{settings.FRONTEND_BASE_URL}/signup?email={email}"
+        # Generate signup link with proper encoding
+        from urllib.parse import urlencode
+        params = {'email': email}
+        signup_link = f"{settings.FRONTEND_BASE_URL}/signup?{urlencode(params)}"
         
         # Prepare email context
         merge_data = {
@@ -743,8 +749,16 @@ def send_signup_email(request):
         }
         
         subject = "تکمیل ثبت نام در سایت"
-        text_body = render_to_string("email/signup_email.txt", merge_data)
-        html_body = render_to_string("email/signup_email.html", merge_data)
+        
+        try:
+            text_body = render_to_string("email/signup_email.txt", merge_data)
+            html_body = render_to_string("email/signup_email.html", merge_data)
+        except Exception as e:
+            logger.error(f"Template rendering error: {str(e)}")
+            return Response(
+                {"error": "Email template rendering failed"}, 
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
         
         # Create email message
         msg = EmailMultiAlternatives(
@@ -756,21 +770,16 @@ def send_signup_email(request):
         msg.attach_alternative(html_body, "text/html")
         
         # Send email
-        try:
-            msg.send()
-            logger.info(f"Signup email sent successfully to {email}")
-            return Response({"message": "Signup email sent successfully"}, status=status.HTTP_200_OK)
-        except Exception as e:
-            logger.error(f"Failed to send signup email to {email}: {str(e)}")
-            return Response(
-                {"error": "Failed to send signup email. Please try again later."}, 
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR
-            )
-            
+        msg.send()
+        logger.info(f"Signup email sent successfully to {email}")
+        return Response({"message": "Signup email sent successfully"}, status=status.HTTP_200_OK)
+        
+    except gomini.User.DoesNotExist:
+        return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
         logger.error(f"Error in send_signup_email: {str(e)}")
         return Response(
-            {"error": "An error occurred while processing your request"}, 
+            {"error": f"Failed to send email: {str(e)}"}, 
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
         )
 
