@@ -144,7 +144,10 @@ function Detail() {
       console.log("Fetching comments from:", url);
       const response = await apiInstance.get(url);
       console.log("Comments with replies:", response.data);
-      setComments(response.data);
+      
+      // Ensure we handle both array and object responses
+      const commentsData = Array.isArray(response.data) ? response.data : response.data.results || response.data.comments || [];
+      setComments(commentsData);
     } catch (error) {
       console.error("Failed to fetch comments:", error);
       // Fallback to post comments if API fails
