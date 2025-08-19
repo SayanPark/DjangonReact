@@ -794,7 +794,7 @@ def send_post_update_email(post, email, unsubscribe_url=None):
                 return html_content
 
     try:
-        post_link = f"{settings.FRONTEND_BASE_URL}/post/{post.slug}"
+        post_link = f"{settings.FRONTEND_BASE_URL}/#/post/{post.slug}"
         uidb64 = urlsafe_base64_encode(force_bytes(gomini.User.objects.get(email=email).pk))
         # Convert Draft.js JSON description to HTML
         if isinstance(post.description, str):
