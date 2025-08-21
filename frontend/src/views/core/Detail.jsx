@@ -139,9 +139,16 @@ function Detail() {
   const fetchComments = async () => {
     if (!post?.id) return;
 
-    if (post?.comments) {
-      console.log("Using comments from post response:", post.comments);
-      setComments(post.comments);
+    try {
+      const response = await apiInstance.get(`post/comments/${post.id}/`);
+      console.log("Fetched comments with replies:", response.data);
+      setComments(response.data);
+    } catch (error) {
+      console.error("Failed to fetch comments:", error);
+      // Fallback to post.comments if separate fetch fails
+      if (post?.comments) {
+        setComments(post.comments);
+      }
     }
   };
 
