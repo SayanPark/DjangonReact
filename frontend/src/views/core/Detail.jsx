@@ -146,8 +146,23 @@ function Detail() {
       console.log("Comments with replies:", response.data);
       
       // Ensure we handle both array and object responses
-      const commentsData = Array.isArray(response.data) ? response.data : response.data.results || response.data.comments || [];
-      setComments(commentsData);
+      let commentsData = [];
+      
+      if (Array.isArray(response.data)) {
+        commentsData = response.data;
+      } else if (response.data && typeof response.data === 'object') {
+        // Handle different response structures
+        commentsData = response.data.results || response.data.comments || response.data.data || [];
+      }
+      
+      // Ensure we include replies in all cases
+      const enrichedComments = commentsData.map(comment => ({
+        ...comment,
+        // Ensure reply is included even if empty
+        reply: comment.reply || null
+      }));
+      
+      setComments(enrichedComments);
     } catch (error) {
       console.error("Failed to fetch comments:", error);
       // Fallback to post comments if API fails
