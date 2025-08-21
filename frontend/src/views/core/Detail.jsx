@@ -138,37 +138,10 @@ function Detail() {
 
   const fetchComments = async () => {
     if (!post?.id) return;
-    
-    try {
-      const url = `author/dashboard/comment-list/${post.id}/`;
-      console.log("Fetching comments from:", url);
-      const response = await apiInstance.get(url);
-      console.log("Comments with replies:", response.data);
-      
-      // Ensure we handle both array and object responses
-      let commentsData = [];
-      
-      if (Array.isArray(response.data)) {
-        commentsData = response.data;
-      } else if (response.data && typeof response.data === 'object') {
-        // Handle different response structures
-        commentsData = response.data.results || response.data.comments || response.data.data || [];
-      }
-      
-      // Ensure we include replies in all cases
-      const enrichedComments = commentsData.map(comment => ({
-        ...comment,
-        // Ensure reply is included even if empty
-        reply: comment.reply || null
-      }));
-      
-      setComments(enrichedComments);
-    } catch (error) {
-      console.error("Failed to fetch comments:", error);
-      // Fallback to post comments if API fails
-      if (post?.comments) {
-        setComments(post.comments);
-      }
+
+    if (post?.comments) {
+      console.log("Using comments from post response:", post.comments);
+      setComments(post.comments);
     }
   };
 
