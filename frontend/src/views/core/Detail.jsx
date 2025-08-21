@@ -142,12 +142,32 @@ function Detail() {
     try {
       const response = await apiInstance.get(`post/comments/${post.id}/`);
       console.log("Fetched comments with replies:", response.data);
-      setComments(response.data);
+      
+      // Ensure we handle both array and object responses
+      let commentsData = response.data;
+      if (typeof commentsData === 'object' && !Array.isArray(commentsData)) {
+        commentsData = commentsData.results || commentsData.comments || [];
+      }
+      
+      // Ensure each comment has reply field
+      const processedComments = commentsData.map(comment => ({
+        ...comment,
+        reply: comment.reply || comment.replies || null
+      }));
+      
+      setComments(processedComments);
     } catch (error) {
       console.error("Failed to fetch comments:", error);
       // Fallback to post.comments if separate fetch fails
       if (post?.comments) {
-        setComments(post.comments);
+        // Process comments from post object
+        const processedComments = post.comments.map(comment => ({
+          ...comment,
+          reply: comment.reply || comment.replies || null
+        }));
+        setComments(processedComments);
+      } else {
+        setComments([]);
       }
     }
   };
