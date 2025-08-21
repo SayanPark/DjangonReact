@@ -248,7 +248,7 @@ if DEBUG:
     ]
 else:
     CORS_ALLOW_ALL_ORIGINS = False
-    CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS', 'https://shahrezananekarafarin.onrender.com').split(',')
+    CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS', 'https://shahrezananekarafarin.liara.run').split(',')
 
 CORS_ALLOW_CREDENTIALS = True
 
@@ -339,7 +339,7 @@ JAZZMIN_UI_TWEAKS = {
 }
 
 # Frontend base URL for password reset link (with hash routing for SPA)
-FRONTEND_BASE_URL = os.environ.get('FRONTEND_BASE_URL', "https://shahrezananekarafarin.onrender.com/#")
+FRONTEND_BASE_URL = os.environ.get('FRONTEND_BASE_URL', "https://shahrezananekarafarin.liara.run/#")
 
 # AWS S3 Settings for Liara
 AWS_ACCESS_KEY_ID = os.getenv('LIARA_ACCESS_KEY')
