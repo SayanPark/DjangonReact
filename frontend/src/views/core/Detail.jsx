@@ -140,33 +140,58 @@ function Detail() {
     if (!post?.id) return;
 
     try {
+      console.log("Fetching comments for post ID:", post.id);
       const response = await apiInstance.get(`post/comments/${post.id}/`);
       console.log("Fetched comments with replies:", response.data);
       
-      // Ensure we handle both array and object responses
+      // Handle different response structures
       let commentsData = response.data;
+      
+      // If response is an object with nested comments array
       if (typeof commentsData === 'object' && !Array.isArray(commentsData)) {
-        commentsData = commentsData.results || commentsData.comments || [];
+        commentsData = commentsData.results || commentsData.comments || commentsData.data || [];
       }
       
-      // Ensure each comment has reply field
+      // If no comments from separate endpoint, fallback to post.comments
+      if (!commentsData || commentsData.length === 0) {
+        console.log("No comments from separate endpoint, using post.comments");
+        if (post?.comments && Array.isArray(post.comments)) {
+          commentsData = post.comments;
+        }
+      }
+      
+      // Ensure each comment has reply field and process the data
       const processedComments = commentsData.map(comment => ({
-        ...comment,
-        reply: comment.reply || comment.replies || null
+        id: comment.id,
+        name: comment.name,
+        email: comment.email,
+        comment: comment.comment,
+        date: comment.date,
+        reply: comment.reply || comment.replies || null, // Handle both reply and replies fields
+        post: comment.post
       }));
       
+      console.log("Processed comments:", processedComments);
       setComments(processedComments);
     } catch (error) {
-      console.error("Failed to fetch comments:", error);
+      console.error("Failed to fetch comments from separate endpoint:", error);
+      
       // Fallback to post.comments if separate fetch fails
-      if (post?.comments) {
-        // Process comments from post object
+      if (post?.comments && Array.isArray(post.comments)) {
+        console.log("Falling back to post.comments");
         const processedComments = post.comments.map(comment => ({
-          ...comment,
-          reply: comment.reply || comment.replies || null
+          id: comment.id,
+          name: comment.name,
+          email: comment.email,
+          comment: comment.comment,
+          date: comment.date,
+          reply: comment.reply || comment.replies || null,
+          post: comment.post
         }));
+        console.log("Fallback comments:", processedComments);
         setComments(processedComments);
       } else {
+        console.log("No comments available from any source");
         setComments([]);
       }
     }
