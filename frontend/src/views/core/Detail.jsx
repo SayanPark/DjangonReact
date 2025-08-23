@@ -172,6 +172,11 @@ function Detail() {
       }));
       
       console.log("Processed comments:", processedComments);
+      
+      // Debug: Check if any comments have replies
+      const commentsWithReplies = processedComments.filter(c => c.reply);
+      console.log("Comments with replies:", commentsWithReplies);
+      
       setComments(processedComments);
     } catch (error) {
       console.error("Failed to fetch comments from separate endpoint:", error);
@@ -189,6 +194,11 @@ function Detail() {
           post: comment.post
         }));
         console.log("Fallback comments:", processedComments);
+        
+        // Debug: Check if any fallback comments have replies
+        const fallbackCommentsWithReplies = processedComments.filter(c => c.reply);
+        console.log("Fallback comments with replies:", fallbackCommentsWithReplies);
+        
         setComments(processedComments);
       } else {
         console.log("No comments available from any source");
