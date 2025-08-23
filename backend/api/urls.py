@@ -32,6 +32,7 @@ urlpatterns = [
     path('post/lists/', api_views.PostListAPIView.as_view()),
     path('post/most-viewed/', api_views.MostViewedPostListAPIView.as_view()),
     path('post/detail/<slug>/', api_views.PostDetailAPIView.as_view()),
+    path('post/comments/<int:post_id>/', api_views.FetchCommentsAPIView.as_view()),  # New endpoint for fetching comments
     path('post/like-post/', api_views.LikePostAPiView.as_view()),
     path('post/comment-post/', api_views.PostCommentAPIView.as_view()),
     path('post/bookmark-post/', api_views.BookmarkPostAPIView.as_view()),

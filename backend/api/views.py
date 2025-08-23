@@ -321,6 +321,12 @@ class LikePostAPiView(APIView):
             )
             return Response({"message": "Post Liked"}, status=status.HTTP_201_CREATED)
         
+class FetchCommentsAPIView(APIView):
+    def get(self, request, post_id):
+        comments = gomini.Comment.objects.filter(post_id=post_id)
+        serializer = serializers.CommentSerializer(comments, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
 class PostCommentAPIView(APIView):
     @swagger_auto_schema(
         request_body=openapi.Schema(
