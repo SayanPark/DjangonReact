@@ -13,6 +13,7 @@ function Comments() {
     const userData = useUserData()
     const user_id = userData?.user_id
     const canDeleteComment = userData?.is_staff || userData?.can_delete_comment || false
+    
 
     const fetchComments = async () => {
         const comment_res = await apiInstance.get(`author/dashboard/comment-list/${user_id}/`)
