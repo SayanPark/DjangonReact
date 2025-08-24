@@ -212,7 +212,7 @@ function Dashboard() {
                                                         <div className="me-3">
                                                             <p className="mb-1">
                                                                 {" "}
-                                                                <Link to={c?.message ? "/comments/" : "#"} className="h6 stretched-link text-decoration-none text-dark">
+                                                                <Link to="/comments/" className="h6 stretched-link text-decoration-none text-dark">
                                                                     {" "}
                                                                     {c?.comment || c?.message}
                                                                 </Link>
