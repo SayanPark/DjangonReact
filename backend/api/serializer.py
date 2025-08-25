@@ -77,8 +77,12 @@ class RegisterSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         image = validated_data.pop('image', None)
         receive_updates = validated_data.pop('receive_updates', False)
+        
+        # Create username from email (everything before '@')
+        email_username = validated_data['email'].split("@")[0]
+        
         user = gomini.User.objects.create(
-            username=validated_data['username'],
+            username=email_username,
             email=validated_data['email'],
             full_name=validated_data['full_name'],
             first_name=validated_data.get('first_name', ''),
@@ -89,8 +93,6 @@ class RegisterSerializer(serializers.ModelSerializer):
         )
         if image:
             user.image = image
-        email_username, mobile = user.email.split("@")
-        user.username = email_username
         user.set_password(validated_data['password'])
         user.save()
         return user
