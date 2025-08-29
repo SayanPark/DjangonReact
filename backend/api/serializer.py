@@ -215,7 +215,6 @@ class CommentSerializer(serializers.ModelSerializer):
 class PostSerializer(serializers.ModelSerializer):
     comments = serializers.SerializerMethodField()
     image_url = serializers.SerializerMethodField()
-    video_url = serializers.SerializerMethodField()
 
     class Meta:
         model = gomini.Post
@@ -230,16 +229,6 @@ class PostSerializer(serializers.ModelSerializer):
         request = self.context.get('request')
         if obj.image and hasattr(obj.image, 'url'):
             url = obj.image.url
-            if request is not None:
-                return request.build_absolute_uri(url)
-            else:
-                return url
-        return None
-
-    def get_video_url(self, obj):
-        request = self.context.get('request')
-        if obj.video and hasattr(obj.video, 'url'):
-            url = obj.video.url
             if request is not None:
                 return request.build_absolute_uri(url)
             else:

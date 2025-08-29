@@ -653,14 +653,13 @@ class DashboardPostCreateAPIView(generics.CreateAPIView):
         logger.info(f"Post creation request data: {request.data}")
         user_id = request.data.get('user_id')
         title = request.data.get('title')
-        image = request.FILES.get('image')  # Changed to get file from request.FILES
-        video = request.FILES.get('video')  # Get video file from request.FILES
+        image = request.FILES.get('image')
         description = request.data.get('description')
         tags = request.data.get('tags')
         category_id = request.data.get('category')
         post_status = request.data.get('post_status')
 
-        logger.info(f"user_id: {user_id}, title: {title}, image: {image}, video: {video}, description: {description}, tags: {tags}, category_id: {category_id}, post_status: {post_status}")
+        logger.info(f"user_id: {user_id}, title: {title}, image: {image}, description: {description}, tags: {tags}, category_id: {category_id}, post_status: {post_status}")
 
         user = gomini.User.objects.get(id=user_id)
         category = gomini.Category.objects.get(id=category_id)
@@ -669,7 +668,6 @@ class DashboardPostCreateAPIView(generics.CreateAPIView):
             user=user,
             title=title,
             image=image,
-            video=video,
             description=description,
             tags=tags,
             category=category,
@@ -701,7 +699,6 @@ class DashboardPostEditAPIView(generics.RetrieveUpdateDestroyAPIView):
 
         title = request.data.get('title')
         image = request.FILES.get('image')  # Changed to get file from request.FILES
-        video = request.FILES.get('video')  # Get video file from request.FILES
         description = request.data.get('description')
         tags = request.data.get('tags')
         category_id = request.data.get('category')
@@ -718,8 +715,6 @@ class DashboardPostEditAPIView(generics.RetrieveUpdateDestroyAPIView):
         post_instance.title = title
         if image and image != "undefined":
             post_instance.image = image
-        if video and video != "undefined":
-            post_instance.video = video
         post_instance.description = description
         post_instance.tags = tags
         if category:
