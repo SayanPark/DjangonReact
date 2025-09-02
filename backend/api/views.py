@@ -34,6 +34,7 @@ import logging
 import random
 import base64
 import re
+import threading
 from datetime import datetime
 from pathlib import Path
 
@@ -688,11 +689,13 @@ class DashboardPostCreateAPIView(generics.CreateAPIView):
         logger.info(f"Post created with slug: {post.slug} and status: {post.status}")
 
         if post.status == "Active":
-            # Send email to all users who opted in to receive updates
-            users_to_notify = gomini.User.objects.filter(receive_updates=True).values_list('email', flat=True)
-            for email in users_to_notify:
-                unsubscribe_url = f"{request.scheme}://{request.get_host()}/api/v1/user/unsubscribe/{urlsafe_base64_encode(force_bytes(gomini.User.objects.get(email=email).pk))}"
-                send_post_update_email(post, email, unsubscribe_url=unsubscribe_url)
+            # Send email to all users who opted in to receive updates asynchronously
+            def send_emails():
+                users_to_notify = gomini.User.objects.filter(receive_updates=True).values_list('email', flat=True)
+                for email in users_to_notify:
+                    unsubscribe_url = f"{request.scheme}://{request.get_host()}/api/v1/user/unsubscribe/{urlsafe_base64_encode(force_bytes(gomini.User.objects.get(email=email).pk))}"
+                    send_post_update_email(post, email, unsubscribe_url=unsubscribe_url)
+            threading.Thread(target=send_emails).start()
 
         return Response({"message": "Post Created Successfully"}, status=status.HTTP_201_CREATED)
 
