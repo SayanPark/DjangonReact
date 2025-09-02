@@ -661,8 +661,20 @@ class DashboardPostCreateAPIView(generics.CreateAPIView):
 
         logger.info(f"user_id: {user_id}, title: {title}, image: {image}, description: {description}, tags: {tags}, category_id: {category_id}, post_status: {post_status}")
 
-        user = gomini.User.objects.get(id=user_id)
-        category = gomini.Category.objects.get(id=category_id)
+        if not user_id or not title or not description or not tags or not category_id or not post_status:
+            return Response({"error": "All fields are required"}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            user_id = int(user_id)
+            user = gomini.User.objects.get(id=user_id)
+        except (ValueError, gomini.User.DoesNotExist):
+            return Response({"error": "Invalid user"}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            category_id = int(category_id)
+            category = gomini.Category.objects.get(id=category_id)
+        except (ValueError, gomini.Category.DoesNotExist):
+            return Response({"error": "Invalid category"}, status=status.HTTP_400_BAD_REQUEST)
 
         post = gomini.Post.objects.create(
             user=user,
