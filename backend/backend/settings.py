@@ -341,6 +341,9 @@ JAZZMIN_UI_TWEAKS = {
 # Frontend base URL for password reset link (with hash routing for SPA)
 FRONTEND_BASE_URL = os.environ.get('FRONTEND_BASE_URL', "https://shahrezananekarafarin.liara.run/#")
 
+# File upload limits
+FILE_UPLOAD_MAX_MEMORY_SIZE = 104857600  # 100MB
+DATA_UPLOAD_MAX_MEMORY_SIZE = 104857600  # 100MB
 
 # AWS S3 Settings for Liara
 AWS_ACCESS_KEY_ID = os.getenv('LIARA_ACCESS_KEY')
