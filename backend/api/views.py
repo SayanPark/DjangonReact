@@ -805,7 +805,7 @@ def send_signup_email(request):
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
         )
 
-def send_post_update_email(post, email, uidb64, unsubscribe_url=None):
+def send_post_update_email(post, email, uidb64=None, unsubscribe_url=None):
     logger = logging.getLogger(__name__)
     if not email:
         logger.error("Email is required to send post update email")
@@ -826,6 +826,19 @@ def send_post_update_email(post, email, uidb64, unsubscribe_url=None):
 
     try:
         post_link = f"{settings.FRONTEND_BASE_URL}/#/post/{post.slug}"
+
+        # If uidb64 is not provided, try to get it from the user
+        if uidb64 is None:
+            try:
+                user = gomini.User.objects.get(email=email)
+                uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
+                if unsubscribe_url is None:
+                    unsubscribe_url = f"{settings.FRONTEND_BASE_URL}/api/v1/user/unsubscribe/{uidb64}"
+            except gomini.User.DoesNotExist:
+                logger.warning(f"User with email {email} not found, proceeding without unsubscribe functionality")
+                uidb64 = ""
+                unsubscribe_url = ""
+
         # Convert Draft.js JSON description to HTML
         if isinstance(post.description, str):
             try:
