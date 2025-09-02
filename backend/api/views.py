@@ -691,11 +691,16 @@ class DashboardPostCreateAPIView(generics.CreateAPIView):
         if post.status == "Active":
             # Send email to all users who opted in to receive updates asynchronously
             def send_emails():
-                users_to_notify = gomini.User.objects.filter(receive_updates=True).values_list('email', flat=True)
-                for email in users_to_notify:
-                    unsubscribe_url = f"{request.scheme}://{request.get_host()}/api/v1/user/unsubscribe/{urlsafe_base64_encode(force_bytes(gomini.User.objects.get(email=email).pk))}"
-                    send_post_update_email(post, email, unsubscribe_url=unsubscribe_url)
-            threading.Thread(target=send_emails).start()
+                users_to_notify = gomini.User.objects.filter(receive_updates=True).values('email', 'pk')
+                for user_data in users_to_notify:
+                    email = user_data['email']
+                    pk = user_data['pk']
+                    uidb64 = urlsafe_base64_encode(force_bytes(pk))
+                    unsubscribe_url = f"{request.scheme}://{request.get_host()}/api/v1/user/unsubscribe/{uidb64}"
+                    send_post_update_email(post, email, uidb64, unsubscribe_url=unsubscribe_url)
+            thread = threading.Thread(target=send_emails, daemon=True)
+            thread.start()
+            logger.info("Email sending thread started")
 
         return Response({"message": "Post Created Successfully"}, status=status.HTTP_201_CREATED)
 
@@ -800,7 +805,7 @@ def send_signup_email(request):
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
         )
 
-def send_post_update_email(post, email, unsubscribe_url=None):
+def send_post_update_email(post, email, uidb64, unsubscribe_url=None):
     logger = logging.getLogger(__name__)
     if not email:
         logger.error("Email is required to send post update email")
@@ -821,7 +826,6 @@ def send_post_update_email(post, email, unsubscribe_url=None):
 
     try:
         post_link = f"{settings.FRONTEND_BASE_URL}/#/post/{post.slug}"
-        uidb64 = urlsafe_base64_encode(force_bytes(gomini.User.objects.get(email=email).pk))
         # Convert Draft.js JSON description to HTML
         if isinstance(post.description, str):
             try:
@@ -845,7 +849,7 @@ def send_post_update_email(post, email, unsubscribe_url=None):
         subject = f"جدیدترین پست: {post.title}"
         text_body = render_to_string("email/new_post_update_email.txt", merge_data)
         html_body = render_to_string("email/new_post_update_email.html", merge_data)
-        
+
         import os
 
         msg = EmailMultiAlternatives(
