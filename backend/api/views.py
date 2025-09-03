@@ -651,46 +651,39 @@ class DashboardPostCreateAPIView(generics.CreateAPIView):
 
     def create(self, request, *args, **kwargs):
         logger = logging.getLogger(__name__)
-        logger.info(f"Post creation request data: {request.data}")
-        user_id = request.data.get('user_id')
-        title = request.data.get('title')
-        image = request.FILES.get('image')
-        description = request.data.get('description')
-        tags = request.data.get('tags')
-        category_id = request.data.get('category')
-        post_status = request.data.get('post_status')
+        logger.info(f"Post creation request data keys: {list(request.data.keys())}")
+        logger.info(f"Post creation request FILES keys: {list(request.FILES.keys())}")
 
-        logger.info(f"user_id: {user_id}, title: {title}, image: {image}, description: {description}, tags: {tags}, category_id: {category_id}, post_status: {post_status}")
+        # Prepare data for serializer
+        data = request.data.copy()
+        data['user'] = request.data.get('user_id')
+        data['category'] = request.data.get('category')
 
-        if not user_id or not title or not tags or not category_id or not post_status:
-            return Response({"error": "All fields are required"}, status=status.HTTP_400_BAD_REQUEST)
+        # Remove fields not in serializer
+        data.pop('user_id', None)
+
+        # Handle image
+        if 'image' in request.FILES:
+            data['image'] = request.FILES['image']
+
+        serializer = self.get_serializer(data=data)
+        try:
+            serializer.is_valid(raise_exception=True)
+            logger.info("Serializer validation passed")
+        except ValidationError as e:
+            logger.error(f"Serializer validation error: {e.detail}")
+            return Response({"error": e.detail}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            logger.error(f"Unexpected validation error: {str(e)}")
+            return Response({"error": "Validation failed"}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
-            user_id = int(user_id)
-            user = gomini.User.objects.get(id=user_id)
-        except (ValueError, gomini.User.DoesNotExist):
-            return Response({"error": "Invalid user"}, status=status.HTTP_400_BAD_REQUEST)
-
-        try:
-            category_id = int(category_id)
-            category = gomini.Category.objects.get(id=category_id)
-        except (ValueError, gomini.Category.DoesNotExist):
-            return Response({"error": "Invalid category"}, status=status.HTTP_400_BAD_REQUEST)
-
-        post = gomini.Post.objects.create(
-            user=user,
-            title=title,
-            image=image,
-            description=description,
-            tags=tags,
-            category=category,
-            status=post_status
-        )
-        logger.info(f"Post created with slug: {post.slug} and status: {post.status}")
-
-
-
-        return Response({"message": "Post Created Successfully"}, status=status.HTTP_201_CREATED)
+            post = serializer.save()
+            logger.info(f"Post created successfully with id: {post.id}, slug: {post.slug}")
+            return Response({"message": "Post Created Successfully", "post_id": post.id}, status=status.HTTP_201_CREATED)
+        except Exception as e:
+            logger.error(f"Error saving post: {str(e)}")
+            return Response({"error": "Failed to create post"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 def send_post_update_email(post, email, uidb64=None, unsubscribe_url=None):
     subject = f"پست جدید: {post.title}"
