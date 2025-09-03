@@ -662,7 +662,7 @@ class DashboardPostCreateAPIView(generics.CreateAPIView):
 
         logger.info(f"user_id: {user_id}, title: {title}, image: {image}, description: {description}, tags: {tags}, category_id: {category_id}, post_status: {post_status}")
 
-        if not user_id or not title or not description or not tags or not category_id or not post_status:
+        if not user_id or not title or not tags or not category_id or not post_status:
             return Response({"error": "All fields are required"}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
@@ -688,21 +688,31 @@ class DashboardPostCreateAPIView(generics.CreateAPIView):
         )
         logger.info(f"Post created with slug: {post.slug} and status: {post.status}")
 
-        if post.status == "Active":
-            # Send email to all users who opted in to receive updates asynchronously
-            def send_emails():
-                users_to_notify = gomini.User.objects.filter(receive_updates=True).values('email', 'pk')
-                for user_data in users_to_notify:
-                    email = user_data['email']
-                    pk = user_data['pk']
-                    uidb64 = urlsafe_base64_encode(force_bytes(pk))
-                    unsubscribe_url = f"{request.scheme}://{request.get_host()}/api/v1/user/unsubscribe/{uidb64}"
-                    send_post_update_email(post, email, uidb64, unsubscribe_url=unsubscribe_url)
-            thread = threading.Thread(target=send_emails, daemon=True)
-            thread.start()
-            logger.info("Email sending thread started")
+
 
         return Response({"message": "Post Created Successfully"}, status=status.HTTP_201_CREATED)
+
+def send_post_update_email(post, email, uidb64=None, unsubscribe_url=None):
+    subject = f"پست جدید: {post.title}"
+    merge_data = {
+        'post_title': post.title,
+        'post_description': post.description,
+        'post_slug': post.slug,
+        'unsubscribe_url': unsubscribe_url,
+    }
+    text_body = render_to_string("email/new_post_update_email.txt", merge_data)
+    html_body = render_to_string("email/new_post_update_email.html", merge_data)
+    msg = EmailMultiAlternatives(
+        subject=subject, from_email=f'"ShahreZananeKarafarin" <{settings.EMAIL_HOST_USER}>',
+        to=[email], body=text_body
+    )
+    msg.attach_alternative(html_body, "text/html")
+    try:
+        msg.send()
+        return True
+    except Exception as e:
+        logging.error(f"Failed to send post update email to {email}: {e}")
+        return False
 
 class DashboardPostEditAPIView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = serializers.PostSerializer
