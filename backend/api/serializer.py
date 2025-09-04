@@ -256,8 +256,8 @@ class PostSerializer(serializers.ModelSerializer):
 
         # Conditionally include video_url only for detail views to improve performance
         if request and hasattr(request, 'resolver_match'):
-            url_name = getattr(request.resolver_match, 'url_name', '')
-            if url_name not in ['post-detail', 'dashboard-post-edit']:
+            route = getattr(request.resolver_match, 'route', '')
+            if 'detail' not in route:
                 # For list views, exclude video_url
                 if hasattr(self, 'fields') and 'video_url' in self.fields:
                     del self.fields['video_url']
