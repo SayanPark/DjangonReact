@@ -263,7 +263,7 @@ class PostListAPIView(generics.ListAPIView):
     pagination_class = StandardResultsSetPagination
 
     def get_queryset(self):
-        return gomini.Post.objects.all().order_by('-date')
+        return gomini.Post.objects.select_related('user', 'category').prefetch_related('likes').all().order_by('-date')
 
 class MostViewedPostListAPIView(generics.ListAPIView):
     serializer_class = serializers.PostSerializer

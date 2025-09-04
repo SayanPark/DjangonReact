@@ -254,6 +254,14 @@ class PostSerializer(serializers.ModelSerializer):
         else:
             self.Meta.depth = 3
 
+    # Conditionally include video_url only for detail views to improve performance
+    if request and hasattr(request, 'resolver_match'):
+        url_name = getattr(request.resolver_match, 'url_name', '')
+        if url_name not in ['post-detail', 'dashboard-post-edit']:
+            # For list views, exclude video_url
+            if hasattr(self, 'fields') and 'video_url' in self.fields:
+                del self.fields['video_url']
+
 class BookmarkSerializer(serializers.ModelSerializer):
     class Meta:
         model = gomini.Bookmark
