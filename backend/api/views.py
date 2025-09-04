@@ -666,6 +666,10 @@ class DashboardPostCreateAPIView(generics.CreateAPIView):
         if 'image' in request.FILES:
             data['image'] = request.FILES['image']
 
+        # Handle video
+        if 'video' in request.FILES:
+            data['video'] = request.FILES['video']
+
         serializer = self.get_serializer(data=data)
         try:
             serializer.is_valid(raise_exception=True)
@@ -738,6 +742,11 @@ class DashboardPostEditAPIView(generics.RetrieveUpdateDestroyAPIView):
         post_instance.title = title
         if image and image != "undefined":
             post_instance.image = image
+
+        video = request.FILES.get('video')
+        if video and video != "undefined":
+            post_instance.video = video
+
         post_instance.description = description
         post_instance.tags = tags
         if category:
