@@ -3,7 +3,8 @@
   "port": 5173,
   "platform": "static",
   "build": {
-    "location": "iran"
+    "location": "iran",
+    "command": "npm run build"
   },
   "static": {
     "path": "./dist",

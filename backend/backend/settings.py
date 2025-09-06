@@ -182,10 +182,7 @@ STATIC_URL = 'static/'
 
 STATIC_ROOT = os.environ.get('STATIC_ROOT', '/usr/src/app/staticfiles')
 
-# Add frontend build directory to static files dirs
-STATICFILES_DIRS = [
-    BASE_DIR.parent / 'frontend' / 'dist',
-]
+STATICFILES_DIRS = []
 
 WHITENOISE_MIMETYPES = {
     '.js': 'application/javascript',
