@@ -4,10 +4,10 @@
   "platform": "static",
   "build": {
     "location": "iran",
-    "command": "npm run build"
+    "command": "cd frontend && npm run build"
   },
   "static": {
-    "path": "./dist",
+    "path": "./frontend/dist",
     "spa": true
   }
 }
