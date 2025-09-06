@@ -205,17 +205,7 @@ MEDIA_ROOT = os.environ.get('MEDIA_ROOT', '/usr/src/app/media')
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ),
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 10,
-    'DEFAULT_THROTTLE_CLASSES': [
-        'rest_framework.throttling.AnonRateThrottle',
-        'rest_framework.throttling.UserRateThrottle'
-    ],
-    'DEFAULT_THROTTLE_RATES': {
-        'anon': '100/hour',
-        'user': '1000/hour'
-    }
+    )
 }
 
 SIMPLE_JWT = {
@@ -362,16 +352,3 @@ AWS_STORAGE_BUCKET_NAME = os.getenv('BUCKET_NAME')
 AWS_S3_ENDPOINT_URL = os.getenv('LIARA_ENDPOINT_URL')
 
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-
-# Caching configuration using local memory cache (Redis not installed)
-CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-        'LOCATION': 'unique-snowflake',
-    }
-}
-
-# Cache settings for production
-CACHE_MIDDLEWARE_ALIAS = 'default'
-CACHE_MIDDLEWARE_SECONDS = 600  # 10 minutes
-CACHE_MIDDLEWARE_KEY_PREFIX = 'szkblog'

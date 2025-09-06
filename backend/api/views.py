@@ -263,7 +263,7 @@ class PostListAPIView(generics.ListAPIView):
     pagination_class = StandardResultsSetPagination
 
     def get_queryset(self):
-        return gomini.Post.objects.select_related('user', 'category').prefetch_related('likes').all().order_by('-date')
+        return gomini.Post.objects.all().order_by('-date')
 
 class MostViewedPostListAPIView(generics.ListAPIView):
     serializer_class = serializers.PostSerializer
@@ -283,10 +283,8 @@ class PostDetailAPIView(generics.RetrieveAPIView):
             post = gomini.Post.objects.get(slug__iexact=slug, status="Active")
         except gomini.Post.DoesNotExist:
             raise NotFound(detail="Post not found")
-        # Increment view count atomically to avoid database locks
-        gomini.Post.objects.filter(id=post.id).update(view=F('view') + 1)
-        # Refresh the post to get the updated view count
-        post.refresh_from_db()
+        post.view += 1
+        post.save()
         return post
 
 class LikePostAPiView(APIView):
