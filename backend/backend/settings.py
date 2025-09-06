@@ -363,14 +363,11 @@ AWS_S3_ENDPOINT_URL = os.getenv('LIARA_ENDPOINT_URL')
 
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
-# Caching configuration for Liara public Redis server
+# Caching configuration using local memory cache (Redis not installed)
 CACHES = {
     'default': {
-        'BACKEND': 'django.core.cache.backends.redis.RedisCache',
-        'LOCATION': 'redis://grande-casse.liara.cloud:32007/1',
-        'OPTIONS': {
-            'PASSWORD': '4KQSy92m4WuMpfpftMZpeFX3',
-        }
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'unique-snowflake',
     }
 }
 
