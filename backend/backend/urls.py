@@ -45,14 +45,14 @@ urlpatterns = [
     path('api/v1/', include('api.urls')),
 ]
 
+# Serve static files in production (when DEBUG=False) - BEFORE the catch-all pattern
+if not settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
 # Serve media files in both development and production
 # In production, this will work alongside Liara's staticPaths configuration
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-# Serve static files in production (when DEBUG=False)
-if not settings.DEBUG:
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-
-# Catch-all pattern for SPA frontend
+# Catch-all pattern for SPA frontend - MUST BE LAST
 urlpatterns += [re_path(r'^(?:.*)/?$', FrontendAppView.as_view(), name='frontend')]
 

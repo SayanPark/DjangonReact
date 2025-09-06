@@ -17,7 +17,11 @@ python manage.py migrate --noinput
 
 # Collect static files
 echo "📦 Collecting static files..."
-python manage.py collectstatic --noinput
+python manage.py collectstatic --noinput --clear
+
+# Verify static files were collected
+echo "📁 Checking static files..."
+ls -la /usr/src/app/staticfiles/ | head -10
 
 # Create superuser if it doesn't exist
 echo "👤 Checking superuser..."

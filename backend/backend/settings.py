@@ -180,7 +180,11 @@ FROM_EMAIL = os.environ.get('FROM_EMAIL', 'no-reply@yourdomain.com')
 
 STATIC_URL = '/static/'
 
-STATIC_ROOT = os.environ.get('STATIC_ROOT', '/usr/src/app/staticfiles')
+# Use different static root for Liara deployment
+if os.environ.get('LIARA_APP_NAME'):
+    STATIC_ROOT = '/usr/src/app/staticfiles'
+else:
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 STATICFILES_DIRS = []
 
@@ -188,9 +192,19 @@ STATICFILES_DIRS = []
 if not DEBUG:
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
+# WhiteNoise configuration
+WHITENOISE_USE_FINDERS = True
+WHITENOISE_AUTOREFRESH = DEBUG
+
 WHITENOISE_MIMETYPES = {
     '.js': 'application/javascript',
     '.min.js': 'application/javascript',
+    '.css': 'text/css',
+    '.woff': 'font/woff',
+    '.woff2': 'font/woff2',
+    '.ttf': 'font/ttf',
+    '.eot': 'application/vnd.ms-fontobject',
+    '.svg': 'image/svg+xml',
 }
 
 # Media directories handled by Liara disk mounts
