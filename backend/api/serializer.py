@@ -256,11 +256,11 @@ class PostSerializer(serializers.ModelSerializer):
 
         # Conditionally include video_url only for detail views to improve performance
         if request and hasattr(request, 'resolver_match'):
-            url_name = getattr(request.resolver_match, 'url_name', '')
-            if url_name not in ['post-detail', 'dashboard-post-edit']:
-                # For list views, exclude video_url
-                if hasattr(self, 'fields') and 'video_url' in self.fields:
-                    del self.fields['video_url']
+            route = getattr(request.resolver_match, 'route', '')
+            if 'detail' not in route:
+                # For list views, exclude video_url and description to reduce payload size
+                self.fields.pop('video_url', None)
+                self.fields.pop('description', None)
 
 class BookmarkSerializer(serializers.ModelSerializer):
     class Meta:
