@@ -33,9 +33,10 @@ function Header() {
             try {
                 setLoadingCategories(true);
                 const response = await apiInstance.get("post/category/list/");
-                setCategories(response.data);
+                setCategories(Array.isArray(response.data) ? response.data : []);
             } catch (error) {
                 console.error("Failed to fetch categories:", error);
+                setCategories([]);
             } finally {
                 setLoadingCategories(false);
             }
