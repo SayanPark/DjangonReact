@@ -78,8 +78,8 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'api.middleware.RequestLoggingMiddleware',
@@ -178,11 +178,15 @@ FROM_EMAIL = os.environ.get('FROM_EMAIL', 'no-reply@yourdomain.com')
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 
 STATIC_ROOT = os.environ.get('STATIC_ROOT', '/usr/src/app/staticfiles')
 
 STATICFILES_DIRS = []
+
+# Ensure static files are served in production
+if not DEBUG:
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 WHITENOISE_MIMETYPES = {
     '.js': 'application/javascript',

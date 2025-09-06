@@ -46,8 +46,12 @@ urlpatterns = [
 ]
 
 # Serve media files in both development and production
-# In production, this will work alongside Render's staticPaths configuration
+# In production, this will work alongside Liara's staticPaths configuration
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+# Serve static files in production (when DEBUG=False)
+if not settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 # Catch-all pattern for SPA frontend
 urlpatterns += [re_path(r'^(?:.*)/?$', FrontendAppView.as_view(), name='frontend')]
