@@ -6,7 +6,7 @@ from django.conf import settings
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
-from django.db.models import Sum
+from django.db.models import Sum, F
 from django.urls import reverse
 from django.views.generic import View
 # Restframework
@@ -263,7 +263,7 @@ class PostListAPIView(generics.ListAPIView):
     pagination_class = StandardResultsSetPagination
 
     def get_queryset(self):
-        return gomini.Post.objects.all().order_by('-date')
+        return gomini.Post.objects.select_related('user', 'category').prefetch_related('likes').all().order_by('-date')
 
 class MostViewedPostListAPIView(generics.ListAPIView):
     serializer_class = serializers.PostSerializer
@@ -283,8 +283,10 @@ class PostDetailAPIView(generics.RetrieveAPIView):
             post = gomini.Post.objects.get(slug__iexact=slug, status="Active")
         except gomini.Post.DoesNotExist:
             raise NotFound(detail="Post not found")
-        post.view += 1
-        post.save()
+        # Increment view count atomically to avoid database locks
+        gomini.Post.objects.filter(id=post.id).update(view=F('view') + 1)
+        # Refresh the post to get the updated view count
+        post.refresh_from_db()
         return post
 
 class LikePostAPiView(APIView):
