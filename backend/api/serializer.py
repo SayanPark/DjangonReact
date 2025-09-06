@@ -258,9 +258,11 @@ class PostSerializer(serializers.ModelSerializer):
         if request and hasattr(request, 'resolver_match'):
             route = getattr(request.resolver_match, 'route', '')
             if 'detail' not in route:
-                # For list views, exclude video_url
+                # For list views, exclude video_url and description
                 if hasattr(self, 'fields') and 'video_url' in self.fields:
                     del self.fields['video_url']
+                if hasattr(self, 'fields') and 'description' in self.fields:
+                    del self.fields['description']
 
 class BookmarkSerializer(serializers.ModelSerializer):
     class Meta:
