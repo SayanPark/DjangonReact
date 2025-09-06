@@ -78,8 +78,8 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'api.middleware.RequestLoggingMiddleware',
@@ -206,6 +206,11 @@ WHITENOISE_MIMETYPES = {
     '.eot': 'application/vnd.ms-fontobject',
     '.svg': 'image/svg+xml',
 }
+
+# Additional WhiteNoise settings for production
+if not DEBUG:
+    WHITENOISE_MAX_AGE = 31536000  # 1 year
+    WHITENOISE_IMMUTABLE_FILE_TEST = lambda path, url: url.startswith('/static/')
 
 # Media directories handled by Liara disk mounts
 
