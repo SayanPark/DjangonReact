@@ -43,6 +43,7 @@ urlpatterns = [
     path("", schema_view.with_ui('swagger', cache_timeout=0), name="schema-swagger-ui"),
     path('admin/', admin.site.urls),
     path('api/v1/', include('api.urls')),
+    path('object-storage/', include('object_storage.urls')),
     path('favicon.ico', RedirectView.as_view(url='/static/favicon.ico')),
 ]
 
