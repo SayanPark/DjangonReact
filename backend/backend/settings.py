@@ -218,7 +218,7 @@ if not DEBUG:
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-MEDIA_ROOT = os.environ.get('MEDIA_ROOT', '/usr/src/app/media')
+MEDIA_ROOT = '/usr/src/app/media'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
