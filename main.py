@@ -17,8 +17,16 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'backend.settings')
 is_liara = os.environ.get('LIARA_APP_NAME') is not None
 
 if is_liara:
-    # Production: Use gunicorn
+    # Production: Run migrations and collect static files first
+    print("Running database migrations...")
+    subprocess.run([sys.executable, 'manage.py', 'migrate', '--noinput'])
+
+    print("Collecting static files...")
+    subprocess.run([sys.executable, 'manage.py', 'collectstatic', '--noinput'])
+
+    # Then start gunicorn
     port = os.environ.get('PORT', '8000')
+    print(f"Starting gunicorn on port {port}...")
     subprocess.run(['gunicorn', 'backend.wsgi:application', '--bind', f'0.0.0.0:{port}'])
 else:
     # Development: Use runserver
