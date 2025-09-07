@@ -46,11 +46,11 @@ urlpatterns = [
     path('favicon.ico', RedirectView.as_view(url='/static/favicon.ico')),
 ]
 
-# Serve static files in production (when DEBUG=False) - BEFORE the catch-all pattern
-if not settings.DEBUG:
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+# Serve static files - BEFORE the catch-all pattern
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
-# Media files are served from S3, no need for local static serving
+# Serve media files from local storage if available
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # Catch-all pattern for SPA frontend - MUST BE LAST
 urlpatterns += [re_path(r'^(?:.*)/?$', FrontendAppView.as_view(), name='frontend')]
