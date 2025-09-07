@@ -379,10 +379,20 @@ AWS_SECRET_ACCESS_KEY = os.getenv('LIARA_SECRET_KEY')
 AWS_STORAGE_BUCKET_NAME = os.getenv('BUCKET_NAME')
 AWS_S3_ENDPOINT_URL = os.getenv('LIARA_ENDPOINT_URL')
 
+# Debug logging for S3 configuration
+import logging
+logger = logging.getLogger(__name__)
+logger.info(f"AWS_ACCESS_KEY_ID: {AWS_ACCESS_KEY_ID is not None}")
+logger.info(f"AWS_SECRET_ACCESS_KEY: {AWS_SECRET_ACCESS_KEY is not None}")
+logger.info(f"AWS_STORAGE_BUCKET_NAME: {AWS_STORAGE_BUCKET_NAME}")
+logger.info(f"AWS_S3_ENDPOINT_URL: {AWS_S3_ENDPOINT_URL}")
+
 # Set storage backend based on S3 configuration
 if AWS_S3_ENDPOINT_URL and AWS_STORAGE_BUCKET_NAME:
     DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
     MEDIA_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.{AWS_S3_ENDPOINT_URL.replace('https://', '')}/"
+    logger.info(f"Using S3 storage with MEDIA_URL: {MEDIA_URL}")
 else:
     DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
     MEDIA_URL = '/media/'
+    logger.info("Using local file storage")
