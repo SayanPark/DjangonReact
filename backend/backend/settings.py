@@ -378,6 +378,7 @@ AWS_ACCESS_KEY_ID = os.getenv('LIARA_ACCESS_KEY')
 AWS_SECRET_ACCESS_KEY = os.getenv('LIARA_SECRET_KEY')
 AWS_STORAGE_BUCKET_NAME = os.getenv('BUCKET_NAME')
 AWS_S3_ENDPOINT_URL = os.getenv('LIARA_ENDPOINT_URL')
+AWS_S3_REGION_NAME = 'c2'
 
 # Debug logging for S3 configuration
 import logging
