@@ -182,6 +182,8 @@ STATIC_URL = '/static/'
 # Use different static root for Liara deployment
 if os.environ.get('LIARA_APP_NAME'):
     STATIC_ROOT = '/usr/src/app/staticfiles'
+    # Ensure the directory exists
+    os.makedirs(STATIC_ROOT, exist_ok=True)
 else:
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
