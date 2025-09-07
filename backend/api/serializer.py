@@ -109,10 +109,11 @@ class UserSerializer(serializers.ModelSerializer):
         }
         
     def get_image_url(self, obj):
-        request = self.context.get('request')
         if obj.image and hasattr(obj.image, 'url'):
             url = obj.image.url
-            # If we have a request, build absolute URI, otherwise return relative URL
+            if url.startswith('http'):
+                return url
+            request = self.context.get('request')
             if request is not None:
                 return request.build_absolute_uri(url)
             else:
@@ -134,10 +135,11 @@ class UserProfileSerializer(serializers.ModelSerializer):
         }
         
     def get_image_url(self, obj):
-        request = self.context.get('request')
         if obj.image and hasattr(obj.image, 'url'):
             url = obj.image.url
-            # If we have a request, build absolute URI, otherwise return relative URL
+            if url.startswith('http'):
+                return url
+            request = self.context.get('request')
             if request is not None:
                 return request.build_absolute_uri(url)
             else:
@@ -170,9 +172,11 @@ class CategorySerializer(serializers.ModelSerializer):
         return category.posts.count()
 
     def get_image_url(self, obj):
-        request = self.context.get('request')
         if obj.image and hasattr(obj.image, 'url'):
             url = obj.image.url
+            if url.startswith('http'):
+                return url
+            request = self.context.get('request')
             if request is not None:
                 return request.build_absolute_uri(url)
             else:
@@ -227,9 +231,11 @@ class PostSerializer(serializers.ModelSerializer):
         return serializer.data
 
     def get_image_url(self, obj):
-        request = self.context.get('request')
         if obj.image and hasattr(obj.image, 'url'):
             url = obj.image.url
+            if url.startswith('http'):
+                return url
+            request = self.context.get('request')
             if request is not None:
                 return request.build_absolute_uri(url)
             else:
@@ -237,9 +243,11 @@ class PostSerializer(serializers.ModelSerializer):
         return None
 
     def get_video_url(self, obj):
-        request = self.context.get('request')
         if obj.video and hasattr(obj.video, 'url'):
             url = obj.video.url
+            if url.startswith('http'):
+                return url
+            request = self.context.get('request')
             if request is not None:
                 return request.build_absolute_uri(url)
             else:
