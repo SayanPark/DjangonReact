@@ -43,15 +43,14 @@ urlpatterns = [
     path("", schema_view.with_ui('swagger', cache_timeout=0), name="schema-swagger-ui"),
     path('admin/', admin.site.urls),
     path('api/v1/', include('api.urls')),
+    path('favicon.ico', RedirectView.as_view(url='/static/favicon.ico')),
 ]
 
 # Serve static files in production (when DEBUG=False) - BEFORE the catch-all pattern
 if not settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
-# Serve media files in both development and production
-# In production, this will work alongside Liara's staticPaths configuration
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# Media files are served from S3, no need for local static serving
 
 # Catch-all pattern for SPA frontend - MUST BE LAST
 urlpatterns += [re_path(r'^(?:.*)/?$', FrontendAppView.as_view(), name='frontend')]
