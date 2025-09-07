@@ -185,7 +185,11 @@ if os.environ.get('LIARA_APP_NAME'):
 else:
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-STATICFILES_DIRS = [os.path.join(BASE_DIR.parent, 'frontend', 'public')]
+# Static files directories
+if os.environ.get('LIARA_APP_NAME'):
+    STATICFILES_DIRS = [os.path.join(BASE_DIR.parent.parent, 'frontend', 'public')]
+else:
+    STATICFILES_DIRS = [os.path.join(BASE_DIR.parent, 'frontend', 'public')]
 
 # Ensure static files are served in production
 if not DEBUG:
@@ -283,7 +287,7 @@ JAZZMIN_SETTINGS = {
     "site_brand": "Modern Marketplace ",
     "welcome_sign": "Welcome To Desphixs",
     "copyright": "Desphixs",
-    "user_avatar": "/static/logo-removebg-preview.png",
+    "user_avatar": lambda user: user.image.url if user.image else "/static/logo-removebg-preview.png",
     "topmenu_links": [
         {"name": "Dashboard", "url": "admin:index", "permissions": ["auth.view_user"]},
         {"model": "auth.User"},
