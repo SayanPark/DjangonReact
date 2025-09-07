@@ -185,7 +185,7 @@ if os.environ.get('LIARA_APP_NAME'):
 else:
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-STATICFILES_DIRS = []
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'frontend', 'public')]
 
 # Ensure static files are served in production
 if not DEBUG:
