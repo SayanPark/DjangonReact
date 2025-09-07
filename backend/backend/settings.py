@@ -388,12 +388,7 @@ logger.info(f"AWS_SECRET_ACCESS_KEY: {AWS_SECRET_ACCESS_KEY is not None}")
 logger.info(f"AWS_STORAGE_BUCKET_NAME: {AWS_STORAGE_BUCKET_NAME}")
 logger.info(f"AWS_S3_ENDPOINT_URL: {AWS_S3_ENDPOINT_URL}")
 
-# Set storage backend based on S3 configuration
-if AWS_S3_ENDPOINT_URL and AWS_STORAGE_BUCKET_NAME:
-    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-    MEDIA_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.{AWS_S3_ENDPOINT_URL.replace('https://', '')}/"
-    logger.info(f"Using S3 storage with MEDIA_URL: {MEDIA_URL}")
-else:
-    DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
-    MEDIA_URL = '/media/'
-    logger.info("Using local file storage")
+# Use local file storage for media files (images, videos)
+DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
+MEDIA_URL = '/media/'
+logger.info("Using local file storage for media files")
