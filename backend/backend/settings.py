@@ -185,7 +185,7 @@ if os.environ.get('LIARA_APP_NAME'):
 else:
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'frontend', 'public')]
+STATICFILES_DIRS = [os.path.join(BASE_DIR.parent, 'frontend', 'public')]
 
 # Ensure static files are served in production
 if not DEBUG:
@@ -218,7 +218,11 @@ if not DEBUG:
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-MEDIA_ROOT = '/usr/src/app/media'
+# Media directories handled by Liara disk mounts
+if os.environ.get('LIARA_APP_NAME'):
+    MEDIA_ROOT = '/usr/src/app/media'
+else:
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -279,9 +283,9 @@ JAZZMIN_SETTINGS = {
     "site_brand": "Modern Marketplace ",
     "welcome_sign": "Welcome To Desphixs",
     "copyright": "Desphixs",
-    "user_avatar": "images/photos/logo.jpg",
+    "user_avatar": "/static/logo-removebg-preview.png",
     "topmenu_links": [
-        {"name": "Dashboard", "url": "home", "permissions": ["auth.view_user"]},
+        {"name": "Dashboard", "url": "admin:index", "permissions": ["auth.view_user"]},
         {"model": "auth.User"},
     ],
     "show_sidebar": True,
