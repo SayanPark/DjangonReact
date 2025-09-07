@@ -722,6 +722,7 @@ class DashboardPostEditAPIView(generics.RetrieveUpdateDestroyAPIView):
         return gomini.Post.objects.get(user=user, id=post_id)
 
     def update(self, request, *args, **kwargs):
+        logger = logging.getLogger(__name__)
         post_instance = self.get_object()
 
         title = request.data.get('title')
@@ -731,30 +732,40 @@ class DashboardPostEditAPIView(generics.RetrieveUpdateDestroyAPIView):
         category_id = request.data.get('category')
         post_status = request.data.get('post_status')
 
-        if category_id:
-            try:
-                category = gomini.Category.objects.get(id=category_id)
-            except gomini.Category.DoesNotExist:
-                return Response({"error": "Invalid category ID"}, status=status.HTTP_400_BAD_REQUEST)
-        else:
-            category = None
+        logger.info(f"Updating post {post_instance.id} with data: title={title}, image={image}, category_id={category_id}")
 
-        post_instance.title = title
-        if image and image != "undefined":
-            post_instance.image = image
+        try:
+            if category_id:
+                try:
+                    category = gomini.Category.objects.get(id=category_id)
+                except gomini.Category.DoesNotExist:
+                    logger.error(f"Invalid category ID: {category_id}")
+                    return Response({"error": "Invalid category ID"}, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                category = None
 
-        video = request.FILES.get('video')
-        if video and video != "undefined":
-            post_instance.video = video
+            post_instance.title = title
+            if image and str(image) != "undefined" and hasattr(image, 'read'):
+                logger.info(f"Assigning image to post: {image}")
+                post_instance.image = image
 
-        post_instance.description = description
-        post_instance.tags = tags
-        if category:
-            post_instance.category = category
-        post_instance.status = post_status
-        post_instance.save()
+            video = request.FILES.get('video')
+            if video and str(video) != "undefined" and hasattr(video, 'read'):
+                logger.info(f"Assigning video to post: {video}")
+                post_instance.video = video
 
-        return Response({"message": "Post Updated Successfully"}, status=status.HTTP_200_OK)
+            post_instance.description = description
+            post_instance.tags = tags
+            if category:
+                post_instance.category = category
+            post_instance.status = post_status
+            post_instance.save()
+            logger.info(f"Post {post_instance.id} updated successfully")
+
+            return Response({"message": "Post Updated Successfully"}, status=status.HTTP_200_OK)
+        except Exception as e:
+            logger.error(f"Error updating post {post_instance.id}: {str(e)}", exc_info=True)
+            return Response({"error": f"Failed to update post: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
