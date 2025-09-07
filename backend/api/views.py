@@ -945,9 +945,15 @@ class FrontendAppView(View):
     Serves the compiled frontend's index.html file for SPA routing.
     """
     def get(self, request, *args, **kwargs):
-        frontend_dir = settings.STATICFILES_DIRS[0]
-        index_file = frontend_dir / 'index.html'
-        if index_file.exists():
-            return FileResponse(open(index_file, 'rb'))
-        else:
-            raise Http404("Frontend build not found")
+        try:
+            if settings.STATICFILES_DIRS:
+                frontend_dir = Path(settings.STATICFILES_DIRS[0])
+                index_file = frontend_dir / 'index.html'
+                if index_file.exists():
+                    return FileResponse(open(index_file, 'rb'))
+                else:
+                    raise Http404("Frontend build not found")
+            else:
+                raise Http404("Frontend not configured")
+        except (IndexError, FileNotFoundError):
+            raise Http404("Frontend not available")
