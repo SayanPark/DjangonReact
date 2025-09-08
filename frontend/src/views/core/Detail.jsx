@@ -15,6 +15,15 @@ function findLinkEntities(contentBlock, callback, contentState) {
   }, callback);
 }
 
+function findUrlEntities(contentBlock, callback, contentState) {
+  const text = contentBlock.getText();
+  const urlRegex = /(https?:\/\/[^\s]+)/g;
+  let match;
+  while ((match = urlRegex.exec(text)) !== null) {
+    callback(match.index, match.index + match[0].length);
+  }
+}
+
 const DraftLink = (props) => {
   let { url } = props.contentState.getEntity(props.entityKey).getData();
 
@@ -56,10 +65,56 @@ const DraftLink = (props) => {
   );
 };
 
+const UrlLink = (props) => {
+  const url = props.children[0].props.text; // The matched text is the URL
+
+  // Normalize URL
+  let normalizedUrl = url;
+  if (!normalizedUrl.startsWith("http://") && !normalizedUrl.startsWith("https://")) {
+    normalizedUrl = "https://" + normalizedUrl;
+  }
+
+  // Check if video
+  const isVideoUrl = /\.(mp4|webm|ogg|avi|mov|wmv|flv|m4v|3gp)$/i.test(normalizedUrl) ||
+                     normalizedUrl.includes('storage.c2.liara.space') && normalizedUrl.includes('.mp4');
+
+  if (isVideoUrl) {
+    return (
+      <div style={{ display: "flex", justifyContent: "center", margin: "1rem 0" }}>
+        <video controls style={{ maxWidth: "50%" }}>
+          <source src={normalizedUrl} type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      </div>
+    );
+  }
+
+  const handleClick = (e) => {
+    e.preventDefault();
+    window.open(normalizedUrl, "_blank", "noopener,noreferrer");
+  };
+
+  return (
+    <a
+      href={normalizedUrl}
+      style={{ color: "blue", textDecoration: "underline" }}
+      onClick={handleClick}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      {props.children}
+    </a>
+  );
+};
+
 const decorator = new CompositeDecorator([
   {
     strategy: findLinkEntities,
     component: DraftLink,
+  },
+  {
+    strategy: findUrlEntities,
+    component: UrlLink,
   },
 ]);
 
