@@ -24,11 +24,25 @@ class ProfileAdmin(admin.ModelAdmin):
     thumbnail.short_description = 'Thumbnail'
 
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ["title"]
+    list_display = ["title", "image_thumbnail"]
+
+    def image_thumbnail(self, obj):
+        if obj.image:
+            return f'<img src="{obj.image.url}" width="50" height="50" />'
+        return '(No Image)'
+    image_thumbnail.allow_tags = True
+    image_thumbnail.short_description = 'Image'
 
 class PostAdmin(admin.ModelAdmin):
-    list_display = ["title","user","category","view"]
+    list_display = ["title","user","category","view", "image_thumbnail"]
     prepopulated_fields = {"slug": ["title"]}
+
+    def image_thumbnail(self, obj):
+        if obj.image:
+            return f'<img src="{obj.image.url}" width="50" height="50" />'
+        return '(No Image)'
+    image_thumbnail.allow_tags = True
+    image_thumbnail.short_description = 'Image'
 
 class CommentAdmin(admin.ModelAdmin):
     list_display = ["post","name","email","comment"]

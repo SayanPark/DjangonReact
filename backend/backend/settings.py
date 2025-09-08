@@ -225,7 +225,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Media directories handled by Liara disk mounts
 if os.environ.get('LIARA_APP_NAME'):
-    MEDIA_ROOT = '/usr/src/app/staticfiles/media'
+    MEDIA_ROOT = '/tmp/media'
+    # Ensure the directory exists
+    os.makedirs(MEDIA_ROOT, exist_ok=True)
 else:
     MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
