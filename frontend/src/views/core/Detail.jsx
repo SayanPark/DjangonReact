@@ -23,6 +23,21 @@ const DraftLink = (props) => {
     url = "https://" + url;
   }
 
+  // Check if URL is a video link
+  const isVideoUrl = /\.(mp4|webm|ogg|avi|mov|wmv|flv|m4v|3gp)$/i.test(url) ||
+                     url.includes('storage.c2.liara.space') && url.includes('.mp4');
+
+  if (isVideoUrl) {
+    return (
+      <div style={{ display: "flex", justifyContent: "center", margin: "1rem 0" }}>
+        <video controls style={{ maxWidth: "50%" }}>
+          <source src={url} type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      </div>
+    );
+  }
+
   const handleClick = (e) => {
     e.preventDefault();
     window.open(url, "_blank", "noopener,noreferrer");
