@@ -499,6 +499,7 @@ function Detail() {
                   readOnly={true}
                   blockRendererFn={mediaBlockRenderer}
                   customStyleMap={customStyleMap}
+                  decorator={decorator}
                 />
               </div>
 
