@@ -51,7 +51,16 @@ def main():
             print("✅ Static files collected successfully")
         except subprocess.CalledProcessError as e:
             print(f"⚠️  Static collection failed: {e}")
-        
+
+        # Ensure media directories exist
+        print("📁 Ensuring media directories exist...")
+        try:
+            from backend.storage_config import ensure_media_directories
+            ensure_media_directories()
+            print("✅ Media directories ensured")
+        except Exception as e:
+            print(f"⚠️  Media directories setup failed: {e}")
+
         # Create superuser if it doesn't exist
         print("👤 Checking superuser...")
         try:
