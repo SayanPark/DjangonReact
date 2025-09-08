@@ -19,6 +19,7 @@ from django.urls import path, include, re_path
 from django.conf import settings
 from django.conf.urls.static import static
 from django.views.generic import RedirectView
+from django.views.static import serve
 
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
@@ -46,14 +47,17 @@ urlpatterns = [
     path('favicon.ico', RedirectView.as_view(url='/static/favicon.ico')),
 ]
 
+# Media file serving - BEFORE catch-all pattern
+urlpatterns += [
+    re_path(r'^media/(?P<path>.*)$', serve, {
+        'document_root': settings.MEDIA_ROOT,
+    }),
+]
+
 # Serve static files in development
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
-# Always serve media files (both development and production)
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
 # Catch-all pattern for SPA frontend - MUST BE LAST
-# Exclude media and static URLs from being caught by the frontend
-urlpatterns += [re_path(r'^(?!media/|static/).*', FrontendAppView.as_view(), name='frontend')]
+urlpatterns += [re_path(r'.*', FrontendAppView.as_view(), name='frontend')]
 
