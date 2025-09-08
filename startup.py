@@ -55,8 +55,27 @@ def main():
         # Ensure media directories exist
         print("📁 Ensuring media directories exist...")
         try:
-            from backend.storage_config import ensure_media_directories
-            ensure_media_directories()
+            # Create media directories manually
+            import os
+            media_root = '/usr/src/app/staticfiles/media'
+            directories = [
+                media_root,
+                os.path.join(media_root, 'image'),
+                os.path.join(media_root, 'videos'),
+                os.path.join(media_root, 'ckeditor_uploads'),
+            ]
+
+            for directory in directories:
+                try:
+                    if not os.path.exists(directory):
+                        os.makedirs(directory, exist_ok=True)
+                        os.chmod(directory, 0o777)
+                        print(f"Created directory: {directory}")
+                    else:
+                        os.chmod(directory, 0o777)
+                        print(f"Set permissions for directory: {directory}")
+                except OSError as e:
+                    print(f"Could not create or set permissions for directory {directory}: {e}")
             print("✅ Media directories ensured")
         except Exception as e:
             print(f"⚠️  Media directories setup failed: {e}")

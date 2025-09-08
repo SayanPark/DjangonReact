@@ -58,9 +58,13 @@ class User(AbstractUser):
                     self.first_name = parts[0]
                     self.last_name = " ".join(parts[1:])
         if self.username == "" or self.username == None:
-            self.username = email_username  
-    
-        super(User, self).save(*args, **kwargs)
+            self.username = email_username
+
+        try:
+            super(User, self).save(*args, **kwargs)
+        except Exception as e:
+            print(f"Error saving User: {e}")
+            raise
 
 class Category(models.Model):
     title = models.CharField(max_length=100)
@@ -76,7 +80,11 @@ class Category(models.Model):
     def save(self, *args, **kwargs):
         if self.slug == "" or self.slug == None:
             self.slug = slugify(self.title)
-        super(Category, self).save(*args, **kwargs)
+        try:
+            super(Category, self).save(*args, **kwargs)
+        except Exception as e:
+            print(f"Error saving Category: {e}")
+            raise
     
     def post_count(self):
         return Post.objects.filter(category=self).count()
@@ -139,7 +147,11 @@ class Post(models.Model):
                     "entityMap": {}
                 }
                 self.description = plain_text_raw
-        super(Post, self).save(*args, **kwargs)
+        try:
+            super(Post, self).save(*args, **kwargs)
+        except Exception as e:
+            print(f"Error saving Post: {e}")
+            raise
     
     def comments(self):
         return Comment.objects.filter(post=self).order_by("-id")

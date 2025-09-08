@@ -66,7 +66,6 @@ INSTALLED_APPS = [
 
      # Custom Apps
      'api',
-     'storages',
 
      #Third Party Apps
      'corsheaders',
@@ -373,22 +372,6 @@ FRONTEND_BASE_URL = os.environ.get('FRONTEND_BASE_URL', "https://shahrezananekar
 FILE_UPLOAD_MAX_MEMORY_SIZE = 104857600  # 100MB
 DATA_UPLOAD_MAX_MEMORY_SIZE = 104857600  # 100MB
 
-# AWS S3 Settings for Liara
-AWS_ACCESS_KEY_ID = os.getenv('LIARA_ACCESS_KEY')
-AWS_SECRET_ACCESS_KEY = os.getenv('LIARA_SECRET_KEY')
-AWS_STORAGE_BUCKET_NAME = os.getenv('BUCKET_NAME')
-AWS_S3_ENDPOINT_URL = os.getenv('LIARA_ENDPOINT_URL')
-AWS_S3_REGION_NAME = 'us-east-1'
-
-# Debug logging for S3 configuration
-import logging
-logger = logging.getLogger(__name__)
-logger.info(f"AWS_ACCESS_KEY_ID: {AWS_ACCESS_KEY_ID is not None}")
-logger.info(f"AWS_SECRET_ACCESS_KEY: {AWS_SECRET_ACCESS_KEY is not None}")
-logger.info(f"AWS_STORAGE_BUCKET_NAME: {AWS_STORAGE_BUCKET_NAME}")
-logger.info(f"AWS_S3_ENDPOINT_URL: {AWS_S3_ENDPOINT_URL}")
-
 # Use local file storage for media files (images, videos)
 DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
 MEDIA_URL = '/media/'
-logger.info("Using local file storage for media files")
