@@ -17,7 +17,7 @@ function findLinkEntities(contentBlock, callback, contentState) {
 
 function findUrlEntities(contentBlock, callback, contentState) {
   const text = contentBlock.getText();
-  const urlRegex = /(https?:\/\/[^\s]+)/g;
+  const urlRegex = /(https?:\/\/[^\s]+|[a-zA-Z0-9-]+\.[a-zA-Z]{2,}[^\s]*)/g;
   let match;
   while ((match = urlRegex.exec(text)) !== null) {
     callback(match.index, match.index + match[0].length);
