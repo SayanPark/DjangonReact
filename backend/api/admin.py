@@ -3,7 +3,14 @@ from api import models as api_models
 
 class UserAdmin(admin.ModelAdmin):
     search_fields  = ['full_name', 'username', 'email']
-    list_display  = ['username', 'email']
+    list_display  = ['username', 'email', 'image_thumbnail']
+
+    def image_thumbnail(self, obj):
+        if obj.image:
+            return f'<img src="{obj.image.url}" width="50" height="50" />'
+        return '(No Image)'
+    image_thumbnail.allow_tags = True
+    image_thumbnail.short_description = 'Image'
 
 class ProfileAdmin(admin.ModelAdmin):
     search_fields  = ['user']
