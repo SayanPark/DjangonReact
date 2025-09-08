@@ -15,7 +15,6 @@ def ensure_media_directories():
         os.path.join(media_root, 'image'),
         os.path.join(media_root, 'videos'),
         os.path.join(media_root, 'ckeditor_uploads'),
-        os.path.join(media_root, 'default'),
     ]
 
     for directory in directories:

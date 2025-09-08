@@ -8,7 +8,7 @@
   "disks": [
     {
       "name": "media-disk",
-      "mountTo": "/usr/src/app/media"
+      "mountTo": "/usr/src/app/staticfiles/media"
     },
     {
       "name": "static-disk",
@@ -24,7 +24,7 @@
   },
   "env": {
     "DJANGO_SETTINGS_MODULE": "backend.settings",
-    "MEDIA_ROOT": "/usr/src/app/media",
+    "MEDIA_ROOT": "/usr/src/app/staticfiles/media",
     "STATIC_ROOT": "/usr/src/app/staticfiles",
     "DATABASE_DIR": "/usr/src/app/database"
   }
