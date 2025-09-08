@@ -46,14 +46,14 @@ urlpatterns = [
     path('favicon.ico', RedirectView.as_view(url='/static/favicon.ico')),
 ]
 
-# Serve static files - BEFORE the catch-all pattern
+# Serve static files in development
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-# Serve media files in production
-urlpatterns += static('/media/', document_root=settings.MEDIA_ROOT)
+# Always serve media files (both development and production)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # Catch-all pattern for SPA frontend - MUST BE LAST
-urlpatterns += [re_path(r'^(?!media/|static/).*$', FrontendAppView.as_view(), name='frontend')]
+# Exclude media and static URLs from being caught by the frontend
+urlpatterns += [re_path(r'^(?!media/|static/).*', FrontendAppView.as_view(), name='frontend')]
 
